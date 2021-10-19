@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import django_heroku
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,7 @@ SECRET_KEY = 'django-insecure-dz6qown^2*rlz-eftr$i17_^rl+_%7igv0r0hmcmpptpdlgg6_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['tractor-factory-interface.herokuapp.com']
 
 
 # Application definition
@@ -78,10 +80,10 @@ WSGI_APPLICATION = 'tractor_factory_interface.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tractor_test',
-        'USER': 'cactus',
-        'PASSWORD': '',
-        'HOST': '',
+        'NAME': 'd8pk0rvfqdi3',
+        'USER': 'ymiheuqkuvgvxo',
+        'PASSWORD': '0464ec5c2d7b66aaa6d3251ddf98ef6f8bb8d7a67e932c8adb30dc2cf8ce70ba',
+        'HOST': 'ec2-54-228-162-209.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
 }
@@ -123,7 +125,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+django_heroku.settings(locals())
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
