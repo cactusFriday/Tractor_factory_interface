@@ -2,37 +2,60 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  height: 60px;
+  background-color: #84C7AE
+}
+
+.App-main {
+  height: fit-content;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  font-size: 20px;
+  font-family: 'Roboto', sans-serif;
+  color: #000000;
 }
 
-.App-link {
-  color: #61dafb;
+.App-InputForm {
+  margin-top: 150px;
+  background-color: #C1E3D666;
+  height: 309px;
+  width: 345px;
+  border-radius: 49.09px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App-Input {
+  margin-top: 10px;
+  padding-left: 15px;
+  width: 284.34px;
+  height: 37.35px;
+  border-radius: 15.34px;
+  border-color: rgba(0, 0, 0, 0.1)
+}
+
+.App-Button {
+  margin-top: 15px;
+  width: 193.35px;
+  height: 40.07px;
+  border-radius: 23.01px;
+  border: none;
+  background-color: #84C7AE;
+  color: #ffffff;
+  box-shadow: #ffffff;
+}
+
+.Title {
+  margin-top: 30px;
+}
+
+.Link-Password {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #000000
 }
