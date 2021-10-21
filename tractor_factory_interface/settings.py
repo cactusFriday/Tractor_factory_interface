@@ -14,6 +14,8 @@ from pathlib import Path
 import django_heroku
 import os
 
+import rest_framework
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'coreAPI',
     'authorization',
 ]
 
@@ -54,6 +57,23 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'tractor_factory_interface.urls'
+
+# auth users can make 60 requests per minute, anons 30.
+# restrict API to auth users
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.AnonRateThrottle',
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '60/minute',
+        'anon': '30/minute',
+    },
+}
+
 
 TEMPLATES = [
     {
@@ -88,6 +108,16 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'tractor_test',
+#         'USER': 'cactus',
+#         'PASSWORD': '',
+#         'HOST': '',
+#         'PORT': '5432',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

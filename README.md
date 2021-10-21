@@ -33,6 +33,6 @@ DATABASES = {
 ```
 After **create database db_name** and finally run:
 ```bash
-./manage.py migrate
 ./manage.py makemigrations
+./manage.py migrate
 ```
