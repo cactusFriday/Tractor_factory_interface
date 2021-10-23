@@ -33,7 +33,7 @@ class Accident(models.Model):
             raise Exception('Not enough arguments to create Accident History record')
         if not set(self.ACC_HIST_ARGS) & set(kwargs.keys()) == set(self.ACC_HIST_ARGS):
             raise Exception('Some arguments are not provided')
-        his_args = {}        
+        his_args = {}
         for arg in self.ACC_HIST_ARGS:
             his_args[arg] = kwargs[arg]
         history_record = AccidentHistory(accident=self, **his_args)
