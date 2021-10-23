@@ -1,37 +1,38 @@
-from django.db.models.base import Model
+from django.contrib.auth.models import User
 from rest_framework import fields, serializers
+
 from .models import *
 
-POST_AMOUNT = 13
 
 class ConveyorStateSerializer(serializers.ModelSerializer):
-    
-    # def alter_posts_states(self):
-    #     if self.is_valid():
-    #         stats_set = ConveyorState.objects.order_by('id')
-    #         for i, conv_stat in enumerate(stats_set):
-    #             tmp = conv_stat
-    #             if tmp.status != self.validated_data[i]['status']:
-    #                 tmp.status = self.validated_data[i]['status']
-    #                 tmp.save()
-    #     else:
-    #         return self.errors
-
     class Meta:
         model = ConveyorState
-        fields = ('id', 'post', 'status')
+        fields = ('post', 'status')
     
-# class ConveyorState
 
-class AccidentListSerializer(serializers.HyperlinkedModelSerializer):
+class AccidentSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.username')
+    accident_history = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    # queryset=AccidentHistory.objects.all(), 
+    # accident_history_related = serializers.HyperlinkedIdentityField(view_name='accident_history-list')
     class Meta:
         model = Accident
-        fields = '__all__'
-        read_only_fields = ('timestamp', )
+        fields = ('id', 'user', 'time_appeared', 'time_solved', 'post', 'accident_class', 'description', 'accident_history')
+        # read_only_fields = ('accident_history', )
 
 
-# class TestSerializer(serializers.ModelSerializer):
-    
-#     class Meta:
-#         model = Accident
-#         fields = '__all__'
+
+# class AccidentDetailSerializer
+
+class AccidentHistorySerializer(serializers.ModelSerializer):
+    accident_id = serializers.IntegerField()
+    class Meta:
+        model = AccidentHistory
+        fields = ('id', 'time_changed', 'accident_id', 'accident_class', 'description')
+
+
+class UserSerializer(serializers.ModelSerializer):
+    accidents = serializers.PrimaryKeyRelatedField(many=True, queryset=Accident.objects.all())
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'accidents')
