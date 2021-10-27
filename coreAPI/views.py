@@ -1,16 +1,15 @@
 from django.contrib.auth.models import User
-from django.http import JsonResponse, request
-
-from rest_framework.response import Response
-from rest_framework.reverse import reverse
+from django.http import JsonResponse
+from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
-from rest_framework import generics, serializers
-from rest_framework import authentication, permissions
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
-from coreAPI.premissions import IsOwnerOrReadOnly
 from coreAPI.models import Accident, AccidentClass, AccidentHistory, ConveyorState
+from coreAPI.premissions import IsOwnerOrReadOnly
 from coreAPI.serializers import AccidentHistorySerializer, AccidentSerializer, ConveyorStateSerializer, UserSerializer
+
 
 @api_view(['GET', ])
 def api_root(request, format=None):
@@ -22,15 +21,18 @@ def api_root(request, format=None):
         'accidents history': reverse('accident_history-list', request=request, format=format),
     })
 
+
 class UserList(generics.ListAPIView):
     '''GET - возвращает всех пользователей, с созданными ими инцидентами'''
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class UserDetail(generics.RetrieveAPIView):
     '''GET+pk - возвращает user(id=pk)'''
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
 
 class AccidentList(generics.ListCreateAPIView):
     '''GET - выводит все инциденты. POST - создает инцидент'''
@@ -40,6 +42,7 @@ class AccidentList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         '''пробрасывает user из request в serializer'''
         serializer.save(user=self.request.user)
+
 
 class AccidentHistoryList(generics.ListCreateAPIView):
     '''GET - выводит все истории изменений. POST - создает историю изменения к определенному инциденту'''
@@ -59,7 +62,8 @@ class AccidentHistoryList(generics.ListCreateAPIView):
         accident.description = serializer.validated_data.get('description')
         accident.accident_class = serializer.validated_data.get('accident_class')
         accident.save()
-        acc_history_elem = AccidentHistory(accident=accident, accident_class=current_class, description=current_description)
+        acc_history_elem = AccidentHistory(accident=accident, accident_class=current_class,
+                                           description=current_description)
         acc_history_elem.save()
         # print(f'Updated accident:\n{accident.id}\n{accident.user}\n{accident.time_appeared}\n{accident.post}\n{accident.accident_class}\n{accident.description}')
         # print(f'Put in history:\n{acc_history_elem.id}\n{acc_history_elem.accident}\n{acc_history_elem.accident_class}\n{acc_history_elem.description}')
@@ -67,9 +71,10 @@ class AccidentHistoryList(generics.ListCreateAPIView):
 
 class AccidentDetail(generics.RetrieveUpdateDestroyAPIView):
     '''GET+pk - возвращает Accident(id=pk)'''
-    permission_classes = [IsOwnerOrReadOnly,]
+    permission_classes = [IsOwnerOrReadOnly, ]
     queryset = Accident.objects.all()
     serializer_class = AccidentSerializer
+
 
 @api_view(['GET', 'POST'])
 def conveyor_state_list(request):
@@ -94,7 +99,6 @@ def conveyor_state_list(request):
                     tmp.save()
             return JsonResponse(serializer.data, status=201, safe=False)
         return JsonResponse(serializer.errors, status=400, safe=False)
-
 
 
 # @api_view(['POST', ])
@@ -127,16 +131,16 @@ def accident_history(request):
         data['accident_class'] = acc_class
         data['user'] = user
         accident = Accident.objects.get(user=user, time_appeared=data['time_appeared'])
-            
+
         history_set = accident.get_history_set()
         history_serializer = AccidentHistorySerializer(history_set, many=True)
         return JsonResponse(history_serializer.data, status=201, safe=False)
+
 
 @api_view(['GET', ])
 def accident_last(request):
     if request.method == 'GET':
         last_acc = Accident.objects.latest('id')
-        
 
 # @api_view(['POST', ])
 # def accident_create(request):

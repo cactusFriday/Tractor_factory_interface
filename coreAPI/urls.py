@@ -1,7 +1,6 @@
 from django.urls import path
-from django.urls.conf import include
-from coreAPI import views
 
+from coreAPI import views
 
 urlpatterns = [
     path('', views.api_root),

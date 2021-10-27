@@ -18,9 +18,9 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include('coreAPI.urls')),
+    path('api/v1/authentication', include('authorization.urls')),
+    path('api/v1/registration', include('registration.urls')),
     path('', include('authorization.urls'))
-    # path('api/v1/auth', include('authorization.urls'))
 ]
 
 # Позволяет залогиниться, в случае работы с API в браузере
