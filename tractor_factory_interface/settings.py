@@ -33,7 +33,6 @@ ALLOWED_HOSTS = ['tractor-factory-interface.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -152,3 +151,8 @@ django_heroku.settings(locals())
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Рассказать Django о созданной нами кастомной модели пользователя. Строка
+# authorization.User сообщает Django, что мы ссылаемся на модель User в модуле
+# authorization. Этот модуль зарегистрирован выше в настройке INSTALLED_APPS.
+AUTH_USER_MODEL = 'authorization.User'

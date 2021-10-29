@@ -1,12 +1,8 @@
 from django.urls import path
-from authorization import views
+from .views import RegistrationAPIView, LoginAPIView
 
-
+app_name = 'authentication'
 urlpatterns = [
-    path('', views.index),
-    path('monitoring/', views.monitoring),
-    path('board/', views.board),
-    path('not_allowed/', views.not_allowed),
-    path('login/', views.login),
-
+    path('users/', RegistrationAPIView.as_view()),
+    path('users/login/', LoginAPIView.as_view()),
 ]

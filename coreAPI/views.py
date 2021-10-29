@@ -13,7 +13,7 @@ from coreAPI.serializers import AccidentHistorySerializer, AccidentSerializer, C
 
 @api_view(['GET', ])
 def api_root(request, format=None):
-    '''func-based view для корневого адреса API, возвращает джсон URL'''
+    """func-based view для корневого адреса API, возвращает джсон URL"""
     return Response({
         'users': reverse('user-list', request=request, format=format),
         'conveyor states': reverse('conveyor-list', request=request, format=format),
@@ -23,19 +23,19 @@ def api_root(request, format=None):
 
 
 class UserList(generics.ListAPIView):
-    '''GET - возвращает всех пользователей, с созданными ими инцидентами'''
+    """GET - возвращает всех пользователей, с созданными ими инцидентами"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class UserDetail(generics.RetrieveAPIView):
-    '''GET+pk - возвращает user(id=pk)'''
+    """GET+pk - возвращает user(id=pk)"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class AccidentList(generics.ListCreateAPIView):
-    '''GET - выводит все инциденты. POST - создает инцидент'''
+    """GET - выводит все инциденты. POST - создает инцидент"""
     queryset = Accident.objects.all()
     serializer_class = AccidentSerializer
 
@@ -45,17 +45,17 @@ class AccidentList(generics.ListCreateAPIView):
 
 
 class AccidentHistoryList(generics.ListCreateAPIView):
-    '''GET - выводит все истории изменений. POST - создает историю изменения к определенному инциденту'''
+    """GET - выводит все истории изменений. POST - создает историю изменения к определенному инциденту"""
     queryset = AccidentHistory.objects.all()
     serializer_class = AccidentHistorySerializer
 
     def perform_create(self, serializer):
-        '''
+        """
         Сценарий создания истории (редактирования инцидента):
         1. клиент заполняет форму опредленного инцидента с полями (класс инцидента, описание)
         2. с фронта приходит джсон {accident_id, accident_class, description}
         3. необходимо положить класс и описание в инцидент по айди и историю уже сохранить с описанием, классом инцидента по айди
-        '''
+        """
         accident = Accident.objects.get(id=serializer.validated_data['accident_id'])
         current_description = accident.description
         current_class = accident.accident_class
