@@ -17,8 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('apps.authentication.urls', namespace='authentication')),
+    path('api/', include('authorization.urls', namespace='authentication')),
 ]
 
 # Позволяет залогиниться, в случае работы с API в браузере
