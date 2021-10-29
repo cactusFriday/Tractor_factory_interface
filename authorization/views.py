@@ -7,13 +7,11 @@ from .renderers import UserJSONRenderer
 from .serializers import LoginSerializer, RegistrationSerializer
 
 
-renderer_classes = (UserJSONRenderer,)
-
-
 class RegistrationAPIView(APIView):
     """
     Разрешить всем пользователям (аутентифицированным и нет) доступ к данному эндпоинту.
     """
+    renderer_classes = (UserJSONRenderer,)
     permission_classes = (AllowAny,)
     serializer_class = RegistrationSerializer
 
