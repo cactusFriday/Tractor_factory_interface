@@ -79,7 +79,7 @@
   
   @font-face {
     font-family: Roboto; 
-    src: url("fonts/Roboto-Light.ttf") format("truetype"); 
+    src: url("../static/fonts/Roboto-Light.ttf") format("truetype"); 
     font-style: normal; 
     font-weight: normal; 
     }

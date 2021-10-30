@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Component } from 'react';
-import logo from './icons/ptz-logo.png';
+import logo from '../static/icons/ptz-logo.png';
 import './Navbar.css'
 
 class Navbar extends Component {
