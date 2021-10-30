@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .renderers import UserJSONRenderer
@@ -9,10 +9,10 @@ from .serializers import LoginSerializer, RegistrationSerializer
 
 class RegistrationAPIView(APIView):
     """
-    Разрешить всем пользователям (аутентифицированным и нет) доступ к данному эндпоинту.
+    Разрешить доступ к данному эндпоинту только администраторам.
     """
     renderer_classes = (UserJSONRenderer,)
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     serializer_class = RegistrationSerializer
 
     def post(self, request):
