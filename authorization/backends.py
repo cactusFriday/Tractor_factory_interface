@@ -29,10 +29,6 @@ def _authenticate_credentials(request, token):
         msg = 'Данный пользователь деактивирован.'
         raise exceptions.AuthenticationFailed(msg)
 
-    if not user.is_superuser:
-        msg = 'Данный пользователь не администратор.'
-        raise exceptions.AuthenticationFailed(msg)
-
     return user, token
 
 
