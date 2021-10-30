@@ -61,6 +61,10 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'tractor_factory_interface.exceptions.core_exception_handler',
     'NON_FIELD_ERRORS_KEY': 'error',
 
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'apps.authorization.backends.JWTAuthentication',
+    ),
+
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
