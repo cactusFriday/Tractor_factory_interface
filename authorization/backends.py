@@ -14,8 +14,9 @@ def _authenticate_credentials(request, token):
     """
 
     print(token, settings.SECRET_KEY)
+    payload = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms='HS256')
     try:
-        payload = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithm='HS256')
+        payload = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms='HS256')
     except Exception:
         msg = 'Ошибка аутентификации. Невозможно декодировать токен'
         raise exceptions.AuthenticationFailed(msg)
