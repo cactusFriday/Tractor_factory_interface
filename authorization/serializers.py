@@ -112,9 +112,11 @@ class UserSerializer(serializers.ModelSerializer):
         write_only=True
     )
 
+    group = serializers.CharField(max_length=255, read_only=True)
+
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'token',)
+        fields = ('email', 'username', 'password', 'token', 'group')
 
         # Параметр read_only_fields является альтернативой явному указанию поля
         # с помощью read_only = True, как мы это делали для пароля выше.
@@ -147,4 +149,13 @@ class UserSerializer(serializers.ModelSerializer):
         # User. Стоит отметить, что set_password() не сохраняет модель.
         instance.save()
 
-        return instance
+        j = ""
+        for g in instance.groups.all():
+            j = g.name
+
+        return {
+            'email': instance.email,
+            'username': instance.username,
+            'token': instance.token,
+            'group': j
+        }
