@@ -58,7 +58,7 @@ ROOT_URLCONF = 'tractor_factory_interface.urls'
 # auth users can make 60 requests per minute, anons 30.
 # restrict API to auth users
 REST_FRAMEWORK = {
-    'EXCEPTION_HANDLER': 'project.exceptions.core_exception_handler',
+    'EXCEPTION_HANDLER': 'tractor_factory_interface.exceptions.core_exception_handler',
     'NON_FIELD_ERRORS_KEY': 'error',
 
     'DEFAULT_PERMISSION_CLASSES': (
