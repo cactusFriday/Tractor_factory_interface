@@ -19,6 +19,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
     # запросом на регистрацию. Сделаем его доступным только на чтение.
     token = serializers.CharField(max_length=255, read_only=True)
 
+    group = serializers.CharField(max_length=255, read_only=True)
+
     class Meta:
         model = User
         # Перечислить все поля, которые могут быть включены в запрос
