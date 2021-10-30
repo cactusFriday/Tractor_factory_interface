@@ -27,9 +27,9 @@ class UserManager(BaseUserManager):
 
         user = self.model(username=username, email=self.normalize_email(email))
         user.set_password(password)
+        user.save()
         guest_group = Group.objects.get(name='Guest')
         guest_group.user_set.add(user)
-        user.save()
 
         return user
 
