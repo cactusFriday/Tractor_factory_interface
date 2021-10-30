@@ -32,10 +32,10 @@ class UserManager(BaseUserManager):
         user = self.model(username=username, email=self.normalize_email(email))
         user.set_password(password)
         user.save()
-        guest_group = Group.objects.get(name='Guest')
-        guest_group.user_set.add(user)
+        group = Group.objects.get(name='Guest')
+        group.user_set.add(user)
 
-        return user
+        return user, group
 
     def create_superuser(self, username, email, password):
         """ Создает и возввращет пользователя с привилегиями суперадмина. """

@@ -23,12 +23,18 @@ class RegistrationSerializer(serializers.ModelSerializer):
         model = User
         # Перечислить все поля, которые могут быть включены в запрос
         # или ответ, включая поля, явно указанные выше.
-        fields = ['email', 'username', 'password', 'token']
+        fields = ['email', 'username', 'password', 'token', 'group']
 
     def create(self, validated_data):
         # Использовать метод create_user, который мы
         # написали ранее, для создания нового пользователя.
-        return User.objects.create_user(**validated_data)
+        user, group = User.objects.create_user(**validated_data)
+        return {
+            'email': user.email,
+            'username': user.username,
+            'token': user.token,
+            'group': group
+        }
 
 
 class LoginSerializer(serializers.Serializer):
