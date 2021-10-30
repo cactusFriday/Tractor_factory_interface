@@ -79,8 +79,6 @@ class LoginSerializer(serializers.Serializer):
                 'This user has been deactivated.'
             )
 
-        i = user.pk
-        user = User.objects.get(pk=i)
         j = ""
         for g in user.groups.all():
             j = g.name
