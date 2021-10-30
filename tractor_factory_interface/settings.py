@@ -58,6 +58,9 @@ ROOT_URLCONF = 'tractor_factory_interface.urls'
 # auth users can make 60 requests per minute, anons 30.
 # restrict API to auth users
 REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'project.exceptions.core_exception_handler',
+    'NON_FIELD_ERRORS_KEY': 'error',
+
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
@@ -72,7 +75,6 @@ REST_FRAMEWORK = {
         'anon': '30/minute',
     },
 }
-
 
 TEMPLATES = [
     {
@@ -91,7 +93,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'tractor_factory_interface.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -125,7 +126,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -138,7 +138,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/

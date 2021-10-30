@@ -12,6 +12,12 @@ class UserJSONRenderer(JSONRenderer):
         # декодировать их перед рендерингом объекта User.
         token = data.get('token', None)
 
+        errors = data.get('errors', None)
+
+        if errors is not None:
+            # Позволим стандартному JSONRenderer обрабатывать ошибку.
+            return super(UserJSONRenderer, self).render(data)
+
         if token is not None and isinstance(token, bytes):
             # Как говорится выше, декодирует token если он имеет тип bytes.
             data['token'] = token.decode('utf-8')
