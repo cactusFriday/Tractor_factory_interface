@@ -40,7 +40,7 @@ class AccidentList(generics.ListCreateAPIView):
     serializer_class = AccidentSerializer
 
     def perform_create(self, serializer):
-        '''пробрасывает user из request в serializer'''
+        """пробрасывает user из request в serializer"""
         serializer.save(user=self.request.user)
 
 

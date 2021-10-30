@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager, PermissionsMixin
+    AbstractBaseUser, BaseUserManager, PermissionsMixin, Group
 )
 
 from django.db import models
@@ -27,6 +27,8 @@ class UserManager(BaseUserManager):
 
         user = self.model(username=username, email=self.normalize_email(email))
         user.set_password(password)
+        guest_group = Group.objects.get(name='Guest')
+        guest_group.user_set.add(user)
         user.save()
 
         return user
@@ -126,5 +128,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         }, settings.SECRET_KEY, algorithm='HS256')
 
         return token
+
+
+class CustomGroup(Group):
+    Group.objects.get_or_create(name='Admin')
+    Group.objects.get_or_create(name='Master')
+    Group.objects.get_or_create(name='Guest')
 
 
