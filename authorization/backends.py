@@ -12,8 +12,10 @@ def _authenticate_credentials(request, token):
     Попытка аутентификации с предоставленными данными. Если успешно -
     вернуть пользователя и токен, иначе - сгенерировать исключение.
     """
+
+    print(token, settings.SECRET_KEY)
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithm='HS256')
+        payload = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithm='HS256')
     except Exception:
         msg = 'Ошибка аутентификации. Невозможно декодировать токен'
         raise exceptions.AuthenticationFailed(msg)

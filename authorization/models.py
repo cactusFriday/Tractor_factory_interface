@@ -125,6 +125,6 @@ class User(AbstractBaseUser, PermissionsMixin):
             'exp': int(dt.strftime('%s'))
         }, settings.SECRET_KEY, algorithm='HS256')
 
-        return token.encode("UTF-8")
+        return token
 
 
