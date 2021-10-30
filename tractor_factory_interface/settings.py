@@ -62,7 +62,7 @@ REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'error',
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'apps.authorization.backends.JWTAuthentication',
+        'tractor_factory_interface.authorization.backends.JWTAuthentication',
     ),
 
     'DEFAULT_PERMISSION_CLASSES': (
