@@ -14,7 +14,7 @@ class RegistrationAPIView(APIView):
     Разрешить доступ к данному эндпоинту только администраторам.
     """
     permission_classes = (IsAdminUser,)
-    # renderer_classes = (UserJSONRenderer,)
+    renderer_classes = (UserJSONRenderer,)
     serializer_class = RegistrationSerializer
 
     def post(self, request):
