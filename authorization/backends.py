@@ -80,7 +80,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
         # декодировать prefix и token. Это не самый чистый код, но это хорошее
         # решение, потому что возможна ошибка, не сделай мы этого.
         prefix = auth_header[0].decode('utf-8')
-        token = auth_header[1].decode('utf-8')
+        token = auth_header[1]
         print(prefix, token)
         if prefix.lower() != auth_header_prefix:
             # Префикс заголовка не тот, который мы ожидали - отказ.
