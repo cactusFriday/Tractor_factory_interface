@@ -13,8 +13,6 @@ def _authenticate_credentials(request, token):
     вернуть пользователя и токен, иначе - сгенерировать исключение.
     """
 
-    print(token, settings.SECRET_KEY)
-    ###payload = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms='HS256')
     try:
         payload = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms='HS256')
     except Exception:
@@ -63,9 +61,6 @@ class JWTAuthentication(authentication.BaseAuthentication):
         # 2) сам JWT, по которому мы должны пройти аутентифкацию
         auth_header = authentication.get_authorization_header(request).split()
         auth_header_prefix = self.authentication_header_prefix.lower()
-
-        print(auth_header)
-
         if not auth_header:
             return None
 
@@ -84,7 +79,6 @@ class JWTAuthentication(authentication.BaseAuthentication):
         # решение, потому что возможна ошибка, не сделай мы этого.
         prefix = auth_header[0].decode('utf-8')
         token = auth_header[1].decode("UTF-8")
-        print(prefix, token)
         if prefix.lower() != auth_header_prefix:
             # Префикс заголовка не тот, который мы ожидали - отказ.
             return None
