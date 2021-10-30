@@ -15,7 +15,7 @@ def _authenticate_credentials(request, token):
     try:
         payload = jwt.decode(token, settings.SECRET_KEY)
     except Exception:
-        msg = 'Ошибка аутентификации. Невозможно декодировать токеню'
+        msg = 'Ошибка аутентификации. Невозможно декодировать токен'
         raise exceptions.AuthenticationFailed(msg)
 
     try:
@@ -81,7 +81,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
         # решение, потому что возможна ошибка, не сделай мы этого.
         prefix = auth_header[0].decode('utf-8')
         token = auth_header[1].decode('utf-8')
-
+        print(prefix, token)
         if prefix.lower() != auth_header_prefix:
             # Префикс заголовка не тот, который мы ожидали - отказ.
             return None
