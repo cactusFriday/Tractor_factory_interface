@@ -81,14 +81,16 @@ class LoginSerializer(serializers.Serializer):
 
         i = user.pk
         user = User.objects.get(pk=i)
-
+        j = ""
+        for g in user.groups.all():
+            j = g.name
         # Метод validate должен возвращать словарь проверенных данных. Это
         # данные, которые передются в т.ч. в методы create и update.
         return {
             'email': user.email,
             'username': user.username,
             'token': user.token,
-            'group': user.groups.all()
+            'group': j
         }
 
 
