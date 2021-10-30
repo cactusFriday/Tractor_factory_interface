@@ -1,7 +1,6 @@
-from abc import ABC
-
-from rest_framework import serializers
 from django.contrib.auth import authenticate
+from rest_framework import serializers
+
 from .models import User
 
 
@@ -79,14 +78,16 @@ class LoginSerializer(serializers.Serializer):
                 'This user has been deactivated.'
             )
 
+        i = user.pk
+        user = User.objects.get(pk=i)
+
         # Метод validate должен возвращать словарь проверенных данных. Это
         # данные, которые передются в т.ч. в методы create и update.
-        print(user.groups)
         return {
             'email': user.email,
             'username': user.username,
             'token': user.token,
-            'group': user.groups
+            'group': user.groups.all()
         }
 
 

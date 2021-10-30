@@ -9,6 +9,10 @@ from django.contrib.auth.models import (
 
 from django.db import models
 
+Group.objects.get_or_create(name='Admin')
+Group.objects.get_or_create(name='Master')
+Group.objects.get_or_create(name='Guest')
+
 
 class UserManager(BaseUserManager):
     """
@@ -128,11 +132,5 @@ class User(AbstractBaseUser, PermissionsMixin):
         }, settings.SECRET_KEY, algorithm='HS256')
 
         return token
-
-
-class CustomGroup(Group):
-    Group.objects.get_or_create(name='Admin')
-    Group.objects.get_or_create(name='Master')
-    Group.objects.get_or_create(name='Guest')
 
 
