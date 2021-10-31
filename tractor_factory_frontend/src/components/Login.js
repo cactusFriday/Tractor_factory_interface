@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Navbar.js'
 import './Login.css'
 
-const baseAPIUrl = "/api/v1";
+const baseAPIUrl = "https://tractor-factory-interface.herokuapp.com/api";
 
 export default function LoginForm() {
   const [login, setLogin] = useState("");
@@ -18,26 +18,26 @@ export default function LoginForm() {
       password: password
     };
 
-    let token = localStorage.getItem("token");
-
-    axios.post(baseAPIUrl + '', { user }, 
-    {
-      headers: { Authorization: `Bearer ${token}` },
+    axios.post(baseAPIUrl + '/users/login', { user }, {
+      headers: { 
+        'Content-Type': 'application/json' },
     })
       .then(res => {
-        console.log(res);
-        console.log(res.data);
+        if (res.data.error || res.status !== 200) {
+          throw new Error(res.data.error);
+        }
+        else {
+          const token = res.data.token;
+          localStorage.setItem('token', token);
+          //console.log(res);
+          //console.log(res.data.token);
+        }
+        
       })
     }
     
     return (
       <div className="App">
-      <head>
-      <meta charset="UTF-8"/>
-      <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-      <title>Вход в систему</title>
-      </head>
         <header className="App-header">
         <Navbar />
           </header>
@@ -52,7 +52,7 @@ export default function LoginForm() {
                 placeholder="Имя пользователя"
                 value={login}
                 required="required"
-                autofocus="autofocus"
+                autoFocus="autoFocus"
                 onChange={(e) => setLogin(e.target.value)}/>
               </label>
               <label>
