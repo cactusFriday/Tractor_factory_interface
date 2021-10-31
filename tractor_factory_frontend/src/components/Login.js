@@ -23,14 +23,17 @@ export default function LoginForm() {
         'Content-Type': 'application/json' },
     })
       .then(res => {
-        if (res.data.error || res.status !== 200) {
-          throw new Error(res.data.error);
+        if (res.user.error || res.status !== 200) {
+          throw new Error(res.user.error);
         }
         else {
-          const token = res.data.token;
+          const token = res.user.token;
+          const group = res.user.group;
           localStorage.setItem('token', token);
+          localStorage.setItem('group', group);
           //console.log(res);
-          //console.log(res.data.token);
+          //console.log(res.user.token);
+          //console.log(res.user.group);
         }
         
       })
