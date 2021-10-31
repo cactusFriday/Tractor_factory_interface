@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Navbar.js'
 import './Login.css'
 
-const baseAPIUrl = "http://localhost:8000";
+const baseAPIUrl = "https://tractor-factory-interface.herokuapp.com/api";
 
 export default function LoginForm() {
   const [login, setLogin] = useState("");
