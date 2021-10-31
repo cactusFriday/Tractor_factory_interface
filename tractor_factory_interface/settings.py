@@ -28,11 +28,12 @@ SECRET_KEY = 'django-insecure-dz6qown^2*rlz-eftr$i17_^rl+_%7igv0r0hmcmpptpdlgg6_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['tractor-factory-interface.herokuapp.com']
+ALLOWED_HOSTS = ['tractor-factory-interface.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -44,7 +45,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -80,7 +80,7 @@ REST_FRAMEWORK = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'tractor_factory_frontend/build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -145,6 +145,14 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'tractor_factory_frontend/build/static')
+]
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+SITE_ID = 1
+
 django_heroku.settings(locals())
 
 # Default primary key field type
