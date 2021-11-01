@@ -23,7 +23,7 @@ export default function LoginForm() {
     axios.defaults.xsrfHeaderName = 'X-CSRFToken';
     axios.defaults.withCredentials = true;
 
-    axios.post(baseAPIUrl + '/users/login', { user }, {
+    axios.post(baseAPIUrl + '/users/login/', { user }, {
       headers: { 
         'Content-Type': 'application/json' },
     })

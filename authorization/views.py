@@ -8,7 +8,7 @@ from .serializers import (
     LoginSerializer, RegistrationSerializer, UserSerializer,
 )
 from django.views.decorators.csrf import ensure_csrf_cookie
-
+from django.utils.decorators import method_decorator
 
 
 class RegistrationAPIView(APIView):
@@ -19,7 +19,7 @@ class RegistrationAPIView(APIView):
     renderer_classes = (UserJSONRenderer,)
     serializer_class = RegistrationSerializer
 
-    @ensure_csrf_cookie
+    
     def post(self, request):
         user = request.data.get('user', {})
 
@@ -37,6 +37,7 @@ class LoginAPIView(APIView):
     renderer_classes = (UserJSONRenderer,)
     serializer_class = LoginSerializer
 
+    @method_decorator(ensure_csrf_cookie)
     def post(self, request):
         user = request.data.get('user', {})
 
