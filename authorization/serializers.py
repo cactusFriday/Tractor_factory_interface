@@ -149,13 +149,13 @@ class UserSerializer(serializers.ModelSerializer):
         # User. Стоит отметить, что set_password() не сохраняет модель.
         instance.save()
 
-        j = ""
+        group_name = ""
         for g in instance.groups.all():
-            j = g.name
+            group_name = g.name
 
         return {
             'email': instance.email,
             'username': instance.username,
             'token': instance.token,
-            'group': j
+            'group': group_name
         }
