@@ -39,19 +39,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'coreAPI',
     'authorization',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'tractor_factory_interface.urls'
@@ -165,3 +168,26 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # authorization.User сообщает Django, что мы ссылаемся на модель User в модуле
 # authorization. Этот модуль зарегистрирован выше в настройке INSTALLED_APPS.
 AUTH_USER_MODEL = 'authorization.User'
+
+
+# Whitelist localhost:3000 because that's where frontend will be served
+CORS_ALLOW_CREDENTIALS = True
+# Option 1
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+]
+
+# Option 2
+# CORS_ORIGIN_ALLOW_ALL = True
+
+
+CORS_ALLOW_HEADERS = (
+    'csrftoken',
+    'content-type',
+    'X-CSRFToken'
+)
+
+CSRF_COOKIE_NAME = "csrftoken"
+CSRF_HEADER_NAME = 'X-CSRFToken'
+CSRF_COOKIE_SECURE = True
