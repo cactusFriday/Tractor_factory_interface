@@ -7,9 +7,7 @@ export default function App() {
     return (
       <BrowserRouter>
       <div className="App" >
-      <Switch>
-      <Route exact path="" component={ Login } />
-      </Switch>
+      <Route exact path="/" component={ Login } />
       </div>
       </BrowserRouter>
     );
