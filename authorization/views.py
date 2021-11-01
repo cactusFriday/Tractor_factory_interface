@@ -7,6 +7,8 @@ from rest_framework.generics import RetrieveUpdateAPIView
 from .serializers import (
     LoginSerializer, RegistrationSerializer, UserSerializer,
 )
+from django.views.decorators.csrf import ensure_csrf_cookie
+
 
 
 class RegistrationAPIView(APIView):
@@ -17,6 +19,7 @@ class RegistrationAPIView(APIView):
     renderer_classes = (UserJSONRenderer,)
     serializer_class = RegistrationSerializer
 
+    @ensure_csrf_cookie
     def post(self, request):
         user = request.data.get('user', {})
 
