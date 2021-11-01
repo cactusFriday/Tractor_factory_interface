@@ -14,7 +14,7 @@ export default function LoginForm() {
     event.preventDefault();
 
     const user = {
-      login: login,
+      email: login,
       password: password
     };
 
@@ -28,20 +28,18 @@ export default function LoginForm() {
         'Content-Type': 'application/json' },
     })
       .then(res => {
-        if (res.user.error || res.status !== 200) {
-          throw new Error(res.user.error);
-        }
-        else {
-          const token = res.user.token;
-          const group = res.user.group;
+          const token = res.data.user.token;
+          const group = res.data.user.group;
           localStorage.setItem('token', token);
           localStorage.setItem('group', group);
           //console.log(res);
           //console.log(res.user.token);
           //console.log(res.user.group);
-        }
-        
       })
+      .catch((error) => {
+        console.log(error.response.data.errors.error[0]);
+        //
+    })
     }
     
     return (
