@@ -1,15 +1,11 @@
 from django.urls import path
 
-from coreAPI import views
+from accident import views
 
 urlpatterns = [
-    path('', views.api_root),
-    path('users/', views.UserList.as_view(), name='user-list'),
-    path('users/<int:pk>/', views.UserDetail.as_view(), name='user-detail'),
-    path('conveyor-state/', views.conveyor_state_list, name='conveyor-list'),
-    # path('accident/', views.AccidentList.as_view(), name='accident-list'),
-    # path('accident/<int:pk>/', views.AccidentDetail.as_view(), name='accident-detail'),
-    # path('accident/history/', views.AccidentHistoryList.as_view(), name='accident_history-list'),
+    path('', views.AccidentList.as_view(), name='accident-list'),
+    path('<int:pk>/', views.AccidentDetail.as_view(), name='accident-detail'),
+    path('history/', views.AccidentHistoryList.as_view(), name='accident_history-list'),
 ]
 
 
