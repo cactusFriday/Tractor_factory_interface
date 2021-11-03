@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import *
+from conveyor.models import *
 
 
 class ConveyorStateSerializer(serializers.ModelSerializer):

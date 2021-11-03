@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'coreAPI',
+    'conveyor',
     'authorization',
     'accident',
 ]
@@ -98,24 +98,13 @@ WSGI_APPLICATION = 'tractor_factory_interface.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'd8pk0rvfqdi3',
-#         'USER': 'ymiheuqkuvgvxo',
-#         'PASSWORD': '0464ec5c2d7b66aaa6d3251ddf98ef6f8bb8d7a67e932c8adb30dc2cf8ce70ba',
-#         'HOST': 'ec2-54-228-162-209.eu-west-1.compute.amazonaws.com',
-#         'PORT': '5432',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tractor_test',
-        'USER': 'cactus',
-        'PASSWORD': '',
-        'HOST': '',
+        'NAME': 'd8pk0rvfqdi3',
+        'USER': 'ymiheuqkuvgvxo',
+        'PASSWORD': '0464ec5c2d7b66aaa6d3251ddf98ef6f8bb8d7a67e932c8adb30dc2cf8ce70ba',
+        'HOST': 'ec2-54-228-162-209.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
 }
