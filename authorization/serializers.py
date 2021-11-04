@@ -181,7 +181,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'token', 'group')
+        fields = ('token', 'group')
 
     def create(self, validated_data):
         group_name = ''
