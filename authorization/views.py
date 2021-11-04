@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from .renderers import UserJSONRenderer
 from rest_framework.generics import RetrieveUpdateAPIView
 from .serializers import (
-    LoginSerializer, RegistrationSerializer, UserSerializer,
+    LoginSerializer, RegistrationSerializer, UserSerializer, GroupSerializer,
 )
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
@@ -19,7 +19,6 @@ class RegistrationAPIView(APIView):
     renderer_classes = (UserJSONRenderer,)
     serializer_class = RegistrationSerializer
 
-    
     def post(self, request):
         user = request.data.get('user', {})
 
@@ -74,3 +73,19 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UserUpdateGroupAPIView(APIView):
+    permission_classes = (IsAdminUser,)
+    renderer_classes = (UserJSONRenderer,)
+    serializer_class = GroupSerializer
+
+    def post(self, request):
+        user = request.data.get('user', {})
+        # Паттерн создания сериализатора, валидации и сохранения - довольно
+        # стандартный, и его можно часто увидеть в реальных проектах.
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

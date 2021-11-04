@@ -1,7 +1,11 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 
+from .backends import _authenticate_credentials
 from .models import User
+from django.contrib.auth.models import (
+    Group
+)
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -30,7 +34,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Использовать метод create_user, который мы
         # написали ранее, для создания нового пользователя.
-        user, group = User.objects.create_user(**validated_data)
+        group_name = ''
+        for key, value in validated_data.items():
+            if key == 'group':
+                group_name = value
+
+        if group_name == 'Admin':
+            user, group = User.objects.create_superuser(**validated_data)
+        else:
+            user, group = User.objects.create_user(**validated_data)
         return {
             'email': user.email,
             'username': user.username,
@@ -124,7 +136,7 @@ class UserSerializer(serializers.ModelSerializer):
         # состоит в том, что нам не нужно ничего указывать о поле. В поле
         # пароля требуются свойства min_length и max_length,
         # но это не относится к полю токена.
-        read_only_fields = ('token',)
+        read_only_fields = ('token', 'group',)
 
     def update(self, instance, validated_data):
         """ Выполняет обновление User. """
@@ -159,3 +171,30 @@ class UserSerializer(serializers.ModelSerializer):
             'token': instance.token,
             'group': group_name
         }
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    """
+    Осуществляет сериализацию поля group
+    """
+    group = serializers.CharField(max_length=255, write_only=True)
+
+    class Meta:
+        fields = ('token', 'group')
+
+    def create(self, validated_data):
+        group_name = ''
+        token = ''
+        for key, value in validated_data.items():
+            if key == 'group':
+                group_name = value
+            elif key == 'token':
+                token = value
+        user, token = _authenticate_credentials(token)
+        group_old_name = ""
+        for g in user.groups.all():
+            group_old_name = g.name
+        old_group = Group.objects.get(name=group_old_name)
+        old_group.user_set.remove(user)
+        group = Group.objects.get(name=group_name)
+        group.user_set.add(user)
