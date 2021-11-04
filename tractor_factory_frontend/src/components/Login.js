@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Navbar.js'
 import './Login.css'
 
+const authError = "Неверный логин или пароль!";
 const baseAPIUrl = "https://tractor-factory-interface.herokuapp.com/api";
 
 export default function LoginForm() {
@@ -12,6 +13,8 @@ export default function LoginForm() {
 
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+ 
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -44,8 +47,10 @@ export default function LoginForm() {
       })
       .catch((error) => {
         console.log(error.response.data.errors.error[0]);
+        setErrorMessage(authError);
         //
       })
+
   }
 
   return (
@@ -76,6 +81,7 @@ export default function LoginForm() {
                 required="required"
                 onChange={(e) => setPassword(e.target.value)} />
             </label>
+            <h5 style={{ textAlign: 'center', color: 'red' }}>{ errorMessage }</h5>
             <button className="App-Button"
               type="submit">
               Войти
