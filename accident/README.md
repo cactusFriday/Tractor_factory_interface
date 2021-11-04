@@ -52,6 +52,11 @@ Response
     ]
 }
 ```
+Or you can add **search parameters** for **filtering**
+`GET` `api/v1/accident/?sort=ASC&dateStart=2020-02-02&dateEnd=2020-09-09&accClass=2`
+`sort = ASC/DESC`
+`dateStart=YYYY-MM-DD`
+`accClass=null` or `accClass=1%3B2%3B3` == `1;2;3`
 
 <a name="create_accident"><h4>2. Create accident</h4></a>
 

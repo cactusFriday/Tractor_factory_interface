@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from authorization.models import User
 
 from accident.models import *
 
@@ -23,10 +24,10 @@ class AccidentSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'user', 'time_appeared', 'time_solved', 'post', 'accident_class', 'description', 'accident_history')
 
-class UserSerializer(serializers.ModelSerializer):
-    accidents = AccidentSerializer(many=True, read_only=True)
-    # accidents = serializers.PrimaryKeyRelatedField(many=True, queryset=Accident.objects.all())
+# class UserSerializer(serializers.ModelSerializer):
+#     accidents = AccidentSerializer(many=True, read_only=True)
+#     # accidents = serializers.PrimaryKeyRelatedField(many=True, queryset=Accident.objects.all())
 
-    class Meta:
-        model = User
-        fields = ('id', 'username', 'accidents')
+#     class Meta:
+#         model = User
+#         fields = ('id', 'username', 'accidents')

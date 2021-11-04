@@ -1,5 +1,5 @@
 from typing import Type
-from django.contrib.auth.models import User
+from authorization.models import User
 from django.db.models import query
 from django.http import request
 from rest_framework import generics
@@ -9,16 +9,16 @@ from accident.permissions import IsOwnerOrReadOnly
 from accident.serializers import AccidentHistorySerializer, AccidentSerializer, UserSerializer
 
 
-class UserList(generics.ListAPIView):
-    '''GET - возвращает всех пользователей, с созданными ими инцидентами'''
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+# class UserList(generics.ListAPIView):
+#     '''GET - возвращает всех пользователей, с созданными ими инцидентами'''
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
 
 
-class UserDetail(generics.RetrieveAPIView):
-    '''GET+pk - возвращает user(id=pk)'''
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+# class UserDetail(generics.RetrieveAPIView):
+#     '''GET+pk - возвращает user(id=pk)'''
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
 
 
 class AccidentList(generics.ListCreateAPIView):
@@ -31,7 +31,7 @@ class AccidentList(generics.ListCreateAPIView):
         'perPage': None,
         'dateStart': None,
         'dateEnd': None,
-        'AccClass': None,
+        'accClass': None,
     }
 
     def get_filter_params(self) -> 'tuple[dict, str]':
@@ -43,7 +43,7 @@ class AccidentList(generics.ListCreateAPIView):
         # Если не передан параметр order или равен любой строке, кроме DESC - '', иначе '-'
         ordering = '' if tmp.pop('order', 'ASC') == 'DESC' else '-'
 
-        acc_class_filter = tmp.get('AccClass')
+        acc_class_filter = tmp.get('accClass')
         acc_class_filter = None if acc_class_filter == 'null' else tuple(map(int, acc_class_filter.split(';')))
         d = {
             'time_appeared__date__range': (tmp.get('dateStart'), tmp.get('dateEnd')),
