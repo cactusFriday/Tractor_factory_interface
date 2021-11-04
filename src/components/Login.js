@@ -71,6 +71,7 @@ export default function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}/>
               </label>
               <button className="App-Button" 
+              class="btn btn-primary float-end"
               type="submit">
                 Войти
                 </button>
