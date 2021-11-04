@@ -21,7 +21,7 @@ class UserManager(BaseUserManager):
     же самого кода, который Django использовал для создания User (для демонстрации).
     """
 
-    def create_user(self, username, email,  group, password=None):
+    def create_user(self, username, email, group, password=None):
         """ Создает и возвращает пользователя с имэйлом, паролем и именем. """
         if username is None:
             raise TypeError('Users must have a username.')
@@ -42,12 +42,10 @@ class UserManager(BaseUserManager):
         if password is None:
             raise TypeError('Superusers must have a password.')
 
-        user = self.create_user(username, email, password)
+        user = self.create_user(username, email, group, password)
         user.is_superuser = True
         user.is_staff = True
         user.save()
-        group = Group.objects.get(name=group)
-        group.user_set.add(user)
 
         return user, group
 
