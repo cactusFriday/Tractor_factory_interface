@@ -5,13 +5,13 @@ import './Navbar.css'
 
 class Navbar extends Component {
     render() {
-        return(
-        <header className="App-header">
-        <span className="App-navbar">
-        <img className="App-logo" src={ logo } alt=""/>
-        АО «Петербургский тракторный завод»
-        </span>
-        </header>
+        return (
+            <header className="App-header" >
+                <span className="App-navbar">
+                    <img className="App-logo" src={logo} alt="" />
+                    АО «Петербургский тракторный завод»
+                </span>
+            </header>
         )
     }
 }

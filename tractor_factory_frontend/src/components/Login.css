@@ -44,13 +44,16 @@
   
   .App-Button {
     margin-top: 5px;
-    width: 5px;
+    width: max-content;
     height: 45px;
     background-color: #2D333C;
+    border: none;
     color: #ffffff;
     box-shadow: #ffffff;
     font-size: 18px;
-    float: right
+    float: right;
+    padding-left: 10px;
+    padding-right: 10px;
   }
   
   .App-Button:hover {
