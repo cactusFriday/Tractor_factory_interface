@@ -13,11 +13,13 @@ def _authenticate_credentials(token):
     вернуть пользователя и токен, иначе - сгенерировать исключение.
     """
 
+    payload = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms='HS256')
+    """ 
     try:
-        payload = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms='HS256')
     except Exception:
         msg = 'Ошибка аутентификации. Невозможно декодировать токен'
         raise exceptions.AuthenticationFailed(msg)
+    """
 
     try:
         user = User.objects.get(pk=payload['id'])
