@@ -184,13 +184,14 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = ('token', 'group')
 
     def create(self, validated_data):
-        group_name = ''
-        token = ''
+        group_name = ""
+        token = ""
         for key, value in validated_data.items():
             if key == 'group':
                 group_name = value
             elif key == 'token':
                 token = value
+        print(token)
         user, token = _authenticate_credentials(token)
         group_old_name = ""
         for g in user.groups.all():
