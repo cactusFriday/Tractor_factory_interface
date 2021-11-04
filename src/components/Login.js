@@ -1,15 +1,21 @@
 import axios from 'axios';
 import { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Navbar.js'
 import './Login.css'
 
+const authError = "Неверный логин или пароль!";
 const baseAPIUrl = "https://tractor-factory-interface.herokuapp.com/api";
 
 export default function LoginForm() {
+  const history = useHistory();
+
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  
+  const [errorMessage, setErrorMessage] = useState("");
+
+
   const handleSubmit = event => {
     event.preventDefault();
 
@@ -24,61 +30,66 @@ export default function LoginForm() {
     axios.defaults.withCredentials = true;
 
     axios.post(baseAPIUrl + '/users/login/', { user }, {
-      headers: { 
-        'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json'
+      },
     })
       .then(res => {
-          const token = res.data.user.token;
-          const group = res.data.user.group;
-          localStorage.setItem('token', token);
-          localStorage.setItem('group', group);
-          //console.log(res);
-          //console.log(res.user.token);
-          //console.log(res.user.group);
+        const token = res.data.user.token;
+        const group = res.data.user.group;
+        localStorage.setItem('token', token);
+        localStorage.setItem('group', group);
+        history.push("/monitoring");
+        //console.log(res);
+        //console.log(res.user.token);
+        //console.log(res.user.group);
+
       })
       .catch((error) => {
         console.log(error.response.data.errors.error[0]);
+        setErrorMessage(authError);
         //
-    })
-    }
-    
-    return (
-      <div className="App">
-        <header className="App-header">
+      })
+  }
+
+  return (
+    <div className="App">
+      <header className="App-header">
         <Navbar />
-          </header>
-          <main className="App-main">
-            <div className="App-InputForm">
-              <h3 className="Title">Вход в систему</h3>
-            <form onSubmit={handleSubmit}>
-              <label>
-                <input className="App-Input" 
-                type="text" 
-                name="login" 
+      </header>
+      <main className="App-main">
+        <div className="App-InputForm">
+          <h3 className="Title">Вход в систему</h3>
+          <form onSubmit={handleSubmit}>
+            <label>
+              <input className="App-Input"
+                type="text"
+                name="login"
                 placeholder="Имя пользователя"
                 value={login}
                 required="required"
                 autoFocus="autoFocus"
-                onChange={(e) => setLogin(e.target.value)}/>
-              </label>
-              <label>
-                <input className="App-Input" 
-                type="password" 
-                name="password" 
+                onChange={(e) => setLogin(e.target.value)} />
+            </label>
+            <label>
+              <input className="App-Input"
+                type="password"
+                name="password"
                 placeholder="Пароль"
                 value={password}
                 required="required"
-                onChange={(e) => setPassword(e.target.value)}/>
-              </label>
-              <button className="App-Button" 
+                onChange={(e) => setPassword(e.target.value)} />
+            </label>
+            <h5 style={{ textAlign: 'center', color: 'red' }}>{errorMessage}</h5>
+            <button className="App-Button"
               class="btn btn-primary float-end"
               type="submit">
-                Войти
-                </button>
-            </form>
-            </div>
-          </main>
-          <footer></footer>
+              Войти
+            </button>
+          </form>
         </div>
-    );
-  }
+      </main>
+      <footer></footer>
+    </div>
+  );
+}
