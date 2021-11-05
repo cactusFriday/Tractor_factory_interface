@@ -3,12 +3,13 @@ from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .renderers import UserJSONRenderer
-from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, ListAPIView
 from .serializers import (
-    LoginSerializer, RegistrationSerializer, UserSerializer, GroupSerializer,
+    LoginSerializer, RegistrationSerializer, UserSerializer, GroupSerializer, UsersRetrieve
 )
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
+from .models import User
 
 
 class RegistrationAPIView(APIView):
@@ -89,3 +90,9 @@ class UserUpdateGroupAPIView(APIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UsersRetrieveAPIView(ListAPIView):
+    permission_classes = (IsAdminUser,)
+    queryset = User.objects.all()
+    serializer_class = UsersRetrieve

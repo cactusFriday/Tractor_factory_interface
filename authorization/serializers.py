@@ -210,3 +210,8 @@ class GroupSerializer(serializers.ModelSerializer):
             'token': user.token,
             'group': group
         }
+
+
+class UsersRetrieve(serializers.ModelSerializer):
+    class Meta:
+        model = User
