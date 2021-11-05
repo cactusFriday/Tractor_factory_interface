@@ -203,6 +203,10 @@ class GroupSerializer(serializers.ModelSerializer):
         old_group.user_set.remove(user)
         group = Group.objects.get(name=group_name)
         group.user_set.add(user)
+        if group != 'Admin':
+            user.is_superuser = False
+            user.is_staff = False
+            user.save()
         return {
             'token': user.token,
             'group': group
