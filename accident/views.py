@@ -43,7 +43,9 @@ class AccidentList(generics.ListCreateAPIView):
         ordering = '' if tmp.pop('order', 'ASC') == 'DESC' else '-'
 
         acc_class_filter = tmp.get('accClass')
-        acc_class_filter = None if acc_class_filter == 'null' else tuple(map(int, acc_class_filter.split(';')))
+        # во избежание ValueError (NoneType не может .split())
+        if acc_class_filter is not None:
+            acc_class_filter = None if acc_class_filter == 'null' else tuple(map(int, acc_class_filter.split(';')))
         d = {
             'time_appeared__date__range': (tmp.get('dateStart'), tmp.get('dateEnd')),
         }
@@ -62,7 +64,10 @@ class AccidentList(generics.ListCreateAPIView):
                 self.sort_params[key] = params.get(key)
 
             filter_params, ordering = self.get_filter_params()
-            queryset = self.queryset.filter(**filter_params).order_by(f'{ordering}time_appeared')
+            try:
+                queryset = self.queryset.filter(**filter_params).order_by(f'{ordering}time_appeared')
+            except:
+                pass
         return queryset
 
     def perform_create(self, serializer):
