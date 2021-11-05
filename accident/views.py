@@ -57,11 +57,12 @@ class AccidentList(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = self.queryset
         params = self.request.query_params
-        for key in self.sort_params:
-            self.sort_params[key] = params.get(key)
-        
-        filter_params, ordering = self.get_filter_params()
-        queryset = self.queryset.filter(**filter_params).order_by(f'{ordering}time_appeared')
+        if params:
+            for key in self.sort_params:
+                self.sort_params[key] = params.get(key)
+
+            filter_params, ordering = self.get_filter_params()
+            queryset = self.queryset.filter(**filter_params).order_by(f'{ordering}time_appeared')
         return queryset
 
     def perform_create(self, serializer):
