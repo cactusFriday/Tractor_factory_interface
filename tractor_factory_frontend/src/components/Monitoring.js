@@ -61,7 +61,7 @@ class Monitoring extends Component {
                 </thead>
                 <tbody>
                   <tr>
-                    <td style={{ textAlign: 'center' }}><input></input>0</td>
+                    <td style={{ textAlign: 'center' }}>0</td>
                     <td style={{ textAlign: 'center' }}>Некомплектность на рабочем месте</td>
                     <td style={{ textAlign: 'center' }}>Брак основной рамы трактора</td>
                     <td style={{ textAlign: 'center' }}>12.10.2021<br />16:20:08</td>
