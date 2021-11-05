@@ -6,7 +6,7 @@ import Modal from './Modal.js';
 import './Monitoring.css';
 import './ConveyorTable.css';
 
-const url = "http://localhost:8000/api/conveyor-state"
+const url = "https://tractor-factory-interface.herokuapp.com/api/conveyor-state/"
 
 export default function ConveyorTable() {
     const [answer, setAnswer] = useState(null);
