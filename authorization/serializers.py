@@ -193,7 +193,6 @@ class GroupSerializer(serializers.ModelSerializer):
                 group_name = value
             elif key == 'token':
                 token = value
-        print(token)
         payload = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms='HS256')
         user = User.objects.get(pk=payload['id'])
         group_old_name = ""
