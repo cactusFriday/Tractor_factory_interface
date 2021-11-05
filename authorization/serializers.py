@@ -215,4 +215,4 @@ class GroupSerializer(serializers.ModelSerializer):
 class UsersRetrieve(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('email', 'username', 'token', 'group')
+        fields = ('email', 'username', 'token')
