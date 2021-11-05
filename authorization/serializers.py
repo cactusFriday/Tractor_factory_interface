@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 
-from .backends import _authenticate_credentials
+import jwt
+from django.conf import settings
 from .models import User
 from django.contrib.auth.models import (
     Group
@@ -177,11 +178,12 @@ class GroupSerializer(serializers.ModelSerializer):
     """
     Осуществляет сериализацию поля group
     """
-    group = serializers.CharField(max_length=255, write_only=True)
+    group = serializers.CharField(max_length=255)
+    token = serializers.CharField(max_length=255)
 
     class Meta:
         model = User
-        fields = ('token', 'group')
+        fields = ['email', 'username', 'password', 'token', 'group']
 
     def create(self, validated_data):
         group_name = ""
@@ -192,7 +194,8 @@ class GroupSerializer(serializers.ModelSerializer):
             elif key == 'token':
                 token = value
         print(token)
-        user, token = _authenticate_credentials(token)
+        payload = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms='HS256')
+        user = User.objects.get(pk=payload['id'])
         group_old_name = ""
         for g in user.groups.all():
             group_old_name = g.name
@@ -200,3 +203,7 @@ class GroupSerializer(serializers.ModelSerializer):
         old_group.user_set.remove(user)
         group = Group.objects.get(name=group_name)
         group.user_set.add(user)
+        return {
+            'token': user.token,
+            'group': group
+        }
