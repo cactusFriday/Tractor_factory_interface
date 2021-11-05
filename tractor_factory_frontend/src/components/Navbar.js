@@ -3,7 +3,9 @@ import { Component } from 'react';
 import logo from '../static/icons/ptz-logo.png';
 import './Navbar.css'
 
+
 class Navbar extends Component {
+    
     render() {
         return (
             <header className="App-header" >

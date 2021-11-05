@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from './Navbar.js';
+import Navbar from './Navbar2.js';
 import './Monitoring.css';
 import { Component } from 'react';
 import Menu from './Menu.js';
