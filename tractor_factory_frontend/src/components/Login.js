@@ -1,9 +1,10 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { useState } from 'react';
 import { useHistory } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from './Navbar.js'
+import logo from '../static/icons/ptz-logo.png';
 import './Login.css'
+import './style.css'
 
 const authError = "Неверный логин или пароль!";
 const baseAPIUrl = "https://tractor-factory-interface.herokuapp.com/api";
@@ -14,8 +15,7 @@ export default function LoginForm() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
- 
-  
+
   const handleSubmit = event => {
     event.preventDefault();
 
@@ -54,41 +54,48 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <Navbar />
+    <div>
+      <body class="text-center">
+      <header class="navbar navbar-dark sticky-top flex-md-nowrap p-0 shadow">
+        <span style={{ textAlign: 'left', verticalAlign: 'middle', paddingLeft: '10px' }}>
+          <img style={{ paddingRight: '10px' }} src={logo} alt='' />АО «Петербургский тракторный завод»
+        </span>
       </header>
-      <main className="App-main">
-        <div className="App-InputForm">
-          <h3 className="Title">Вход в систему</h3>
-          <form onSubmit={handleSubmit}>
-            <label>
-              <input className="App-Input"
-                type="text"
-                name="login"
-                placeholder="Имя пользователя"
-                value={login}
-                required="required"
-                autoFocus="autoFocus"
-                onChange={(e) => setLogin(e.target.value)} />
-            </label>
-            <label>
-              <input className="App-Input"
-                type="password"
-                name="password"
-                placeholder="Пароль"
-                value={password}
-                required="required"
-                onChange={(e) => setPassword(e.target.value)} />
-            </label>
-            <h5 style={{ textAlign: 'center', color: 'red' }}>{ errorMessage }</h5>
-            <button className="App-Button"
-              type="submit">
-              Войти
-            </button>
-          </form>
-        </div>
-      </main>
+
+      <form onSubmit={handleSubmit} class="form-signin" style={{ paddingTop: '200px' }}>
+        <h1 class="h3 mb-3 font-weight-normal">Вход в систему</h1>
+        <label>
+          <input
+            class="form-control"
+            style={{ marginBottom: '20px' }}
+            type="text"
+            name="login"
+            placeholder="Имя пользователя"
+            value={login}
+            required="required"
+            autoFocus="autoFocus"
+            onChange={(e) => setLogin(e.target.value)} />
+        </label>
+        <label>
+          <input
+            class="form-control"
+            style={{ marginBottom: '10px' }}
+            type="password"
+            name="password"
+            placeholder="Пароль"
+            value={password}
+            required="required"
+            onChange={(e) => setPassword(e.target.value)} />
+        </label>
+        <h5 style={{ textAlign: 'center', color: 'red' }}>{errorMessage}</h5>
+        <button class="btn btn-lg btn-primary btn-block float-end"
+          type="submit">
+          Войти
+        </button>
+      </form>
+
+    </body>
+
       <footer></footer>
     </div>
   );
