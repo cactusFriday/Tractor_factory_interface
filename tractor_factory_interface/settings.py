@@ -41,8 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'coreAPI',
     'authorization',
+    'accident',
+    'conveyor',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +77,8 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.AnonRateThrottle',
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'user': '60/minute',
-        'anon': '30/minute',
+        'user': '200/minute',
+        'anon': '200/minute',
     },
 }
 
@@ -98,6 +99,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'tractor_factory_interface.wsgi.application'
+
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -131,6 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -143,6 +146,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -176,6 +180,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+    'http://127.0.0.1:8000',
 ]
 
 # Option 2
