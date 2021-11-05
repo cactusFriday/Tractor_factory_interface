@@ -1,9 +1,10 @@
-from django.shortcuts import render
-
-# Create your views here.
+from django.http import JsonResponse
 from rest_framework.decorators import api_view
+from rest_framework.parsers import JSONParser
 
 from conveyor.models import ConveyorState
+from conveyor.serializers import ConveyorStateSerializer
+
 
 
 @api_view(['GET', 'POST'])
@@ -13,7 +14,7 @@ def conveyor_state_list(request):
     GET:    достает состояния постов из БД и отправляет json
     '''
     if request.method == 'GET':
-        conv_state_set = ConveyorState.get_posts()
+        conv_state_set = ConveyorState.objects.order_by('post')
         serializer = ConveyorStateSerializer(conv_state_set, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':

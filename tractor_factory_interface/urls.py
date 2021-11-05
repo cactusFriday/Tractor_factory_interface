@@ -19,6 +19,8 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path('api/', include('authorization.urls', namespace='authentication')),
+    path('api/accident/', include('accident.urls')),
+    path('api/conveyor-state/', include('conveyor.urls')),
     re_path('', TemplateView.as_view(template_name='index.html')),
 ]
 

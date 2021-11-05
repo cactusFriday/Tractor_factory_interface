@@ -43,16 +43,17 @@
   }
   
   .App-Button {
-    font-family: Roboto;
+    margin-top: 5px;
+    width: max-content;
+    height: 45px;
+    background-color: #2D333C;
+    border: none;
+    color: #ffffff;
+    box-shadow: #ffffff;
     font-size: 18px;
-    background-color:#2D333C;
-    color:#FFFFFF;
-    outline: none;
-    box-shadow: none;
-    border-style: none;
-    padding: 15px;
-    text-align: left;
-    border-radius: 0;
+    float: right;
+    padding-left: 10px;
+    padding-right: 10px;
   }
   
   .App-Button:hover {

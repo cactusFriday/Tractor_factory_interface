@@ -1,0 +1,10 @@
+.error {
+    background-color: red;
+    cursor: pointer;
+}
+.active {
+    background-color: yellow;
+}
+.success {
+    background-color: green;
+}
