@@ -20,6 +20,7 @@ class RegistrationAPIView(APIView):
     renderer_classes = (UserJSONRenderer,)
     serializer_class = RegistrationSerializer
 
+    @method_decorator(ensure_csrf_cookie)
     def post(self, request):
         user = request.data.get('user', {})
 
@@ -55,6 +56,7 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
     renderer_classes = (UserJSONRenderer,)
     serializer_class = UserSerializer
 
+    @method_decorator(ensure_csrf_cookie)
     def retrieve(self, request, *args, **kwargs):
         # Здесь нечего валидировать или сохранять. Мы просто хотим, чтобы
         # сериализатор обрабатывал преобразования объекта User во что-то, что
@@ -63,6 +65,7 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @method_decorator(ensure_csrf_cookie)
     def update(self, request, *args, **kwargs):
         serializer_data = request.data.get('user', {})
 
@@ -81,6 +84,7 @@ class UserUpdateGroupAPIView(APIView):
     renderer_classes = (UserJSONRenderer,)
     serializer_class = GroupSerializer
 
+    @method_decorator(ensure_csrf_cookie)
     def post(self, request):
         user = request.data.get('user', {})
         # Паттерн создания сериализатора, валидации и сохранения - довольно
@@ -88,7 +92,6 @@ class UserUpdateGroupAPIView(APIView):
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -96,3 +99,4 @@ class UsersRetrieveAPIView(ListAPIView):
     permission_classes = (IsAdminUser,)
     queryset = User.objects.all()
     serializer_class = UsersRetrieve
+
