@@ -2,6 +2,9 @@ from authorization.models import User
 from django.db.models import query
 from django.http import request
 from rest_framework import generics
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.utils.decorators import method_decorator
+
 
 from accident.models import Accident, AccidentHistory
 from accident.permissions import IsOwnerOrReadOnly
@@ -32,6 +35,10 @@ class AccidentList(generics.ListCreateAPIView):
         'dateEnd': None,
         'accClass': None,
     }
+
+    @method_decorator(ensure_csrf_cookie)
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
 
     def get_filter_params(self) -> 'tuple[dict, str]':
         """Очищает словарь от непереданных фильтров, парсит фильтры. 
@@ -80,6 +87,10 @@ class AccidentHistoryList(generics.ListCreateAPIView):
     queryset = AccidentHistory.objects.all()
     serializer_class = AccidentHistorySerializer
 
+    @method_decorator(ensure_csrf_cookie)
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
     def perform_create(self, serializer):
         '''
         Сценарий создания истории (редактирования инцидента):
@@ -102,7 +113,3 @@ class AccidentDetail(generics.RetrieveDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly, ]
     queryset = Accident.objects.all()
     serializer_class = AccidentSerializer
-
-    # def perform_destroy(self, serializer: Accident):
-    #     print(serializer.history)
-
