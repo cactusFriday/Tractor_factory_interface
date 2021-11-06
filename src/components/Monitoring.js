@@ -105,20 +105,20 @@ class Monitoring extends Component {
                   <td style={{ width: '3%', verticalAlign: 'middle', border: 'none' }}>
                     <img src={arrow_forward} alt="" /></td>
                   <td style={{ border: 'none' }}>
-                    <ConveyorTable />
+                    <ConveyorTable handleOnSubmit={this.handleFormSubmit}/>
                   </td>
                   <td style={{ width: '3%', verticalAlign: 'middle', border: 'none' }}>
                     <img src={arrow_forward} alt="" /></td>
                 </tr>
-            </table>
-          </div>
-          <div className="App-Accidents">
-            <h1 style={{ textAlign: 'left', verticalAlign: 'middle', lineHeight: '30px', marginBottom: '30px', fontWeight: '600' }}>Список последних происшествий</h1>
-            <AccidentTable accidents={this.state.accidents}/>
+              </table>
+              <div className="App-Accidents">
+                <h1 style={{ textAlign: 'left', verticalAlign: 'middle', lineHeight: '30px', marginBottom: '30px', fontWeight: '600' }}>Список последних происшествий</h1>
+                <AccidentTable accidents={this.state.accidents}/>
+              </div>
+            </main>
           </div>
         </body>
         <footer></footer>
-
       </div>
     );
   }
