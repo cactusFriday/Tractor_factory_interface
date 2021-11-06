@@ -8,7 +8,9 @@ import './ConveyorTable.css';
 
 const url = "https://tractor-factory-interface.herokuapp.com/api/conveyor-state/"
 
-export default function ConveyorTable() {
+
+const ConveyorTable = ({handleOnSubmit}) => {
+// export default function ConveyorTable() {
     const [answer, setAnswer] = useState(null);
     const [isActiveModal, setActive] = useState(false);
     const [post, setPost] = useState(null);
@@ -26,7 +28,6 @@ export default function ConveyorTable() {
 
     function onTdClick(i) {
         setPost(i);
-        console.log(i);
         setActive(true);
     }
 
@@ -118,7 +119,9 @@ export default function ConveyorTable() {
                 <td style={{ width: '1%', backgroundColor: '#E6E8EB' }}></td>
             </tr>
         </table>
-        <Modal isActive={isActiveModal} setActive={setActive} post={post}/>
+        <Modal isActive={isActiveModal} setActive={setActive} post={post} handleOnSubmit={handleOnSubmit}/>
         </React.Fragment>
     )
 }
+
+export default ConveyorTable;

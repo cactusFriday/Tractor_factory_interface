@@ -3,13 +3,82 @@ import Navbar from './Navbar.js';
 import './Monitoring.css';
 import { Component } from 'react';
 import ConveyorTable from './ConveyorTable.js';
+import AccidentTable from './AccidentTable.js';
 import Menu from './Menu.js';
-import history from '../static/icons/history.svg';
-import edit from '../static/icons/edit.svg';
 import arrow_forward from '../static/icons/arrow_forward.svg';
 import sensors from '../static/icons/sensors.svg';
+import axios from 'axios';
+
+const postAcidentURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/'
 
 class Monitoring extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      loading: true,
+      accidents: [],
+      accidentDetails:{},
+    }
+  };
+
+  componentDidMount() {
+    fetch(postAcidentURL)
+    .then(res => res.json())
+    .then(accidents => {
+        // console.log(accidents);
+        this.setState({
+            loading: false,
+            accidents: accidents.results,
+        });
+        console.log(accidents);
+    });
+  }
+  
+  handleFormSubmit = (e) => {
+    e.preventDefault();
+    let trgt = e.target
+    // Вытягиваем данные из формы, приводим к принятому формату
+    let timeEnd = ":00+00:00";
+    let time_appeared = trgt.timeAppeared.value ==='' ? null : trgt.timeAppeared.value.replace('T', ' ') + timeEnd;
+    let time_solved = trgt.timeSolved.value === '' ? null : trgt.timeSolved.value.replace('T', ' ') + timeEnd;
+    const accidentDetails = {
+      time_appeared: time_appeared,
+      time_solved: time_solved,
+      post: parseInt(trgt.post.placeholder),
+      accident_class: parseInt(trgt.accidentClass.value),
+      description: trgt.description.value
+    }
+    this.setState({
+      accidentDetails,
+    });
+
+    axios.defaults.xsrfCookieName = 'csrftoken';
+    axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+    axios.defaults.withCredentials = true;
+
+    // Сериализуем, отправляем на сервер, создавая новое происшествие.
+    // При получении ответа обновляем состояние новым происшествием.
+    // При обновлении состояния компонент рендерится заново, значит,
+    // список с актуальными происшествиями, переданный как пропсы в компонент таблицы, будет отрендерен
+    axios.post(postAcidentURL, JSON.stringify(accidentDetails), {
+      headers: {
+        'Authorization': `Token ${localStorage.token}`,
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(res => this.setState(() => {
+      let accidents = [...this.state.accidents];
+      accidents.push(res.data);
+      return {accidents: accidents};
+    }))
+    .catch((error) => {
+      console.log(error);
+    });
+  };
+
+
+
   render() {
     return (
       <div className="App">
@@ -27,7 +96,7 @@ class Monitoring extends Component {
               <td style={{ width: '3%', verticalAlign: 'middle', border: 'none' }}>
                 <img src={ arrow_forward } /></td>
               <td style={{ border: 'none' }}>
-                <ConveyorTable />
+                <ConveyorTable handleOnSubmit={this.handleFormSubmit}/>
               </td>
               <td style={{ width: '3%', verticalAlign: 'middle', border: 'none' }}>
                 <img src={arrow_forward} /></td>
@@ -41,80 +110,7 @@ class Monitoring extends Component {
           </div>
           <div className="App-Accidents">
             <h1 style={{ textAlign: 'left', verticalAlign: 'middle', lineHeight: '30px', marginBottom: '30px', fontWeight: '600' }}>Список последних происшествий</h1>
-            <table className="Table-Accidents" style={{ borderColor: 'black' }} class="table table-striped table-sm table-bordered">
-              <thead>
-                <tr>
-                  <th class="text-center">
-                    Номер поста
-                  </th>
-                  <th class="text-center">
-                    Тип происшествия
-                  </th>
-                  <th class="text-center">
-                    Описание
-                  </th>
-                  <th class="text-center">
-                    Время фиксации проблемы
-                  </th>
-                  <th class="text-center">
-                    Время устранения проблемы
-                  </th>
-                  <th class="text-center"></th>
-
-                </tr>
-              </thead>
-              <tbody className="Table-body">
-                <tr>
-                  <td>0</td>
-                  <td>Некомплектность на рабочем месте</td>
-                  <td>Брак основной рамы трактора</td>
-                  <td>12.10.2021<br />16:20:08</td>
-                  <td>12.10.2021<br />16:25:24</td>
-                  <td><img src={history} alt="" /> <img src={edit} alt="" /></td>
-                </tr>
-                <tr>
-                  <td >3П</td>
-                  <td >Другое</td>
-                  <td >Тестирование ПО</td>
-                  <td >12.10.2021<br />11:02:26</td>
-                  <td >12.10.2021<br />12:38:45</td>
-                  <td ><img src={history} alt="" /> <img src={edit} alt="" /></td>
-                </tr>
-                <tr>
-                  <td >2, 3Л</td>
-                  <td >Авария на рабочем месте</td>
-                  <td ></td>
-                  <td >12.10.2021<br />16:20:08</td>
-                  <td >12.10.2021<br />16:25:24</td>
-                  <td ><img src={history} alt="" /> <img src={edit} alt="" /></td>
-                </tr>
-                <tr>
-                  <td >0</td>
-                  <td >Некомплектность на рабочем месте</td>
-                  <td >Брак основной рамы трактора</td>
-                  <td >12.10.2021<br />16:20:08</td>
-                  <td >12.10.2021<br />16:25:24</td>
-                  <td ><img src={history} alt="" /> <img src={edit} alt="" /></td>
-                </tr>
-                <tr>
-                  <td >3П</td>
-                  <td >Другое</td>
-                  <td >Тестирование ПО</td>
-                  <td >12.10.2021<br />11:02:26</td>
-                  <td >12.10.2021<br />12:38:45</td>
-                  <td ><img src={history} alt="" /> <img src={edit} alt="" /></td>
-                </tr>
-                <tr>
-                  <td >2, 3Л</td>
-                  <td >Авария на рабочем месте</td>
-                  <td ></td>
-                  <td >12.10.2021<br />16:20:08</td>
-                  <td >12.10.2021<br />16:25:24</td>
-                  <td ><img src={history} alt="" /> <img src={edit} alt="" /></td>
-                </tr>
-
-              </tbody>
-            </table>
+            <AccidentTable accidents={this.state.accidents}/>
           </div>
         </main>
         <footer></footer>
