@@ -6,7 +6,8 @@ import './Monitoring.css';
 import history from '../static/icons/history.svg';
 import edit from '../static/icons/edit.svg';
 
-const url = "https://tractor-factory-interface.herokuapp.com/api/accident/"
+const url = "https://tractor-factory-interface.herokuapp.com/api/accident/";
+const accidentsClasses = ["Некомплектность на рабочем месте", "Авария на рабчем месте", "Другое"];
 
 
 class AccidentTable extends Component {
@@ -72,10 +73,10 @@ class AccidentTable extends Component {
                     {accidents_list == null ? <p>Page is Loading ...</p> : accidents_list.map((obj, i) => (
                     <tr>
                         <td>{obj.post}</td>
-                        <td>{obj.accident_class}</td>
+                        <td>{accidentsClasses[obj.accident_class - 1]}</td>
                         <td>{obj.description}</td>
-                        <td>{obj.time_appeared}</td>
-                        <td>{obj.time_solved}</td>
+                        <td>{obj.time_appeared.replace('T', ' ').replace('Z', '')}</td>
+                        <td>{obj.time_solved === null ? "Проблема не устранена" : obj.time_solved.replace('T', ' ').replace('Z', '')}</td>
                         <td><img src={history} alt="" /> <img src={edit} alt="" /></td>
                     </tr>
                     ))}
