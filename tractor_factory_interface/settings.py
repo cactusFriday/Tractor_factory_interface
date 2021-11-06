@@ -191,6 +191,7 @@ CORS_ALLOW_HEADERS = (
     'csrftoken',
     'content-type',
     'X-CSRFToken'
+    'Authorization'
 )
 
 CSRF_COOKIE_NAME = "csrftoken"
