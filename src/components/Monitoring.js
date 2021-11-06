@@ -1,25 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from './Navbar.js';
 import './Monitoring.css';
-import { Component } from 'react';
-<<<<<<< HEAD
-import Menu from './Menu.js';
-import ConveyorTable from './ConveyorTable.js';
-import arrow_forward from '../static/icons/arrow_forward.svg';
-import sensors from '../static/icons/sensors.svg';
-import history from '../static/icons/history.svg';
-import edit from '../static/icons/edit.svg';
 import './style.css'
-=======
-import ConveyorTable from './ConveyorTable.js';
-import AccidentTable from './AccidentTable.js';
 import Menu from './Menu.js';
+import Navbar from './Navbar.js';
+import AccidentTable from './AccidentTable.js';
+import ConveyorTable from './ConveyorTable.js';
 import arrow_forward from '../static/icons/arrow_forward.svg';
-import sensors from '../static/icons/sensors.svg';
 import axios from 'axios';
+import { Component } from 'react';
 
 const postAcidentURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/'
->>>>>>> origin/deploy-accidentTable
 
 class Monitoring extends Component {
   constructor() {
