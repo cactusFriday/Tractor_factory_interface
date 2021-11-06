@@ -71,7 +71,7 @@ class AccidentTable extends Component {
                 <tbody className="Table-body">
                     {accidents_list == null ? <p>Page is Loading ...</p> : accidents_list.map((obj, i) => (
                     <tr>
-                        <td>{obj.id}</td>
+                        <td>{obj.post}</td>
                         <td>{obj.accident_class}</td>
                         <td>{obj.description}</td>
                         <td>{obj.time_appeared}</td>
