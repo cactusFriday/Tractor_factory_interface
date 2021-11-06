@@ -100,6 +100,3 @@ class UsersRetrieveAPIView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UsersRetrieve
 
-    @method_decorator(ensure_csrf_cookie)
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)

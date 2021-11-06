@@ -1,12 +1,12 @@
-from django.contrib.auth import authenticate
-from rest_framework import serializers
-
 import jwt
 from django.conf import settings
-from .models import User
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import (
     Group
 )
+from rest_framework import serializers
+
+from .models import User
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -213,6 +213,8 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class UsersRetrieve(serializers.ModelSerializer):
+    groups = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = User
-        fields = ('email', 'username', 'token')
+        fields = ['username', 'email', 'groups']
