@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Menu.css';
 import './style.css';
+import { useHistory } from "react-router-dom";
 import home from '../static/icons/home.svg';
 import scoreboard from '../static/icons/scoreboard.svg';
 import events from '../static/icons/events.svg';
@@ -12,6 +13,12 @@ import admin from '../static/icons/admin.svg';
 import settings from '../static/icons/settings.svg';
 
 export default function Menu() {
+  const history = useHistory();
+
+  function pushToRegister() {
+    history.push("/register");
+  }
+;
   return (
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
       <div class="position-sticky">
@@ -35,7 +42,7 @@ export default function Menu() {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" style={{ color: 'white' }} href="monitoring.html">
+            <a class="nav-link" style={{ color: 'white' }}>
               <img style={{ paddingRight: '24px' }} src={monitoring} alt=""/>
               Мониторинг
             </a>
@@ -93,22 +100,11 @@ export default function Menu() {
               </div>
             </div>
           </li>
-          <li class="nav-item">
-            <div class="d-grid gap-2 btn-group dropend">
-              <button type="button" class="btn btn-secondary shadow-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <img style={{ paddingRight: '24px' }} src={settings} alt=""/>
-                Система
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Настройки</a>
-                <a class="dropdown-item" href="#">Кнопки и посты</a>
-                <a class="dropdown-item" href="#">Контроллеры экранов</a>
-                <a class="dropdown-item" href="#">Переменные табло</a>
-                <a class="dropdown-item" href="#">Состояния конвейера</a>
-                <a class="dropdown-item" href="#">Типы техники</a>
-                <a class="dropdown-item" href="#">О системе</a>
-              </div>
-            </div>
+          <li class="nav-item" onClick={pushToRegister}>
+            <a class="nav-link" style={{ color: 'white' }}>
+              <img style={{ paddingRight: '24px' }} src={settings} alt=""/>
+              Регистрация пользователей
+            </a>
           </li>
         </ul>
       </div>
