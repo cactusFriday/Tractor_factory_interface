@@ -2,6 +2,7 @@ import './App.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Login from './components/Login'
 import Monitoring from './components/Monitoring'
+import Register from './components/Register'
 
 
 export default function App() {
@@ -12,6 +13,8 @@ export default function App() {
       <Switch>
       <Route exact path="/" component={ Login } />
       <Route exact path="/monitoring" component={ Monitoring } />
+      <Route exact path="/register" component={ Register } />
+          
       </Switch>
       </div>
       </BrowserRouter>
