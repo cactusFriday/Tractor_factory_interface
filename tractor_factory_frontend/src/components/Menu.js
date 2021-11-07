@@ -103,7 +103,7 @@ export default function Menu() {
           <li class="nav-item" onClick={pushToRegister}>
             <a class="nav-link" style={{ color: 'white' }}>
               <img style={{ paddingRight: '24px' }} src={settings} alt=""/>
-              Система
+              Регистрация пользователей
             </a>
           </li>
         </ul>
