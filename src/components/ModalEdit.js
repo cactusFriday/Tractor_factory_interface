@@ -15,7 +15,6 @@ const ModalEdit = ({isAct, setUnactive, data, key, handleOnSubmit}) => {
     //let middleCheckState = false;
 
     useEffect(() => {
-        console.log('render!');
         setDescription(middleDescription);
         setAccidentClass(middleAccidentClass);
         //setCheckState(false);

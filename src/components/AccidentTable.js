@@ -160,8 +160,8 @@ class AccidentTable extends Component {
                                 <td>{obj.post}</td>
                                 <td>{accidentsClasses[obj.accident_class - 1]}</td>
                                 <td>{obj.description}</td>
-                                <td>{obj.time_appeared.replace('T', ' ').replace('Z', '')}</td>
-                                <td>{obj.time_solved === null ? "Проблема не устранена" : obj.time_solved.replace('T', ' ').replace('Z', '')}</td>
+                                <td>{obj.time_appeared.replace('T', ' ').replace('Z', '').slice(0, 19)}</td>
+                                <td>{obj.time_solved === null ? "Проблема не устранена" : obj.time_solved.replace('T', ' ').replace('Z', '').slice(0, 19)}</td>
                                 <td>
                                     <img src={history} alt="" onClick={() => this.setActiveHistory(i)} />
                                     <img src={edit} alt="" onClick={() => this.setActiveEdit(i)} />
