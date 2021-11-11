@@ -13,6 +13,7 @@ const getAccidentHistoryURL = "https://tractor-factory-interface.herokuapp.com/a
 const postAccidentEditURL = "https://tractor-factory-interface.herokuapp.com/api/accident/history/";
 const accidentsClasses = ["Некомплектность на рабочем месте", "Авария на рабчем месте", "Другое"];
 
+
 class AccidentTable extends Component {
     constructor() {
         super();
