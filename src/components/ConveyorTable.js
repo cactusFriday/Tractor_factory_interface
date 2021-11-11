@@ -35,7 +35,7 @@ const ConveyorTable = () => {
         Получает информацию о последнем зафиксированном происшествии на этом посту.
         После установки true, компонент перерендеривается и вызывается модальное окно.
         в которое передается вся информация о полученном происшествии. */
-        const retrieveAccidentURL = `http://localhost:8000/api/accident/?post=${i}&last=True`;
+        const retrieveAccidentURL = `https://tractor-factory-interface.herokuapp.com/api/accident/?post=${i}&last=True`;
         fetch(retrieveAccidentURL)
         .then(res => res.json())
         .then(accidents => {
