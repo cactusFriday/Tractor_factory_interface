@@ -37,8 +37,10 @@ export default function LoginForm() {
       .then(res => {
         const token = res.data.user.token;
         const group = res.data.user.group;
+        const username = res.data.user.username;
         localStorage.setItem('token', token);
         localStorage.setItem('group', group);
+        localStorage.setItem('username', username);
         history.push("/monitoring");
         //console.log(res);
         //console.log(res.user.token);
