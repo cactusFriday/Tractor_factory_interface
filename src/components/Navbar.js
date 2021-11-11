@@ -11,6 +11,7 @@ export default function Navbar() {
     function handleClick() {
         localStorage.removeItem('token');
         localStorage.removeItem('group');
+        localStorage.removeItem('username');
         history.push("/");
     }
 
@@ -24,8 +25,8 @@ export default function Navbar() {
             </button>
             <div class="navbar-nav">
                 <div class="nav-item text-nowrap">
-                    <a class="nav-link" style={{ verticalAlign: 'middle' }} onClick={handleClick}>NEAD\PTZ
-                        <img style={{ paddingRight: '32px', paddingLeft: '12px' }} src={logout} alt=""/>
+                    <a class="nav-link" style={{ verticalAlign: 'middle' }} >{localStorage.username}
+                        <img style={{ paddingRight: '32px', paddingLeft: '12px' }} src={logout} onClick={handleClick} alt=""/>
                     </a>
                 </div>
             </div>
