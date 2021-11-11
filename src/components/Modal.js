@@ -3,10 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Modal.css';
 import close from "../static/icons/close.svg";
 
-import React, { forwardRef } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './Modal.css';
-
 
 const Modal = ({isActive, setActive, post, handleOnSubmit}) => {
     return (
