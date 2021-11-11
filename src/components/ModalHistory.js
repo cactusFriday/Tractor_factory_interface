@@ -41,7 +41,7 @@ const ModalHistory = ({isAct, setUnactive, data, accidentsClasses}) => {
                             </tr>
                         <th colspan="5"><h5 style={{textAlign: 'center', color: 'Highlight'}}><b>История изменений</b></h5></th>
                         <tr></tr>
-                        {data === 0 ? <th colspan="5" style={{textAlign: 'center'}}><h6>Нет истории изменений...</h6></th>
+                        {data === null ? <th colspan="5" style={{textAlign: 'center'}}><h6>Нет истории изменений...</h6></th>
                          : data.accident_history.map((obj, i) => (
                             <tr>
                                 <td>{data.post}</td>
