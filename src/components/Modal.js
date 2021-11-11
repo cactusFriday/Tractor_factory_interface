@@ -1,12 +1,20 @@
 import React, { forwardRef } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Modal.css';
+import close from "../static/icons/close.svg";
+
+import React, { forwardRef } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './Modal.css';
 
 
 const Modal = ({isActive, setActive, post, handleOnSubmit}) => {
     return (
         <div className={isActive ? "modalAccident active" : "modalAccident"} onClick={() => setActive(false)}>
             <div className="modal__content" onClick={e => e.stopPropagation()}>
+            <div>
+                <img height='32px' style={{marginTop: '10px', float: 'right'}} src={ close } alt="" onClick={() => setActive(false)}/>
+            </div>
                 <form onSubmit={handleOnSubmit}>
                     <div class="form-group my-3">
                         <label for="PostNumber">Номер поста</label>
