@@ -9,7 +9,7 @@ import arrow_forward from '../static/icons/arrow_forward.svg';
 import axios from 'axios';
 import { Component } from 'react';
 
-const postAcidentURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/'
+const postAcidentURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/';
 
 class Monitoring extends Component {
   constructor() {
@@ -31,53 +31,8 @@ class Monitoring extends Component {
             loading: false,
             accidents: accidents.results,
         });
-        console.log(accidents);
     });
   }
-  
-  handleFormSubmit = (e) => {
-    e.preventDefault();
-    let trgt = e.target
-    // Вытягиваем данные из формы, приводим к принятому формату
-    let timeEnd = ":00+00:00";
-    let time_appeared = trgt.timeAppeared.value ==='' ? null : trgt.timeAppeared.value.replace('T', ' ') + timeEnd;
-    let time_solved = trgt.timeSolved.value === '' ? null : trgt.timeSolved.value.replace('T', ' ') + timeEnd;
-    const accidentDetails = {
-      time_appeared: time_appeared,
-      time_solved: time_solved,
-      post: parseInt(trgt.post.placeholder),
-      accident_class: parseInt(trgt.accidentClass.value),
-      description: trgt.description.value
-    }
-    this.setState({
-      accidentDetails,
-    });
-
-    axios.defaults.xsrfCookieName = 'csrftoken';
-    axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-    axios.defaults.withCredentials = true;
-
-    // Сериализуем, отправляем на сервер, создавая новое происшествие.
-    // При получении ответа обновляем состояние новым происшествием.
-    // При обновлении состояния компонент рендерится заново, значит,
-    // список с актуальными происшествиями, переданный как пропсы в компонент таблицы, будет отрендерен
-    axios.post(postAcidentURL, JSON.stringify(accidentDetails), {
-      headers: {
-        'Authorization': `Token ${localStorage.token}`,
-        'Content-Type': 'application/json'
-      },
-    })
-    .then(res => this.setState(() => {
-      let accidents = [...this.state.accidents];
-      accidents.push(res.data);
-      return {accidents: accidents};
-    }))
-    .catch((error) => {
-      console.log(error);
-    });
-  };
-
-
 
   render() {
     return (
@@ -95,7 +50,7 @@ class Monitoring extends Component {
                   <td style={{ width: '3%', verticalAlign: 'middle', border: 'none' }}>
                     <img src={arrow_forward} alt="" /></td>
                   <td style={{ border: 'none' }}>
-                    <ConveyorTable handleOnSubmit={this.handleFormSubmit}/>
+                    <ConveyorTable/>
                   </td>
                   <td style={{ width: '3%', verticalAlign: 'middle', border: 'none' }}>
                     <img src={arrow_forward} alt="" /></td>

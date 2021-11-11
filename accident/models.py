@@ -2,6 +2,18 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 
+'''
+Как только сообщается красная кнопка - фиксация времени.
+создание происшествия с начальным временем и номером поста в соответствии с конфигурацией. Accident().save()
+Больше одного НЕрешенного происшествия на одном блоке кнопок быть не может.
+Значит при нажатии на клиенте на красную кнопку берем последний инцидент (GET + /?last=true)
+Причем в соотетствии с конфигурацией (можно ее хранить в локалсторедж), понимаем на какой пост нажали - запрашиваем инцидент по такому посту
+подгружаем время фиксации, ставим пост. Менять можно класс, описание. Время решения менять нельзя, 
+оно выставляется на беке в момент переключения кнопки, в дальнейшем обновится на фронте.
+'''
+
+
+
 
 class AccidentClass(models.Model):
     """Таблица с классами инцидентов"""
@@ -14,9 +26,8 @@ class AccidentClass(models.Model):
 
 class Accident(models.Model):
     """Основная информация происшествия"""
-    objects = None
     ACC_HIST_ARGS = ('accident_class', 'description')
-    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='accidents', on_delete=models.CASCADE)
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='accidents', on_delete=models.CASCADE, blank=True, null=True)
     # Время появления проблемы (момент нажатия кнопки)
     time_appeared = models.DateTimeField('Время появления происшествия', blank=False, default=timezone.now, unique=True)
     # Время решения проблемы (мастер зарегестрировал в системе) TODO: узнать как это поле заполнять
@@ -41,7 +52,7 @@ class Accident(models.Model):
         return history_record
 
     def __str__(self) -> str:
-        return f'[{self.user.username}][{self.time_appeared}]: {self.accident_class}'
+        return f'[{self.time_appeared}]: {self.accident_class}'
 
 
 class AccidentHistory(models.Model):

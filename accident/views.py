@@ -1,36 +1,57 @@
+import rest_framework
 from authorization.models import User
-from django.db.models import query
-from django.http import request
 from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework import status
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
-
+from django_filters import rest_framework as filters
 
 from accident.models import Accident, AccidentHistory
 from accident.permissions import IsOwnerOrReadOnly
 from accident.serializers import AccidentHistorySerializer, AccidentSerializer
+from accident.filters import AccidentFilter
 
+"""
+TODO: 1. UPDATE request [v]
+TODO: 2. POST not allowed? [v]
+TODO: 3. Pagination settings
+TODO: 4. Filter params [page?, post, last]
+"""
 
-# class UserList(generics.ListAPIView):
-#     '''GET - возвращает всех пользователей, с созданными ими инцидентами'''
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
+class AccidentRetrieveUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Accident.objects.all()
+    serializer_class = AccidentSerializer
 
+    @method_decorator(ensure_csrf_cookie)
+    def update(self, request, *args, **kwargs):
+        """При PATCH запросе в инциденте должны обновиться только класс, описание"""
+        # Получаем модель инцидента
+        instance = self.get_object()
+        # Инициализируем сериализатор, передавая модель для сериализации, джсон из реквеста. 
+        # partial=true - передаем не все необходимые поля модели
+        serializer = self.get_serializer(instance, request.data, partial=True)
+        # Валидируем данные и сохраняем в БД
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=self.request.user)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
-# class UserDetail(generics.RetrieveAPIView):
-#     '''GET+pk - возвращает user(id=pk)'''
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
 
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
 class AccidentList(generics.ListCreateAPIView):
     '''GET - выводит все инциденты. POST - создает инцидент'''
     queryset = Accident.objects.all()
     serializer_class = AccidentSerializer
-
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = AccidentFilter
     sort_params = {
         'sort': None,
-        'perPage': None,
+        'last': None,
+        'post': None,
         'dateStart': None,
         'dateEnd': None,
         'accClass': None,
@@ -40,42 +61,42 @@ class AccidentList(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 
-    def get_filter_params(self) -> 'tuple[dict, str]':
-        """Очищает словарь от непереданных фильтров, парсит фильтры. 
-        Возвращает словарь аргументов для фильтрации и порядок сортировки"""
-        # Чистим лишние элементы словаря (параметры, которые не были переданы)
-        tmp = self.sort_params.copy()
-        [tmp.pop(param) for param in self.sort_params if self.sort_params[param] is None]
-        # Если не передан параметр order или равен любой строке, кроме DESC - '', иначе '-'
-        ordering = '' if tmp.pop('order', 'ASC') == 'DESC' else '-'
+    # def get_filter_params(self) -> 'tuple[dict, str]':
+    #     """Очищает словарь от непереданных фильтров, парсит фильтры. 
+    #     Возвращает словарь аргументов для фильтрации и порядок сортировки"""
+    #     # Чистим лишние элементы словаря (параметры, которые не были переданы)
+    #     tmp = self.sort_params.copy()
+    #     [tmp.pop(param) for param in self.sort_params if self.sort_params[param] is None]
+    #     # Если не передан параметр order или равен любой строке, кроме DESC - '', иначе '-'
+    #     ordering = '' if tmp.pop('order', 'ASC') == 'DESC' else '-'
 
-        acc_class_filter = tmp.get('accClass')
-        # во избежание ValueError (NoneType не может .split())
-        if acc_class_filter is not None:
-            acc_class_filter = None if acc_class_filter == 'null' else tuple(map(int, acc_class_filter.split(';')))
-        d = {
-            'time_appeared__date__range': (tmp.get('dateStart'), tmp.get('dateEnd')),
-        }
-        # Если класс инцидента null - будем искать инциденты только с классом None, иначе ищем в переданной последовательности
-        if acc_class_filter is None:
-            d['accident_class__number'] = acc_class_filter
-        else: 
-            d['accident_class__number__in'] = acc_class_filter
-        return d, ordering
+    #     acc_class_filter = tmp.get('accClass')
+    #     # во избежание ValueError (NoneType не может .split())
+    #     if acc_class_filter is not None:
+    #         acc_class_filter = None if acc_class_filter == 'null' else tuple(map(int, acc_class_filter.split(';')))
+    #     d = {
+    #         'time_appeared__date__range': (tmp.get('dateStart'), tmp.get('dateEnd')),
+    #     }
+    #     # Если класс инцидента null - будем искать инциденты только с классом None, иначе ищем в переданной последовательности
+    #     if acc_class_filter is None:
+    #         d['accident_class__number'] = acc_class_filter
+    #     else: 
+    #         d['accident_class__number__in'] = acc_class_filter
+    #     return d, ordering
 
-    def get_queryset(self):
-        queryset = self.queryset
-        params = self.request.query_params
-        if params:
-            for key in self.sort_params:
-                self.sort_params[key] = params.get(key)
+    # def get_queryset(self):
+    #     queryset = self.queryset
+    #     params = self.request.query_params
+    #     if params:
+    #         for key in self.sort_params:
+    #             self.sort_params[key] = params.get(key)
 
-            filter_params, ordering = self.get_filter_params()
-            try:
-                queryset = self.queryset.filter(**filter_params).order_by(f'{ordering}time_appeared')
-            except:
-                pass
-        return queryset
+    #         filter_params, ordering = self.get_filter_params()
+    #         try:
+    #             queryset = self.queryset.filter(**filter_params).order_by(f'{ordering}time_appeared')
+    #         except:
+    #             pass
+    #     return queryset
 
     def perform_create(self, serializer):
         '''пробрасывает user из request в serializer'''
@@ -106,10 +127,3 @@ class AccidentHistoryList(generics.ListCreateAPIView):
         acc_history_elem = AccidentHistory(accident=accident, accident_class=current_class,
                                            description=current_description)
         acc_history_elem.save()
-
-
-class AccidentDetail(generics.RetrieveDestroyAPIView):
-    '''GET+pk - возвращает Accident(id=pk)'''
-    permission_classes = [IsOwnerOrReadOnly, ]
-    queryset = Accident.objects.all()
-    serializer_class = AccidentSerializer

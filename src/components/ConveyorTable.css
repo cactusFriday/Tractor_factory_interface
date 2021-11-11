@@ -9,12 +9,13 @@
     font-family: Roboto;
 }
 .error {
-    background-color: red;
+    background-color: #C92A2D;
     cursor: pointer;
 }
 .active {
-    background-color: yellow;
+    /* background-color: #FFAE50; */
+    background-color: #F8C100;
 }
 .success {
-    background-color: green;
+    background-color: #09AC54;
 }

@@ -4,7 +4,7 @@ from accident import views
 
 urlpatterns = [
     path('', views.AccidentList.as_view(), name='accident-list'),
-    path('<int:pk>/', views.AccidentDetail.as_view(), name='accident-detail'),
+    path('<int:pk>/', views.AccidentRetrieveUpdateDelete.as_view(), name='accident-detail'),
     path('history/', views.AccidentHistoryList.as_view(), name='accident_history-list'),
 ]
 
