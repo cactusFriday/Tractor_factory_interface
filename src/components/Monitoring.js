@@ -9,7 +9,8 @@ import arrow_forward from '../static/icons/arrow_forward.svg';
 import axios from 'axios';
 import { Component } from 'react';
 
-const postAcidentURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/';
+const getAcidentURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/';
+const getAcidentClassesURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/classes/';
 
 class Monitoring extends Component {
   constructor() {
@@ -18,18 +19,25 @@ class Monitoring extends Component {
     this.state = {
       loading: true,
       accidents: [],
-      accidentDetails:{},
+      accidentClasses: [],
     }
   };
 
   componentDidMount() {
-    fetch(postAcidentURL)
+    fetch(getAcidentURL)
     .then(res => res.json())
     .then(accidents => {
         // console.log(accidents);
         this.setState({
-            loading: false,
             accidents: accidents.results,
+        });
+    });
+    fetch(getAcidentClassesURL)
+    .then(res => res.json())
+    .then(accidentClasses => {
+        this.setState({
+            loading: false,
+            accidentClasses: accidentClasses.results,
         });
     });
   }
@@ -50,7 +58,7 @@ class Monitoring extends Component {
                   <td style={{ width: '3%', verticalAlign: 'middle', border: 'none' }}>
                     <img src={arrow_forward} alt="" /></td>
                   <td style={{ border: 'none' }}>
-                    <ConveyorTable/>
+                    <ConveyorTable accidentClasses={this.state.accidentClasses}/>
                   </td>
                   <td style={{ width: '3%', verticalAlign: 'middle', border: 'none' }}>
                     <img src={arrow_forward} alt="" /></td>

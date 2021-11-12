@@ -24,10 +24,9 @@ class AccidentSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'user', 'time_appeared', 'time_solved', 'post', 'accident_class', 'description', 'accident_history')
 
-# class UserSerializer(serializers.ModelSerializer):
-#     accidents = AccidentSerializer(many=True, read_only=True)
-#     # accidents = serializers.PrimaryKeyRelatedField(many=True, queryset=Accident.objects.all())
+class AccidentClassSerializer(serializers.ModelSerializer):
+    """Сериализатор для классов инцидентов"""
 
-#     class Meta:
-#         model = User
-#         fields = ('id', 'username', 'accidents')
+    class Meta:
+        model = AccidentClass
+        fields = '__all__'
