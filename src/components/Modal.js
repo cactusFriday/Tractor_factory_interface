@@ -51,18 +51,21 @@ class Modal extends Component {
             this.props.setError("Ошибка во время отправки происшествия");
             // this.props.setError([error.response.status, error.response.statusText]);
         });
-      };
+    };
+
+    convertTime(accident) {
+        let time_appeared = accident.time_appeared == null ? '' : accident.time_appeared.slice(0, 19);
+        let time_solved = accident.time_solved == null ? '' : accident.time_solved.slice(0, 19);
+        return [time_appeared, time_solved]
+    }
     
     render () {
         const isActive = this.props.isActive;
         const setActive = this.props.setActive;
         const accident = this.props.accident;
-        let time_appeared = null;
+        let times = null;
         if (accident !== null) {
-            time_appeared = this.props.accident.time_appeared;
-            time_appeared = time_appeared.split('.');
-            time_appeared.pop();
-            time_appeared = time_appeared.join('.');
+            times = this.convertTime(accident);
         };
         return (
             <div className={isActive ? "container-fluid modalAccident active" : "container-fluid modalAccident"} onClick={() => setActive(false)}>
@@ -89,18 +92,19 @@ class Modal extends Component {
                                 class="form-control form-control-modal" 
                                 id="AccidentAppeared" 
                                 name="timeAppeared" 
-                                value={accident == null ? '' : time_appeared}
+                                value={times[0] == null ? '' : times[0]}
                                 disabled/>
                             </div>
-                            {/* <div class="form-group my-3">
+                            <div class="form-group my-3">
                                 <label for="AccidentSolved">Время решения происшествия</label>
                                 <input 
                                 type="datetime-local" 
                                 class="form-control form-control-modal" 
                                 id="AccidentSolved" 
                                 name="timeSolved"
+                                value={times[1] == null ? '' : times[1]}
                                 disabled/>
-                            </div> */}
+                            </div>
                             <div class="form-group my-3">
                                 <label for="AccidentClass">Класс происшествия</label>
                                 <select class="form-control form-control-modal" id="AccidentClass" name="accidentClass">
@@ -113,7 +117,7 @@ class Modal extends Component {
                                 <label for="AccidentDescription">Описание</label>
                                 <textarea class="form-control form-control-modal" id="AccidentDescription" rows="3" name="description"></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Подтвердить</button>
                         </form>
                         {this.props.error === 'undefined' || null ? null : <div><p style={{color: "red", fontWeight: "bold"}}>{this.props.error}</p></div>}
                         </React.Fragment>
