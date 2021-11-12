@@ -10,8 +10,7 @@ import axios from 'axios';
 import { Component } from 'react';
 
 const getAcidentURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/';
-// const getAcidentClassesURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/classes/';
-const getAcidentClassesURL = 'http://localhost:8000/api/accident/classes/';
+const getAcidentClassesURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/classes/';
 
 class Monitoring extends Component {
   constructor() {
