@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Modal.css';
 import close from "../static/icons/close.svg";
 import axios from "axios";
+import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
 
 
 class Modal extends Component {
@@ -24,8 +25,9 @@ class Modal extends Component {
         let post = parseInt(trgt.post.placeholder);
         let accident_id = this.props.accident.id;
         // Объект для сериализации и PATCH
+        let accident_class = this.props.accidentClasses[trgt.accidentClass.selectedIndex].number;
         const accidentDetails = {
-          accident_class: parseInt(trgt.accidentClass.value),
+          accident_class: parseInt(accident_class),
           description: trgt.description.value
         };
         // Сериализуем, отправляем на сервер, создавая новое происшествие.
@@ -63,6 +65,7 @@ class Modal extends Component {
         const isActive = this.props.isActive;
         const setActive = this.props.setActive;
         const accident = this.props.accident;
+        const accidentClasses = this.props.accidentClasses;
         let times = null;
         if (accident !== null) {
             times = this.convertTime(accident);
@@ -108,9 +111,11 @@ class Modal extends Component {
                             <div class="form-group my-3">
                                 <label for="AccidentClass">Класс происшествия</label>
                                 <select class="form-control form-control-modal" id="AccidentClass" name="accidentClass">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
+                                    {
+                                        accidentClasses.map((obj, i) => 
+                                            <option>{"Класс " + String(obj.number) + ": " + String(obj.name)}</option>
+                                        )
+                                    }
                                 </select>
                             </div>
                             <div class="form-group my-3">

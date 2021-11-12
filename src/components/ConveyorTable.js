@@ -12,7 +12,7 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
-const ConveyorTable = () => {
+const ConveyorTable = ({accidentClasses}) => {
     const [answer, setAnswer] = useState(null);
     const [isActiveModal, setActive] = useState(false);
     const [accident, setAccident] = useState(null);
@@ -134,7 +134,14 @@ const ConveyorTable = () => {
                 <td style={{ width: '1%', backgroundColor: '#E6E8EB' }}></td>
             </tr>
         </table>
-        <Modal isActive={isActiveModal} setActive={setActive} accident={accident} setError={setError} error={error}/>
+        <Modal 
+            isActive={isActiveModal} 
+            setActive={setActive} 
+            accident={accident} 
+            setError={setError} 
+            error={error}
+            accidentClasses={accidentClasses}
+        />
         </React.Fragment>
     )
 }

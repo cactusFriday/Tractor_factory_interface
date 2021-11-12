@@ -7,9 +7,9 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from django_filters import rest_framework as filters
 
-from accident.models import Accident, AccidentHistory
+from accident.models import Accident, AccidentClass, AccidentHistory
 from accident.permissions import IsOwnerOrReadOnly
-from accident.serializers import AccidentHistorySerializer, AccidentSerializer
+from accident.serializers import AccidentClassSerializer, AccidentHistorySerializer, AccidentSerializer
 from accident.filters import AccidentFilter
 
 """
@@ -127,3 +127,11 @@ class AccidentHistoryList(generics.ListCreateAPIView):
         acc_history_elem = AccidentHistory(accident=accident, accident_class=current_class,
                                            description=current_description)
         acc_history_elem.save()
+
+class AccidentClassList(generics.ListCreateAPIView):
+    queryset = AccidentClass.objects.all()
+    serializer_class = AccidentClassSerializer
+
+    @method_decorator(ensure_csrf_cookie)
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
