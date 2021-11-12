@@ -37,19 +37,20 @@ const ModalHistory = ({isAct, setUnactive, data, accidentsClasses}) => {
                                 <td>{data === null ? "" : data.post}</td>
                                 <td>{data === null ? "" : accidentsClasses[data.accident_class - 1]}</td>
                                 <td rows="3">{data === null ? "" : data.description}</td>
-                                <td>{data === null ? "" : data.time_appeared.replace('T', ' ').replace('Z', '').slice(0, 19)}</td> 
+                                <td>{data === null ? "" : data.time_appeared.replace('T', ' ').replace('Z', '').replaceAll('-', '.').slice(0, 19)}</td> 
                             </tr>
                         <th colspan="5"><h5 style={{textAlign: 'center', color: 'Highlight'}}><b>История изменений</b></h5></th>
                         <tr></tr>
-                        {data === null ? <th colspan="5" style={{textAlign: 'center'}}><h6>Нет истории изменений...</h6></th>
+                        {data === null ? <th colspan="5" style={{textAlign: 'center'}}><h6>Нет истории изменений...</h6></th> 
+                        : (data.accident_history === null ?  <th colspan="5" style={{textAlign: 'center'}}><h6>Нет истории изменений...</h6></th> 
                          : data.accident_history.map((obj, i) => (
                             <tr>
                                 <td>{data.post}</td>
                                 <td>{accidentsClasses[obj.accident_class - 1]}</td>
                                 <td>{obj.description}</td>
-                                <td>{obj.time_changed.replace('T', ' ').replace('Z', '').slice(0, 19)}</td>
+                                <td>{obj.time_changed.replace('T', ' ').replace('Z', '').replaceAll('-', '.').slice(0, 19)}</td>
                             </tr>
-                        ))}      
+                        )))}      
                     </tbody>
                 </table>
                 </div>
