@@ -58,7 +58,7 @@ const ModalEdit = ({isAct, setUnactive, data, key, handleOnSubmit}) => {
         <div className={showHideClassName} onClick={setUnactive}>
             <div className="modal__content" onClick={e => e.stopPropagation()}>
             <div>
-                <img height='32px' style={{float: 'right'}} src={ close } alt="" onClick={setUnactive}/>
+                <img height='32px' style={{float: 'right', cursor: "pointer"}} src={ close } alt="" onClick={setUnactive}/>
             </div>
                 <form onSubmit={handleOnSubmit}>
                     <div class="form-group my-3">

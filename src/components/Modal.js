@@ -68,7 +68,7 @@ class Modal extends Component {
             <div className={isActive ? "container-fluid modalAccident active" : "container-fluid modalAccident"} onClick={() => setActive(false)}>
                 <div className="modal__content container-sm" onClick={e => e.stopPropagation()}>
                 <div>
-                    <img height='32px' style={{marginTop: '10px', float: 'right'}} src={ close } alt="" onClick={() => setActive(false)}/>
+                    <img height='32px' style={{marginTop: '10px', float: 'right', cursor: "pointer"}} src={ close } alt="" onClick={() => setActive(false)}/>
                 </div>
                     {
                         accident == null ? 

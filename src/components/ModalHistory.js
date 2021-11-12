@@ -10,7 +10,7 @@ const ModalHistory = ({isAct, setUnactive, data, accidentsClasses}) => {
         <div className={showHideClassName} onClick={setUnactive} style={{position: 'fixed', overflowY: 'scroll'}}>
             <div className="modal__content" onClick={e => e.stopPropagation()}>
             <div>
-                <img height='32px' style={{marginTop: '10px', float: 'right'}} src={ close } alt="" onClick={setUnactive}/>
+                <img height='32px' style={{marginTop: '10px', float: 'right', cursor: "pointer"}} src={ close } alt="" onClick={setUnactive}/>
             </div>
                 <div><table>
                     <thead>

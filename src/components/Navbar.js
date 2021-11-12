@@ -26,7 +26,7 @@ export default function Navbar() {
             <div class="navbar-nav">
                 <div class="nav-item text-nowrap">
                     <a class="nav-link" style={{ verticalAlign: 'middle' }} >{localStorage.username}
-                        <img style={{ paddingRight: '32px', paddingLeft: '12px' }} src={logout} onClick={handleClick} alt=""/>
+                        <img style={{ paddingRight: '32px', paddingLeft: '12px', cursor: "pointer" }} src={logout} onClick={handleClick} alt=""/>
                     </a>
                 </div>
             </div>
