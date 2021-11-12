@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'django_filters',
     'authorization',
     'accident',
     'conveyor',
@@ -178,7 +179,6 @@ AUTH_USER_MODEL = 'authorization.User'
 CORS_ALLOW_CREDENTIALS = True
 # Option 1
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:8000',
 ]
@@ -191,7 +191,9 @@ CORS_ALLOW_HEADERS = (
     'csrftoken',
     'content-type',
     'X-CSRFToken',
-    'Authorization'
+    'Authorization',
+    'Content-Type',
+    'Accept'
 )
 
 CSRF_COOKIE_NAME = "csrftoken"
