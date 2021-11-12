@@ -77,7 +77,7 @@ const ModalEdit = ({isAct, setUnactive, data, key, handleOnSubmit}) => {
                     </div>
                     <div class="form-group my-3">
                         <label for="AccidentSolved">Время устранения проблемы</label>
-                        <input type="text" class="form-control" id="AccidentSolved" 
+                        <input type="text" class="form-control form-control-modal" id="AccidentSolved" 
                         name="AccidentSolved" 
                         disabled
                         value={data === null ? "" : data.time_solved === null ? "Проблема не устранена" : data.time_solved.replace('T', ' ').replace('Z', '').replaceAll('-', '.').slice(0, 19)}/>
