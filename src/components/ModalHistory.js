@@ -5,10 +5,10 @@ import close from "../static/icons/close.svg";
 
 
 const ModalHistory = ({isAct, setUnactive, data, accidentsClasses}) => {
-    const showHideClassName = isAct ? "modalAccident active" : "modalAccident";
+    const showHideClassName = isAct ? "container-fluid modalAccident active" : "container-fluid modalAccident";
     return (
         <div className={showHideClassName} onClick={setUnactive} style={{position: 'fixed', overflowY: 'scroll'}}>
-            <div className="modal__content" onClick={e => e.stopPropagation()}>
+            <div className="container modal__content" onClick={e => e.stopPropagation()}>
             <div>
                 <img height='32px' style={{marginTop: '10px', float: 'right', cursor: "pointer"}} src={ close } alt="" onClick={setUnactive}/>
             </div>

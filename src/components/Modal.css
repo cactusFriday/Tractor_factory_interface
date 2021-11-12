@@ -1,5 +1,3 @@
-
-
 .modalAccident {
     z-index: 9999998;
     height: 100vh;
@@ -35,4 +33,11 @@
 }
 .form-control-modal {
     width: 100%;
+}
+
+@font-face {
+    font-family: Roboto; 
+    src: url("../static/fonts/Roboto-Light.ttf") format("truetype"); 
+    font-style: normal; 
+    font-weight: normal; 
 }

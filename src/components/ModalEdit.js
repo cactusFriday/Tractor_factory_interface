@@ -1,10 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React,  useEffect,  useState } from "react";
-import './ModalEdit.css';
+import './Modal.css';
 import close from "../static/icons/close.svg";
 
 const ModalEdit = ({isAct, setUnactive, data, key, handleOnSubmit}) => {
-    const showHideClassName = isAct ? "modalAccident active" : "modalAccident";
+    const showHideClassName = isAct ? "container-fluid modalAccident active" : "container-fluid modalAccident";
     const [accident_key, setAccidentKey] = useState(key);
     const [accident_class, setAccidentClass] = useState(data === null ? "" : data.accident_class);
     const [time_solved, setTimeSolved] = useState("");
@@ -63,21 +63,21 @@ const ModalEdit = ({isAct, setUnactive, data, key, handleOnSubmit}) => {
                 <form onSubmit={handleOnSubmit}>
                     <div class="form-group my-3">
                         <label for="PostNumber">Номер поста</label>
-                        <input type="text" class="form-control" id="PostNumber" 
+                        <input type="text" class="form-control form-control-modal" id="PostNumber" 
                         name="post" 
                         disabled 
                         value={data === null ? "" : data.post}/>
                     </div>
                     <div class="form-group my-3">
                         <label for="AccidentAppeared">Время фиксирования происшествия</label>
-                        <input type="datetime-local" class="form-control" id="AccidentAppeared" 
+                        <input type="datetime-local" class="form-control form-control-modal" id="AccidentAppeared" 
                         name="timeAppeared" 
                         disabled
                         value={data === null ? "" : data.time_appeared.replace('Z', '').slice(0, 19)}/>
                     </div>
                     <div class="form-group my-3">
                         <label for="AccidentClass">Класс происшествия</label>
-                        <select class="form-control" id="AccidentClass" 
+                        <select class="form-control form-control-modal" id="AccidentClass" 
                         name="accidentClass" 
                         value={accident_class}
                         onChange={changeAccidentClass}>
@@ -88,7 +88,7 @@ const ModalEdit = ({isAct, setUnactive, data, key, handleOnSubmit}) => {
                     </div>
                     <div class="form-group my-3">
                         <label for="AccidentDescription">Описание</label>
-                        <textarea class="form-control" id="AccidentDescription" rows="3" 
+                        <textarea class="form-control form-control-modal" id="AccidentDescription" rows="3" 
                         name="description"
                         value={description}
                         onChange={changeDescription}></textarea>
