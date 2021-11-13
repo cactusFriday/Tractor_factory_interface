@@ -64,7 +64,7 @@ class Monitoring extends Component {
                     <img src={arrow_forward} alt="" /></td>
                 </tr>
               </table>
-              <div className="App-Accidents">
+              <div className="App-Accidents" class="table-responsive">
                 <h1 style={{ textAlign: 'left', verticalAlign: 'middle', lineHeight: '30px', marginBottom: '30px', fontWeight: '600' }}>Список последних происшествий</h1>
                 <AccidentTable accidents={this.state.accidents}/>
               </div>
