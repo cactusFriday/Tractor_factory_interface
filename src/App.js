@@ -1,22 +1,31 @@
 import './App.css';
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import Login from './components/Login'
-import Monitoring from './components/Monitoring'
-import Register from './components/Register'
+import { Component } from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { PrivateRoute } from './components/PrivateRoute';
+import Login from './components/Login';
+import Monitoring from './components/Monitoring';
+import Register from './components/Register';
+import Unauthorized from './components/Unauthorized';
 
 
-export default function App() {
-    
-    return (
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state= { value: "" };
+  }
+    render() {
+      return (
       <BrowserRouter>
       <div className="App" >
       <Switch>
       <Route exact path="/" component={ Login } />
-      <Route exact path="/monitoring" component={ Monitoring } />
-      <Route exact path="/register" component={ Register } />
-          
+      <Route exact path="/unauthorized" component={ Unauthorized } />
+      <PrivateRoute exact path="/monitoring" component={ Monitoring } />
+      <PrivateRoute exact path="/register" component={ Register } />  
       </Switch>
       </div>
       </BrowserRouter>
     );
-  }
+  } 
+}
+
