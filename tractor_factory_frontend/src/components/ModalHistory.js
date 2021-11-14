@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { React,  useState } from "react";
+import { React } from "react";
 import './ModalHistory.css';
 import close from "../static/icons/close.svg";
 
@@ -12,7 +12,8 @@ const ModalHistory = ({isAct, setUnactive, data, accidentsClasses}) => {
             <div>
                 <img height='32px' style={{marginTop: '10px', float: 'right'}} src={ close } alt="" onClick={setUnactive}/>
             </div>
-                <div><table>
+                <div class="table-responsive" style={{height: '80vh', overflowY: 'auto'}}>
+                    <table class="table table-bordered table-hover table-sm">
                     <thead>
                         <tr>
                             <th class="text-center">
@@ -27,12 +28,10 @@ const ModalHistory = ({isAct, setUnactive, data, accidentsClasses}) => {
                             <th class="text-center">
                                 Время изменения
                             </th>
-                            
-                            <th class="text-center"></th>
                         </tr>
                     </thead>
                     <tbody className="Table-body">
-                        <th colspan="5"><h5 style={{textAlign: 'center', color: 'Highlight'}}><b>Текущее состояние</b></h5></th>
+                        <th colspan="4"><h5 style={{textAlign: 'center', color: 'Highlight'}}><b>Текущее состояние</b></h5></th>
                             <tr>
                                 <td>{data === null ? "" : data.post}</td>
                                 <td>{data === null ? "" : accidentsClasses[data.accident_class - 1]}</td>
