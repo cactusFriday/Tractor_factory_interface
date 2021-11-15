@@ -3,7 +3,7 @@ from conveyor.models import *
 
 
 class PostsStateSerializer(serializers.ModelSerializer):
-    post_number = serializers.ReadOnlyField
+    post_number = serializers.CharField(max_length=255, read_only=True)
 
     class Meta:
         model = PostsState

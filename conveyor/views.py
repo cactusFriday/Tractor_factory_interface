@@ -13,7 +13,7 @@ def posts_state_list(request):
     GET:    достает состояния постов из БД и отправляет json
     """
     if request.method == 'GET':
-        conv_state_set = PostsState.objects.order_by('post')
+        conv_state_set = PostsState.objects.order_by('post_number')
         serializer = PostsStateSerializer(conv_state_set, many=True)
         return JsonResponse(serializer.data, safe=False)
 
@@ -25,8 +25,10 @@ def update_posts_status(request):
         serializer = ButtonsBlocksSerializer(data=data, many=True)
         if serializer.is_valid():
             status_set = ButtonsBlocks.objects.all()
-            print(ButtonsBlocks.posts)
+            print(status_set)
             for i, conv_stat in enumerate(status_set):
+                print(conv_stat.posts.all())
+                print(serializer.validated_data[0]['posts_state']['status_post'])
                 """if tmp.posts_state != serializer.validated_data[i]['status_post']:
                     tmp.posts_state = serializer.validated_data[i]['status_post']
                     tmp.save()"""
