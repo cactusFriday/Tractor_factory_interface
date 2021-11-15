@@ -79,8 +79,8 @@ const ConveyorTable = ({accidentClasses}) => {
                                                 answer.slice(0, answer.length/2).map((obj, i) => 
                                                 <td 
                                                 key={obj.post_number} 
-                                                class={obj.status_post} 
-                                                onClick={obj.status_post==='error' ? () => onTdClick(obj.post_number) : null}/>)
+                                                class={obj.buttons_set[0].status_block} 
+                                                onClick={obj.buttons_set[0].status_block==='error' ? () => onTdClick(obj.post_number) : null}/>)
                                                 )
                                         }
                                     }()
@@ -99,8 +99,8 @@ const ConveyorTable = ({accidentClasses}) => {
                                                 answer.slice(answer.length/2, answer.length).map((obj, i) => 
                                                 <td 
                                                 key={obj.post_number}
-                                                class={obj.status_post} 
-                                                onClick={obj.status_post==='error' ? () => onTdClick(obj.post_number) : null}/>)
+                                                class={obj.buttons_set[0].status_block} 
+                                                onClick={obj.buttons_set[0].status_block==='error' ? () => onTdClick(obj.post_number) : null}/>)
                                                 )
                                         }
                                     }()

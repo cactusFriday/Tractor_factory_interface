@@ -5,8 +5,10 @@ import Navbar from './Navbar.js'
 import './ConveyorConfig.css'
 
 
-// const getConfigAPIUrl = "https://tractor-factory-interface.herokuapp.com/api/conveyor/config";
-const getConfigAPIUrl = "http://localhost:8000/api/conveyor/config";
+const getConfigAPIUrl = "https://tractor-factory-interface.herokuapp.com/api/conveyor-state/buttons-posts/";
+const updateConfigAPIUrl = "https://tractor-factory-interface.herokuapp.com/api/conveyor-state/buttons-posts/update-buttons-configuration/";
+
+// const getConfigAPIUrl = "http://localhost:8000/api/conveyor/config";
 
 
 class ConveyorConfig extends Component {
@@ -44,21 +46,17 @@ class ConveyorConfig extends Component {
         axios.get(getConfigAPIUrl)
         .then(res => {
             // В случае получения результата, если выведена ошибка, удаляем её со страницы
-            this.setState({
-                isError: false
-            });
             let errorHeader = document.getElementById("error-header");
             if (errorHeader !== null) {
                 errorHeader.parentNode.removeChild(errorHeader);
             }
             
-            this.fillInputsWithConfig(res);
+            this.fillInputsWithConfig(res.data.results);
 
-            let localStorageConfig = localStorage.getItem('posts-config');
-            if (localStorageConfig !==  null) {
-                localStorage.removeItem('posts=config');
-            }
-            // localStorage.setItem('posts-config', JSON.stringify(res));
+            this.saveToLocalStorage(res.data.results);
+            this.setState({
+                isError: false
+            });
         })
         .catch((error) => {
             this.setState({
@@ -73,77 +71,26 @@ class ConveyorConfig extends Component {
     }
     
     postConfig(config) {
-        axios.post(getConfigAPIUrl, JSON.stringify(config), {
+        axios.post(updateConfigAPIUrl, JSON.stringify(config), {
             headers: {
                 'Authorization': `Token ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json'
             },
         })
         .then(res => {
-            return res;
+            console.log(res);
         })
         .catch((error) => {
-            return error;
+            console.log(error);
         });
     }
 
-    checkOnError() {
-        /* Метод, периодически проверяющий есть ли ошибка получения конфига.
-        Если есть - шлет запрос. Если нет - очищает интервал*/
-        if (this.state.isError === true) {
-            this.getConfig()
-            console.log(this.state.isError)
+    saveToLocalStorage(config) {
+        let localStorageConfig = localStorage.getItem('posts-config');
+        if (localStorageConfig !==  null) {
+            localStorage.removeItem('posts-config');
         }
-        else {
-            clearInterval(this.interval);
-        }
-    }
-
-    convertPostsNumbersFromInputs(inputs) {
-        /* Записи с инпутов конвертировать в блоки по постам */
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ДОДЕЛАТЬ КОНВЕРТАЦИЮ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // [
-        //     {
-        //         block: 0,
-        //         posts: [0, 14]
-        //     },
-        //     {
-        //         ...
-        //     }
-        // ]
-
-        // inputsLen = Object.keys(inputs).length;
-        // convertedConfig = [];
-        // for (let i = 0; i < inputsLen; i++) {
-        //     let curBlock = inputs[i].block;
-        //     if (convertedConfig)
-        //     convertedConfig[i] = {}
-
-        //     for (let j = 0; j < inputsLen; j++) {
-                
-        //     }
-        // }
-
-        // let btnConf = {};
-        // for(let i = 0; i < 28; i++) {
-        //     btnConf[String(i)] = [];
-        // }
-
-        // for (let i = 0; i < posts.length; i++) {
-        //     btnConf[posts[i].value].push(posts[i].post);
-        // }
-
-        // console.log(btnConf);
-        // let upperPosts = inputs.slice(0, inputs.length/2);
-        // let bottomPosts = inputs.slice(inputs.length/2, inputs.length);
-        // upperPosts.reverse();
-        // bottomPosts.reverse();
-        // upperPosts.concat(bottomPosts);
-    }
-
-    fillInputsWithConfig(config) {
-        /* Заполняет инпуты конфигурацией */
-        // Если массив - получаем инпуты, итерируемся и расставляем
+        localStorage.setItem('posts-config', JSON.stringify(config));
     }
 
     onSubmitClick() {
@@ -155,10 +102,11 @@ class ConveyorConfig extends Component {
             postsObj[i]["post"] = i;
             postsObj[i]["block"] = inputs[i].value;
         }
+        // {{post: 1, block: 0}, {}, {}....}
         let convertedConfig = this.convertPostsNumbersFromInputs(postsObj);
 
-        console.log(postsObj);
-        // this.postConfig(inp_values);
+        this.saveToLocalStorage(convertedConfig);
+        this.postConfig(convertedConfig);
     }
 
     onResetClick() {
@@ -166,6 +114,60 @@ class ConveyorConfig extends Component {
         let inputs = document.getElementsByTagName('input');
         for (let i = 0; i < inputs.length; i++) {
             inputs[i].value = "";
+        }
+    }
+
+    convertPostsNumbersFromInputs(inputs) {
+        /* Записи с инпутов конвертировать в блоки по постам */
+        // inputs: {{post: 1, block: 0}, {}, {}....}
+        let inputsLen = Object.keys(inputs).length;
+        let convertedConfig = {};
+        let passedKeys = [];
+        for (let key in inputs) {
+            let curBlock = String(inputs[key].block)
+            if (passedKeys.indexOf(curBlock) < 0) {
+                convertedConfig[curBlock] = {
+                    "buttons_block_number": curBlock,
+                    "posts": [ {"post_number": parseInt(key)}, ],
+                }              //Если блока нет - создаем объект под ключем блока
+            }
+            else {
+                convertedConfig[curBlock].posts.push({"post_number": parseInt(key)});
+            }
+            passedKeys.push(curBlock);       // кладем уже рассмотренный блок кнопок
+        }
+
+        let result = [];
+        for (let key in convertedConfig) {
+            result.push(convertedConfig[key]);
+        }
+        console.log(result);
+        return result
+    }
+
+    fillInputsWithConfig(config) {
+        /* Заполняет инпуты конфигурацией */
+        let inputs = document.getElementsByTagName('input');
+        let inputsArray = Array.prototype.slice.call(inputs);
+        // console.log(config);
+        // console.log(inputsArray);
+        for (let i = 0; i < config.length; i++) {
+            let curVal = config[i].buttons_block_number;
+            let curPosts = config[i].posts;
+            for(let j = 0; j < curPosts.length; j++) {
+                inputsArray[curPosts[j].post_number].value = curVal;
+            }
+        }
+    }
+
+    checkOnError() {
+        /* Метод, периодически проверяющий есть ли ошибка получения конфига.
+        Если есть - шлет запрос. Если нет - очищает интервал*/
+        if (this.state.isError === true) {
+            this.getConfig();
+        }
+        else {
+            clearInterval(this.interval);
         }
     }
 
@@ -183,20 +185,20 @@ class ConveyorConfig extends Component {
                             <thead>
                                 <tr>
                                 <th scope="col">Пост</th>
-                                <th scope="col">13</th>
-                                <th scope="col">12</th>
-                                <th scope="col">11</th>
-                                <th scope="col">10</th>
-                                <th scope="col">9</th>
-                                <th scope="col">8</th>
-                                <th scope="col">7</th>
-                                <th scope="col">6</th>
-                                <th scope="col">5</th>
-                                <th scope="col">4</th>
-                                <th scope="col">3</th>
-                                <th scope="col">2</th>
-                                <th scope="col">1</th>
                                 <th scope="col">0</th>
+                                <th scope="col">1</th>
+                                <th scope="col">2</th>
+                                <th scope="col">3</th>
+                                <th scope="col">4</th>
+                                <th scope="col">5</th>
+                                <th scope="col">6</th>
+                                <th scope="col">7</th>
+                                <th scope="col">8</th>
+                                <th scope="col">9</th>
+                                <th scope="col">10</th>
+                                <th scope="col">11</th>
+                                <th scope="col">12</th>
+                                <th scope="col">13</th>
                                 </tr>
                             </thead>
                             <tbody>
