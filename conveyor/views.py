@@ -24,14 +24,11 @@ def update_posts_status(request):
         data = JSONParser().parse(request)
         serializer = ButtonsBlocksSerializer(data=data, many=True)
         if serializer.is_valid():
-            status_set = ButtonsBlocks.objects.all()
-            print(status_set)
-            for i, conv_stat in enumerate(status_set):
-                print(conv_stat.posts.all())
-                print(serializer.validated_data[0]['posts_state']['status_post'])
-                """if tmp.posts_state != serializer.validated_data[i]['status_post']:
-                    tmp.posts_state = serializer.validated_data[i]['status_post']
-                    tmp.save()"""
+            buttons_blocks = ButtonsBlocks.objects.all()
+            for i, buttons_block in enumerate(buttons_blocks):
+                if buttons_block.status_block != serializer.validated_data[i]['status_block']:
+                    buttons_block.status_block = serializer.validated_data[i]['status_block']
+                    buttons_block.save()
             return JsonResponse(serializer.data, status=201, safe=False)
         return JsonResponse(serializer.data, status=201, safe=False)
 
