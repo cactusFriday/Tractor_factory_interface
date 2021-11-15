@@ -99,6 +99,48 @@ class ConveyorConfig extends Component {
         }
     }
 
+    convertPostsNumbersFromInputs(inputs) {
+        /* Записи с инпутов конвертировать в блоки по постам */
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ДОДЕЛАТЬ КОНВЕРТАЦИЮ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // [
+        //     {
+        //         block: 0,
+        //         posts: [0, 14]
+        //     },
+        //     {
+        //         ...
+        //     }
+        // ]
+
+        // inputsLen = Object.keys(inputs).length;
+        // convertedConfig = [];
+        // for (let i = 0; i < inputsLen; i++) {
+        //     let curBlock = inputs[i].block;
+        //     if (convertedConfig)
+        //     convertedConfig[i] = {}
+
+        //     for (let j = 0; j < inputsLen; j++) {
+                
+        //     }
+        // }
+
+        // let btnConf = {};
+        // for(let i = 0; i < 28; i++) {
+        //     btnConf[String(i)] = [];
+        // }
+
+        // for (let i = 0; i < posts.length; i++) {
+        //     btnConf[posts[i].value].push(posts[i].post);
+        // }
+
+        // console.log(btnConf);
+        // let upperPosts = inputs.slice(0, inputs.length/2);
+        // let bottomPosts = inputs.slice(inputs.length/2, inputs.length);
+        // upperPosts.reverse();
+        // bottomPosts.reverse();
+        // upperPosts.concat(bottomPosts);
+    }
+
     fillInputsWithConfig(config) {
         /* Заполняет инпуты конфигурацией */
         // Если массив - получаем инпуты, итерируемся и расставляем
@@ -107,10 +149,15 @@ class ConveyorConfig extends Component {
     onSubmitClick() {
         /* Метод обработки кнопки Сохранение. Собирает значения из всех инпутов и отправляет */
         let inputs = document.getElementsByTagName('input');
-        let inp_values = [];
+        let postsObj = {};
         for (let i = 0; i < inputs.length; i++) {
-            inp_values.push(inputs[i].value);
+            postsObj[i] = {}
+            postsObj[i]["post"] = i;
+            postsObj[i]["block"] = inputs[i].value;
         }
+        let convertedConfig = this.convertPostsNumbersFromInputs(postsObj);
+
+        console.log(postsObj);
         // this.postConfig(inp_values);
     }
 
