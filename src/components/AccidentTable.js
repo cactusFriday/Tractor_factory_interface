@@ -42,8 +42,6 @@ class AccidentTable extends Component {
                     accidents: accidents,
                 })
             });
-        // const intervalGet = setInterval(() => this.getAccidents(), 2000);
-        // this.setState({ intervalGet })
     };
 
     componentWillUnmount() {
