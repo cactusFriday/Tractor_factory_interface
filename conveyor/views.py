@@ -13,7 +13,7 @@ def posts_state_list(request):
     GET:    достает состояния постов из БД и отправляет json
     """
     if request.method == 'GET':
-        conv_state_set = PostsState.objects.order_by('post_number')
+        conv_state_set = PostsState.objects.all()
         serializer = PostsStateSerializer(conv_state_set, many=True)
         return JsonResponse(serializer.data, safe=False)
 
