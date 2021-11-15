@@ -18,6 +18,9 @@ export default function Menu() {
   function pushToRegister() {
     history.push("/register");
   }
+  function pushToConfig() {
+    history.push("/config");
+  }
 ;
   return (
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
@@ -86,7 +89,7 @@ export default function Menu() {
               </div>
             </div>
           </li>
-          <li class="nav-item">
+          {/* <li class="nav-item">
             <div class="d-grid gap-2 btn-group dropend">
               <button type="button" class="btn btn-secondary shadow-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 <img style={{ paddingRight: '24px' }} src={admin} alt=""/>
@@ -99,6 +102,12 @@ export default function Menu() {
                 <a class="dropdown-item" href="#">События конвейера</a>
               </div>
             </div>
+          </li> */}
+          <li class="nav-item" onClick={pushToConfig}>
+            <a class="nav-link" style={{ color: 'white' }}>
+              <img style={{ paddingRight: '24px' }} src={settings} alt=""/>
+              Конфигурация
+            </a>
           </li>
           <li class="nav-item" onClick={pushToRegister}>
             <a class="nav-link" style={{ color: 'white' }}>
