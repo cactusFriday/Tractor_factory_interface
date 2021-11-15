@@ -9,7 +9,7 @@ class ButtonsBlocksSerializer(serializers.ModelSerializer):
 
 
 class PostsStateSerializer(serializers.ModelSerializer):
-    post_number = serializers.CharField(max_length=255, read_only=True)
+    post_number = serializers.IntegerField(read_only=True)
     buttons_set = ButtonsBlocksSerializer(many=True)
 
     class Meta:
