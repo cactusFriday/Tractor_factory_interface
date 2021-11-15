@@ -162,7 +162,7 @@ class AccidentTable extends Component {
                                 <td>{obj.description}</td>
                                 <td>{obj.time_appeared.replace('T', ' ').replace('Z', '').replaceAll('-', '.').slice(0, 19)}</td>
                                 <td>{obj.time_solved === null ? "Проблема не устранена" : obj.time_solved.replace('T', ' ').replace('Z', '').replaceAll('-', '.').slice(0, 19)}</td>
-                                <td>
+                                <td style={{position:'sticky', right:'0px'}}>
                                     <img src={history} alt="" onClick={() => this.setActiveHistory(i)} />
                                     <img src={edit} alt="" onClick={() => this.setActiveEdit(i)} />
                                 </td>
