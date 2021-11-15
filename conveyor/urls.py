@@ -6,5 +6,5 @@ from conveyor.views import ButtonsBlocksRetrieveAPIView
 urlpatterns = [
     path('', views.posts_state_list, name='conveyor-list'),
     path('update-list/', views.update_posts_status),
-    path('post-buttons/', ButtonsBlocksRetrieveAPIView.as_view()),
+    path('buttons-posts/', ButtonsBlocksRetrieveAPIView.as_view()),
 ]

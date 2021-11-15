@@ -4,7 +4,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.parsers import JSONParser
 
 from conveyor.models import PostsState, ButtonsBlocks
-from conveyor.serializers import PostsStateSerializer, ButtonsBlocksSerializer
+from conveyor.serializers import PostsStateSerializer, ButtonsBlocksSerializer, ButtonsBlocksConfiguratorSerializer
 
 
 @api_view(['GET'])
@@ -35,4 +35,4 @@ def update_posts_status(request):
 
 class ButtonsBlocksRetrieveAPIView(ListAPIView):
     queryset = ButtonsBlocks.objects.all()
-    serializer_class = ButtonsBlocksSerializer
+    serializer_class = ButtonsBlocksConfiguratorSerializer
