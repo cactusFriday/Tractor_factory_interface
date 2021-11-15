@@ -4,6 +4,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.parsers import JSONParser
 
 from conveyor.models import PostsState, ButtonsBlocks
+from accident.models import Accident
 from conveyor.serializers import PostsStateSerializer, ButtonsBlocksSerializer, ButtonsBlocksConfiguratorSerializer
 
 
@@ -27,6 +28,10 @@ def update_posts_status(request):
             buttons_blocks = ButtonsBlocks.objects.all()
             for i, buttons_block in enumerate(buttons_blocks):
                 if buttons_block.status_block != serializer.validated_data[i]['status_block']:
+                    if serializer.validated_data[i]['status_block'] == 'error':
+                        for post in buttons_block.posts.all():
+                            accident = Accident(post=post.post_number)
+                            accident.save()
                     buttons_block.status_block = serializer.validated_data[i]['status_block']
                     buttons_block.save()
             return JsonResponse(serializer.data, status=201, safe=False)
