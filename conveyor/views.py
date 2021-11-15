@@ -1,11 +1,11 @@
 from django.http import JsonResponse
+from django.utils import timezone
 from rest_framework.decorators import api_view
 from rest_framework.generics import ListAPIView
 from rest_framework.parsers import JSONParser
-from django.utils import timezone
 
-from conveyor.models import PostsState, ButtonsBlocks
 from accident.models import Accident
+from conveyor.models import PostsState, ButtonsBlocks
 from conveyor.serializers import PostsStateSerializer, ButtonsBlocksSerializer, ButtonsBlocksConfiguratorSerializer
 
 
@@ -53,3 +53,20 @@ def update_posts_status(request):
 class ButtonsBlocksRetrieveAPIView(ListAPIView):
     queryset = ButtonsBlocks.objects.all()
     serializer_class = ButtonsBlocksConfiguratorSerializer
+
+
+@api_view(['POST'])
+def update_posts_buttons_configuration(request):
+    data = JSONParser().parse(request)
+    serializer = ButtonsBlocksConfiguratorSerializer(data=data, many=True)
+    if serializer.is_valid():
+        for new_button_block in serializer.validated_data:
+            old_button_block = ButtonsBlocks.objects.get(
+                buttons_block_number=new_button_block['buttons_block_number'])
+            for post in old_button_block.posts.all():
+                old_post = PostsState.objects.get(post_number=post.post_number)
+                old_post.buttons_set.remove(old_button_block)
+            for new_post in new_button_block['posts']:
+                post = PostsState.objects.get(post_number=new_post['post_number'])
+                post.buttons_set.add(old_button_block)
+        return JsonResponse(serializer.data, status=201, safe=False)

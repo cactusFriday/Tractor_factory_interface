@@ -17,7 +17,6 @@ class ButtonsBlocksConfiguratorSerializer(serializers.ModelSerializer):
 
 
 class ButtonsBlocksSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ButtonsBlocks
         fields = ('buttons_block_number', 'status_block')
