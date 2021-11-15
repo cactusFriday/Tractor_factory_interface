@@ -1,18 +1,13 @@
 from django.db import models
 
 
-class ConveyorState(models.Model):
-    """Таблица с 28 записями состояний постов"""
+class PostsState(models.Model):
+    post_number = models.IntegerField()
+    status_post = models.CharField(max_length=10)
 
-    objects = None
 
-    class StatusChoices(models.IntegerChoices):
-        ACTIVE = 1
-        SUCCESS = 2
-        ERROR = 3
+class ButtonsBlocks(models.Model):
+    buttons_block_number = models.IntegerField()
+    count_click = models.IntegerField()
+    posts = models.ManyToManyField(PostsState, related_name='posts', related_query_name='posts_set')
 
-    post = models.IntegerField('Номер поста')
-    status = models.CharField('Статус поста', max_length=12, default='success')
-
-    def __str__(self) -> str:
-        return f'[{self.status}]: post {self.post}'
