@@ -47,7 +47,7 @@ def update_posts_status(request):
                     buttons_block.status_block = serializer.validated_data[i]['status_block']
                     buttons_block.save()
             return JsonResponse(serializer.data, status=201, safe=False)
-        return JsonResponse(serializer.data, status=201, safe=False)
+        return JsonResponse(serializer.errors, status=400, safe=False)
 
 
 class ButtonsBlocksRetrieveAPIView(ListAPIView):
@@ -70,3 +70,4 @@ def update_posts_buttons_configuration(request):
                 post = PostsState.objects.get(post_number=new_post['post_number'])
                 post.buttons_set.add(old_button_block)
         return JsonResponse(serializer.data, status=201, safe=False)
+    return JsonResponse(serializer.errors, status=400, safe=False)
