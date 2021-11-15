@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import React from "react";
 import Modal from './Modal.js';
@@ -8,9 +7,6 @@ import './ConveyorTable.css';
 
 const getConvStateURL = "https://tractor-factory-interface.herokuapp.com/api/conveyor-state/"
 
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-axios.defaults.withCredentials = true;
 
 const ConveyorTable = ({accidentClasses}) => {
     const [answer, setAnswer] = useState(null);

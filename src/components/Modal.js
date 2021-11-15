@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Modal.css';
 import close from "../static/icons/close.svg";
 import axios from "axios";
-import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
 
 
 class Modal extends Component {
