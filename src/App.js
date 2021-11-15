@@ -6,7 +6,7 @@ import Login from './components/Login';
 import Monitoring from './components/Monitoring';
 import Register from './components/Register';
 import Unauthorized from './components/Unauthorized';
-
+import ConveyorConfig from './components/ConveyorConfig';
 
 export default class App extends Component {
   constructor(props) {
@@ -21,7 +21,8 @@ export default class App extends Component {
       <Route exact path="/" component={ Login } />
       <Route exact path="/unauthorized" component={ Unauthorized } />
       <PrivateRoute exact path="/monitoring" component={ Monitoring } />
-      <PrivateRoute exact path="/register" component={ Register } />  
+      <PrivateRoute exact path="/register" component={ Register } /> 
+      <PrivateRoute exact path="/config" component={ ConveyorConfig } />
       </Switch>
       </div>
       </BrowserRouter>

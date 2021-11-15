@@ -1,0 +1,23 @@
+
+.table-config tbody {
+    vertical-align: middle;
+}
+.table-config > tbody td input {
+    margin: auto;
+}
+
+.form-control__config {
+    width: 80%;
+    height: 40px;
+}
+
+.btn-config {
+    margin: 20px 20px 0 0;
+}
+
+.btn-config-dark {
+    background-color: rgba(254, 254, 254, 0.5);
+    border-style: groove;
+    /* border: 1.5px solid transparent; */
+    color: rgb(65, 65, 65);
+}

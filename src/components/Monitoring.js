@@ -15,7 +15,7 @@ const getAcidentClassesURL = 'https://tractor-factory-interface.herokuapp.com/ap
 class Monitoring extends Component {
   constructor() {
     super();
-
+    this.getAccidents = this.getAccidents.bind(this);
     this.state = {
       loading: true,
       accidents: [],
@@ -39,6 +39,20 @@ class Monitoring extends Component {
             loading: false,
             accidentClasses: accidentClasses.results,
         });
+    });
+    // Ставим функцию получения инцидентов на интервал
+    this.intervalGetAccidents = setInterval(this.getAccidents, 2500);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalGetAccidents);
+  }
+
+  async getAccidents() {
+    const res = await fetch(getAcidentURL);
+    const data = await res.json();
+    this.setState({
+      accidents: data.results,
     });
   }
 
