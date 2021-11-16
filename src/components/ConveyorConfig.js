@@ -3,13 +3,13 @@ import { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Navbar.js'
 import './ConveyorConfig.css'
+import { useHistory } from "react-router-dom";
 
 
 const getConfigAPIUrl = "https://tractor-factory-interface.herokuapp.com/api/conveyor-state/buttons-posts/";
 const updateConfigAPIUrl = "https://tractor-factory-interface.herokuapp.com/api/conveyor-state/buttons-posts/update-buttons-configuration/";
 
 // const getConfigAPIUrl = "http://localhost:8000/api/conveyor/config";
-
 
 class ConveyorConfig extends Component {
     constructor() {
@@ -28,6 +28,7 @@ class ConveyorConfig extends Component {
         axios.defaults.xsrfCookieName = 'csrftoken';
         axios.defaults.xsrfHeaderName = 'X-CSRFToken';
         axios.defaults.withCredentials = true;
+
     };
 
     componentDidMount() {
@@ -180,6 +181,14 @@ class ConveyorConfig extends Component {
                 </header>
                 <main className="App-main">
                     <div class="container">
+                        <div class = "mb-4">
+                            <div class="outer">
+                                <a href="/monitoring">
+                                    <div class="arrow-back"></div>
+                                    <p>Назад</p>
+                                </a>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                         <table class="table table-bordered table-config">
                             <thead>
