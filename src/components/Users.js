@@ -7,8 +7,7 @@ import axios from "axios";
 import { Component } from "react";
 
 const getUsersURL = "http://127.0.0.1:8000/api/users/all/";
-const postChangeGroupUser =
-  "https://tractor-factory-interface.herokuapp.com/api/user/group/";
+const postChangeGroupUser = "http://127.0.0.1:8000/api/user/group/";
 
 class Users extends Component {
   constructor() {
@@ -16,8 +15,6 @@ class Users extends Component {
     this.getUsers = this.getUsers.bind(this);
     this.state = {
       users: [],
-      group_user: "",
-      token_user: "",
     };
   }
 
@@ -35,7 +32,7 @@ class Users extends Component {
         });
       });
 
-    this.intervalGetUsers = setInterval(this.getUsers, 2500);
+    this.intervalGetUsers = setInterval(this.getUsers, 5000);
   }
 
   async getUsers() {
@@ -55,26 +52,32 @@ class Users extends Component {
     clearInterval(this.intervalGetUsers);
   }
 
-  handleChangeGroupUser = (event) => {
+  handleChangeGroupUser = (event, token_user, group_user) => {
+    event.preventDefault();
     const user = {
-      token: this.state.token_user,
-      group: this.state.group_user,
+      token: token_user,
+      group: group_user,
     };
 
     axios.defaults.xsrfCookieName = "csrftoken";
     axios.defaults.xsrfHeaderName = "X-CSRFToken";
     axios.defaults.withCredentials = true;
 
+    let token = localStorage.getItem("token");
+
     axios
-      .post(postChangeGroupUser, JSON.stringify(user), {
-        headers: {
-          Authorization: `Token ${localStorage.token}`,
-          "Content-Type": "application/json",
-        },
-      })
+      .post(
+        postChangeGroupUser,
+        { user },
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((res) => {
         console.log(res);
-        console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -127,12 +130,11 @@ class Users extends Component {
                         <td>
                           <select
                             onChange={(e) => {
-                              this.setState({
-                                token_user: obj.token,
-                                group_user: e.target.value,
-                              });
-
-                              this.handleChangeGroupUser();
+                              this.handleChangeGroupUser(
+                                e,
+                                obj.token,
+                                e.target.value
+                              );
                             }}
                           >
                             <option value="Admin">Администратор</option>
