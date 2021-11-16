@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Menu from "./Menu.js";
 import Navbar from './Navbar.js'
 import './Register.css'
 
@@ -64,7 +65,11 @@ export default function RegisterForm() {
         <header className="App-header">
         <Navbar />
           </header>
-          <main className="App-main">
+          <div class="row">
+            <div>
+              <Menu />
+            </div>
+            <main className="App-main" class="col-md-9 ms-sm-auto col-lg-10 px-md-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
             <div className="App-InputForm">
               <h3 className="Title">Регистрация нового пользователя в системе</h3>
             <form onSubmit={handleSubmit}>
@@ -132,5 +137,6 @@ export default function RegisterForm() {
           </main>
           <footer></footer>
         </div>
+      </div>
     );
   }
