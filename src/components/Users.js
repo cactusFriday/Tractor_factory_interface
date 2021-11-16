@@ -7,7 +7,7 @@ import axios from "axios";
 import { Component } from "react";
 
 const getUsersURL = "https://tractor-factory-interface.herokuapp.com//api/users/all/";
-const postChangeGroupUser = "https://tractor-factory-interface.herokuapp.com//api/user/group/";
+const postChangeGroupUser = "https://tractor-factory-interface.herokuapp.com/api/user/group/";
 
 class Users extends Component {
   constructor() {

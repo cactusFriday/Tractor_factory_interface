@@ -11,6 +11,7 @@ import planning from '../static/icons/planning.svg';
 import reports from '../static/icons/reports.svg';
 import admin from '../static/icons/admin.svg';
 import settings from '../static/icons/settings.svg';
+import people from '../static/icons/people-fill.svg';
 
 export default function Menu() {
   const history = useHistory();
