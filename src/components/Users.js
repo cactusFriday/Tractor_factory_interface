@@ -6,8 +6,8 @@ import Navbar from "./Navbar.js";
 import axios from "axios";
 import { Component } from "react";
 
-const getUsersURL = "http://127.0.0.1:8000/api/users/all/";
-const postChangeGroupUser = "http://127.0.0.1:8000/api/user/group/";
+const getUsersURL = "https://tractor-factory-interface.herokuapp.com//api/users/all/";
+const postChangeGroupUser = "https://tractor-factory-interface.herokuapp.com//api/user/group/";
 
 class Users extends Component {
   constructor() {
