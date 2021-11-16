@@ -1,4 +1,6 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+import React from "react";
+import "bootstrap/dist/css/bootstrap.css";
+import Dropdown from "react-bootstrap/Dropdown";
 import "./Monitoring.css";
 import "./style.css";
 import Menu from "./Menu.js";
@@ -117,7 +119,6 @@ class Users extends Component {
                     <th class="text-center">Имя пользователя</th>
                     <th class="text-center">Почта</th>
                     <th class="text-center">Группа пользователя</th>
-                    <th class="text-center"></th>
                   </tr>
                 </thead>
                 <tbody className="Table-body">
@@ -128,21 +129,47 @@ class Users extends Component {
                       <tr>
                         <td>{obj.username}</td>
                         <td>{obj.email}</td>
-                        <td>{obj.groups[0]}</td>
                         <td>
-                          <select
-                            onChange={(e) => {
-                              this.handleChangeGroupUser(
-                                e,
-                                obj.token,
-                                e.target.value
-                              );
-                            }}
-                          >
-                            <option value="Admin">Администратор</option>
-                            <option value="Master">Мастер</option>
-                            <option value="Guest">Гость</option>
-                          </select>
+                          <Dropdown>
+                            <Dropdown.Toggle variant="secondary">
+                              {obj.groups[0]}
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu variant="dark">
+                              <Dropdown.Item
+                                onClick={(e) => {
+                                  this.handleChangeGroupUser(
+                                    e,
+                                    obj.token,
+                                    "Admin"
+                                  );
+                                }}
+                              >
+                                Администратор
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                onClick={(e) => {
+                                  this.handleChangeGroupUser(
+                                    e,
+                                    obj.token,
+                                    "Master"
+                                  );
+                                }}
+                              >
+                                Мастер
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                onClick={(e) => {
+                                  this.handleChangeGroupUser(
+                                    e,
+                                    obj.token,
+                                    "Guest"
+                                  );
+                                }}
+                              >
+                                Гость
+                              </Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
                         </td>
                       </tr>
                     ))
