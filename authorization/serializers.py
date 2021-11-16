@@ -193,7 +193,8 @@ class GroupSerializer(serializers.ModelSerializer):
                 group_name = value
             elif key == 'token':
                 token = value
-        payload = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms='HS256')
+        payload = jwt.decode(
+            jwt=token, key=settings.SECRET_KEY, algorithms='HS256')
         user = User.objects.get(pk=payload['id'])
         group_old_name = ""
         for g in user.groups.all():
@@ -217,4 +218,4 @@ class UsersRetrieve(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'groups']
+        fields = ['username', 'email', 'token', 'groups']
