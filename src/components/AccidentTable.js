@@ -11,7 +11,7 @@ import ModalHistory from './ModalHistory.js';
 const url = "https://tractor-factory-interface.herokuapp.com/api/accident/"
 const getAccidentHistoryURL = "https://tractor-factory-interface.herokuapp.com/api/accident/";
 const postAccidentEditURL = "https://tractor-factory-interface.herokuapp.com/api/accident/history/";
-const accidentsClasses = ["Некомплектность на рабочем месте", "Авария на рабчем месте", "Другое"];
+// const accidentsClasses = ["Некомплектность на рабочем месте", "Авария на рабчем месте", "Другое"];
 
 
 class AccidentTable extends Component {
@@ -128,7 +128,10 @@ class AccidentTable extends Component {
     };
 
     render() {
-        const accidents_list = typeof this.props.accidents == 'undefined' ? null : this.props.accidents
+        const accidents_list = typeof this.props.accidents == 'undefined' ? null : this.props.accidents;
+        const accidentClasses = this.props.accidentClasses;
+        console.log(accidentClasses[0]);
+        console.log(accidents_list);
         return (
             <React.Fragment>
                 <table className="Table-Accidents" style={{ borderColor: 'black' }} class="table table-striped table-sm table-bordered">
@@ -156,7 +159,7 @@ class AccidentTable extends Component {
                         {accidents_list == null ? <p>Page is Loading ...</p> : accidents_list.map((obj, i) => (
                             <tr>
                                 <td>{obj.post}</td>
-                                <td>{accidentsClasses[obj.accident_class - 1]}</td>
+                                <td>{typeof accidentClasses[obj.accident_class - 1] == 'undefined' ? "" : accidentClasses[obj.accident_class - 1].name}</td>
                                 <td>{obj.description}</td>
                                 <td>{obj.time_appeared.replace('T', ' ').replace('Z', '').replaceAll('-', '.').slice(0, 19)}</td>
                                 <td>{obj.time_solved === null ? "Проблема не устранена" : obj.time_solved.replace('T', ' ').replace('Z', '').replaceAll('-', '.').slice(0, 19)}</td>
@@ -171,7 +174,7 @@ class AccidentTable extends Component {
                 <ModalEdit isAct={this.state.edit} setUnactive={this.setUnactiveEdit} data={this.state.data} key={this.state.key}
                     handleOnSubmit={this.handleEditSubmit} />
                 <ModalHistory isAct={this.state.history} setUnactive={this.setUnactiveHistory} data={this.state.data_history}
-                    accidentsClasses={accidentsClasses} />
+                    accidentsClasses={accidentClasses} />
             </React.Fragment>
         );
     }

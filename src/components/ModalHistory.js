@@ -34,7 +34,7 @@ const ModalHistory = ({isAct, setUnactive, data, accidentsClasses}) => {
                         <th colspan="4"><h5 style={{textAlign: 'center', color: 'Highlight'}}><b>Текущее состояние</b></h5></th>
                             <tr>
                                 <td>{data === null ? "" : data.post}</td>
-                                <td>{data === null ? "" : accidentsClasses[data.accident_class - 1]}</td>
+                                <td>{data === null || typeof accidentsClasses[data.accident_class - 1] == 'undefined' ? "" : accidentsClasses[data.accident_class - 1].name}</td>
                                 <td rows="3">{data === null ? "" : data.description}</td>
                                 <td>{data === null ? "" : data.time_appeared.replace('T', ' ').replace('T', ' ').replace('Z', '').replaceAll('-', '.').slice(0, 19)}</td> 
                             </tr>

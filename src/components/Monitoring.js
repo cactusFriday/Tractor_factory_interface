@@ -81,7 +81,7 @@ class Monitoring extends Component {
               <div className="App-Accidents" class="table-responsive">
                 <h1 style={{ textAlign: 'left', verticalAlign: 'middle', lineHeight: '30px', marginBottom: '30px', fontWeight: '600' }}>Список последних происшествий</h1>
                 <div style={{height: '40vh', overflowY: 'auto'}}>
-                  <AccidentTable accidents={this.state.accidents}/>
+                  <AccidentTable accidents={this.state.accidents} accidentClasses={this.state.accidentClasses}/>
                 </div>
               </div>
             </main>
