@@ -11,7 +11,7 @@ import planning from "../static/icons/planning.svg";
 import reports from "../static/icons/reports.svg";
 import admin from "../static/icons/admin.svg";
 import settings from "../static/icons/settings.svg";
-import pepole from "../static/icons/people-fill.svg";
+import people from "../static/icons/people-fill.svg";
 
 export default function Menu() {
   const history = useHistory();
@@ -25,11 +25,14 @@ export default function Menu() {
   function pushToUsers() {
     history.push("/users");
   }
+  function pushToMonitoring() {
+    history.push("/monitoring");
+  }
   return (
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
       <div class="position-sticky">
         <ul class="nav flex-column">
-          <li class="nav-item">
+          {/*<li class="nav-item">
             <a class="nav-link" style={{ color: "white" }} aria-current="page">
               <img style={{ paddingRight: "24px" }} src={home} alt="" />
               Главная
@@ -46,14 +49,14 @@ export default function Menu() {
               <img style={{ paddingRight: "24px" }} src={events} alt="" />
               Такты
             </a>
-          </li>
+          </li>*/}
           <li class="nav-item">
             <a class="nav-link" style={{ color: "white" }}>
               <img style={{ paddingRight: "24px" }} src={monitoring} alt="" />
               Мониторинг
             </a>
           </li>
-          <li class="nav-item">
+          {/*<li class="nav-item">
             <a class="nav-link" style={{ color: "white" }}>
               <img style={{ paddingRight: "24px" }} src={displays} alt="" />
               Экраны
@@ -130,7 +133,7 @@ export default function Menu() {
               </div>
             </div>
           </li>
-          {/* <li class="nav-item">
+           <li class="nav-item">
             <div class="d-grid gap-2 btn-group dropend">
               <button
                 type="button"
@@ -171,7 +174,7 @@ export default function Menu() {
           </li>
           <li class="nav-item" onClick={pushToUsers}>
             <a class="nav-link" style={{ color: "white" }}>
-              <img style={{ paddingRight: "24px" }} src={pepole} alt="" />
+              <img style={{ paddingRight: "24px" }} src={people} alt="" />
               Пользователи
             </a>
           </li>
