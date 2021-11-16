@@ -11,6 +11,7 @@ import planning from "../static/icons/planning.svg";
 import reports from "../static/icons/reports.svg";
 import admin from "../static/icons/admin.svg";
 import settings from "../static/icons/settings.svg";
+import pepole from "../static/icons/people-fill.svg";
 
 export default function Menu() {
   const history = useHistory();
@@ -20,6 +21,9 @@ export default function Menu() {
   }
   function pushToConfig() {
     history.push("/config");
+  }
+  function pushToUsers() {
+    history.push("/users");
   }
   return (
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
@@ -154,8 +158,8 @@ export default function Menu() {
             </div>
           </li> */}
           <li class="nav-item" onClick={pushToConfig}>
-            <a class="nav-link" style={{ color: 'white' }}>
-              <img style={{ paddingRight: '24px' }} src={settings} alt=""/>
+            <a class="nav-link" style={{ color: "white" }}>
+              <img style={{ paddingRight: "24px" }} src={settings} alt="" />
               Конфигурация
             </a>
           </li>
@@ -163,6 +167,12 @@ export default function Menu() {
             <a class="nav-link" style={{ color: "white" }}>
               <img style={{ paddingRight: "24px" }} src={settings} alt="" />
               Регистрация пользователей
+            </a>
+          </li>
+          <li class="nav-item" onClick={pushToUsers}>
+            <a class="nav-link" style={{ color: "white" }}>
+              <img style={{ paddingRight: "24px" }} src={pepole} alt="" />
+              Пользователи
             </a>
           </li>
         </ul>
