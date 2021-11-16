@@ -6,8 +6,10 @@ import Navbar from "./Navbar.js";
 import axios from "axios";
 import { Component } from "react";
 
-const getUsersURL = "https://tractor-factory-interface.herokuapp.com//api/users/all/";
-const postChangeGroupUser = "https://tractor-factory-interface.herokuapp.com/api/user/group/";
+const getUsersURL =
+  "https://tractor-factory-interface.herokuapp.com/api/users/all/";
+const postChangeGroupUser =
+  "https://tractor-factory-interface.herokuapp.com/api/user/group/";
 
 class Users extends Component {
   constructor() {
@@ -32,7 +34,7 @@ class Users extends Component {
         });
       });
 
-    this.intervalGetUsers = setInterval(this.getUsers, 5000);
+    this.intervalGetUsers = setInterval(this.getUsers, 2500);
   }
 
   async getUsers() {

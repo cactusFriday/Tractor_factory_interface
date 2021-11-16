@@ -1,17 +1,17 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './Menu.css';
-import './style.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./Menu.css";
+import "./style.css";
 import { useHistory } from "react-router-dom";
-import home from '../static/icons/home.svg';
-import scoreboard from '../static/icons/scoreboard.svg';
-import events from '../static/icons/events.svg';
-import monitoring from '../static/icons/monitoring.svg';
-import displays from '../static/icons/displays.svg';
-import planning from '../static/icons/planning.svg';
-import reports from '../static/icons/reports.svg';
-import admin from '../static/icons/admin.svg';
-import settings from '../static/icons/settings.svg';
-import people from '../static/icons/people-fill.svg';
+import home from "../static/icons/home.svg";
+import scoreboard from "../static/icons/scoreboard.svg";
+import events from "../static/icons/events.svg";
+import monitoring from "../static/icons/monitoring.svg";
+import displays from "../static/icons/displays.svg";
+import planning from "../static/icons/planning.svg";
+import reports from "../static/icons/reports.svg";
+import admin from "../static/icons/admin.svg";
+import settings from "../static/icons/settings.svg";
+import people from "../static/icons/people-fill.svg";
 
 export default function Menu() {
   const history = useHistory();
@@ -33,7 +33,7 @@ export default function Menu() {
       <div class="position-sticky">
         <ul class="nav flex-column">
           <li class="nav-item" onClick={pushToMonitoring}>
-            <a class="nav-link" style={{ color: 'white' }} aria-current="page">
+            <a class="nav-link" style={{ color: "white" }} aria-current="page">
               <img style={{ paddingRight: "24px" }} src={home} alt="" />
               Главная
             </a>
@@ -181,5 +181,5 @@ export default function Menu() {
         </ul>
       </div>
     </nav>
-  )
+  );
 }
