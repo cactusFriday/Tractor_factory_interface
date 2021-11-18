@@ -33,7 +33,6 @@ class Monitoring extends Component {
     })
     .catch((error) => {
       console.log(error);
-      console.log(error.response.status);
       toast.error("Ошибка получения списка инцидентов.", {
         style: {
             backgroundColor: 'grey',
