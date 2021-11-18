@@ -69,7 +69,7 @@ def update_posts_buttons_configuration(request):
 
             for new_post in button_block_json['posts']:
                 post = PostsState.objects.get(post_number=new_post['post_number'])
-                for button in post.buttons.all():
+                for button in post.buttons_set.all():
                     button_data_base = ButtonsBlocks.objects.get(
                         buttons_block_number=button.buttons_block_number)
                     post.buttons_set.remove(button_data_base)
