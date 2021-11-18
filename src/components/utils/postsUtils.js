@@ -13,7 +13,8 @@ export function getPostsFromAccident(accident) {
     /* Принимает инцидент и возвращает массив объектов [{'post_number': 2},] постов 
     для данного инцидента в соответствии с конфигурацией */
     let config = JSON.parse(localStorage.getItem('posts-config'));
-    let posts = config.find(block => block.buttons_block_number === parseInt(accident.posts_block)).posts;
+    typeof config == 'undefined' ? console.log('Config: ', config) : console.log('Config: ', config);
+    let posts = config.find(block => block.buttons_block_number === String(accident.posts_block)).posts;
     // console.log(posts);
     return posts;
 }
