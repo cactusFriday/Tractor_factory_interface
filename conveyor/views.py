@@ -58,14 +58,25 @@ def update_posts_buttons_configuration(request):
     data = JSONParser().parse(request)
     serializer = ButtonsBlocksConfiguratorSerializer(data=data, many=True)
     if serializer.is_valid():
-        for new_button_block in serializer.validated_data:
-            old_button_block = ButtonsBlocks.objects.get(
-                buttons_block_number=new_button_block['buttons_block_number'])
-            for post in old_button_block.posts.all():
-                old_post = PostsState.objects.get(post_number=post.post_number)
-                old_post.buttons_set.remove(old_button_block)
-            for new_post in new_button_block['posts']:
+        for button_block_json in serializer.validated_data:
+
+            button_block_data_base = ButtonsBlocks.objects.get(
+                buttons_block_number=button_block_json['buttons_block_number'])
+            for post_of_button_block in button_block_data_base.posts.all():
+                post = PostsState.objects.get(post_number=post_of_button_block.post_number)
+                post.buttons_set.remove(button_block_data_base)
+                post.save()
+
+            for new_post in button_block_json['posts']:
                 post = PostsState.objects.get(post_number=new_post['post_number'])
-                post.buttons_set.add(old_button_block)
+                for button in post.buttons_set.all():
+                    button_data_base = ButtonsBlocks.objects.get(
+                        buttons_block_number=button.buttons_block_number)
+                    post.buttons_set.remove(button_data_base)
+
+            for new_post in button_block_json['posts']:
+                post = PostsState.objects.get(post_number=new_post['post_number'])
+                post.buttons_set.add(button_block_data_base)
+
         return JsonResponse(serializer.data, status=201, safe=False)
     return JsonResponse(serializer.errors, status=400, safe=False)
