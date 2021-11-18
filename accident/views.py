@@ -44,7 +44,7 @@ class AccidentRetrieveUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
 
 class AccidentList(generics.ListCreateAPIView):
     '''GET - выводит все инциденты. POST - создает инцидент'''
-    queryset = Accident.objects.all()
+    queryset = Accident.objects.order_by('-id')
     serializer_class = AccidentSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = AccidentFilter
