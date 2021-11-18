@@ -3,13 +3,13 @@ import { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Navbar.js'
 import './ConveyorConfig.css'
-import { useHistory } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
 
 
 const getConfigAPIUrl = "https://tractor-factory-interface.herokuapp.com/api/conveyor-state/buttons-posts/";
 const updateConfigAPIUrl = "https://tractor-factory-interface.herokuapp.com/api/conveyor-state/buttons-posts/update-buttons-configuration/";
-
 // const getConfigAPIUrl = "http://localhost:8000/api/conveyor/config";
+
 
 class ConveyorConfig extends Component {
     constructor() {
@@ -58,6 +58,12 @@ class ConveyorConfig extends Component {
             this.setState({
                 isError: false
             });
+            toast.success("Конфигурация постов/кнопок получена с сервера", {
+                style: {
+                    backgroundColor: "grey",
+                    color: "white"
+                }
+            })
         })
         .catch((error) => {
             this.setState({
@@ -79,10 +85,31 @@ class ConveyorConfig extends Component {
             },
         })
         .then(res => {
+            toast.success("Конфигурация успешно сохранена", {
+                style: {
+                    backgroundColor: "grey",
+                    color: "white"
+                }
+            });
             console.log(res);
         })
         .catch((error) => {
-            console.log(error);
+            if (error.response.status === 403) {
+                toast.error("Ошибка сохранения. Вы не авторизованы", {
+                    style: {
+                        backgroundColor: 'grey',
+                        color: "white"
+                    }
+                })
+            }
+            else {
+                toast.error("Ошибка сохранения конфигурации", {
+                    style: {
+                        backgroundColor: 'grey',
+                        color: "white"
+                    }
+                })
+            }
         });
     }
 
@@ -112,6 +139,14 @@ class ConveyorConfig extends Component {
 
     onResetClick() {
         /* Метод очистки полей ввода */
+        // notify('Hello');
+        toast.success("Введенные данные удалены", {
+            className: 'toaster-notification',
+            style: {
+                backgroundColor: "grey",
+                color: "white"
+            }
+        });
         let inputs = document.getElementsByTagName('input');
         for (let i = 0; i < inputs.length; i++) {
             inputs[i].value = "";
@@ -121,7 +156,6 @@ class ConveyorConfig extends Component {
     convertPostsNumbersFromInputs(inputs) {
         /* Записи с инпутов конвертировать в блоки по постам */
         // inputs: {{post: 1, block: 0}, {}, {}....}
-        let inputsLen = Object.keys(inputs).length;
         let convertedConfig = {};
         let passedKeys = [];
         for (let key in inputs) {
@@ -253,6 +287,7 @@ class ConveyorConfig extends Component {
                             <button type='button' class="btn btn-dark btn-config btn-config-dark" onClick={this.onResetClick}>Сброс</button>
                         </div>
                     </div>
+                    <Toaster position="bottom-right"/>
                 </main>
                 <footer></footer>
             </div>

@@ -1,8 +1,10 @@
-import React, { Component, forwardRef } from "react";
+import React, { Component } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Modal.css';
 import close from "../static/icons/close.svg";
 import axios from "axios";
+import { getPostsToDisplayFromAccident } from "./utils/postsUtils";
+import toast, {Toaster} from 'react-hot-toast';
 
 
 class Modal extends Component {
@@ -20,8 +22,7 @@ class Modal extends Component {
         e.preventDefault();
         // trgt - вся форма, лежащая в event
         let trgt = e.target;
-        let timeEnd = ":00+00:00";
-        let post = parseInt(trgt.post.placeholder);
+        // let timeEnd = ":00+00:00";
         let accident_id = this.props.accident.id;
         // Объект для сериализации и PATCH
         let accident_class = this.props.accidentClasses[trgt.accidentClass.selectedIndex].number;
@@ -45,12 +46,32 @@ class Modal extends Component {
           },
         })
         .then(res => {
-            // закрываем окно в случае ответа
             this.props.setActive(false);
+            toast.success("Инцидент успешно зарегестрирован", {
+                style: {
+                    backgroundColor: 'grey',
+                    color: "white"
+                }
+            })
         })
         .catch((error) => {
             this.props.setError("Ошибка во время отправки происшествия");
-            // this.props.setError([error.response.status, error.response.statusText]);
+            if (error.response.status === 403) {
+                toast.error("Ошибка отправки. Вы не авторизованы", {
+                    style: {
+                        backgroundColor: 'grey',
+                        color: "white"
+                    }
+                })
+            }
+            else {
+                toast.error("Ошибка отправки на сервер", {
+                    style: {
+                        backgroundColor: 'grey',
+                        color: "white"
+                    }
+                })
+            }
         });
     };
 
@@ -85,7 +106,16 @@ class Modal extends Component {
                         <form onSubmit={this.handleOnSubmit}>
                             <div class="form-group my-3">
                                 <label for="PostNumber">Номер поста</label>
-                                <input type="text" class="form-control form-control-modal" id="PostNumber" name="post" disabled placeholder={accident == null ? null : accident.post}/>
+                                <input 
+                                type="text" 
+                                class="form-control form-control-modal" 
+                                id="PostNumber" 
+                                name="post" 
+                                disabled 
+                                placeholder={
+                                    accident == null ? '' : 
+                                    getPostsToDisplayFromAccident(accident)}
+                                />
                             </div>
                             <div class="form-group my-3">
                                 <label for="AccidentAppeared">Время фиксирования происшествия</label>
@@ -127,6 +157,7 @@ class Modal extends Component {
                         </React.Fragment>
                     }
                 </div>
+                <Toaster position="bottom-right"/>
             </div>
         )
     }

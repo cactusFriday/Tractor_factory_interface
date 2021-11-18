@@ -1,12 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import { Component, useEffect, useState } from 'react';
+import { Component } from 'react';
 import React from "react";
 import './Monitoring.css';
 import history from '../static/icons/history.svg';
 import edit from '../static/icons/edit.svg';
 import ModalEdit from './ModalEdit.js';
 import ModalHistory from './ModalHistory.js';
+import { getPostsToDisplayFromAccident } from './utils/postsUtils';
+import toast, { Toaster } from 'react-hot-toast';
 
 const url = "https://tractor-factory-interface.herokuapp.com/api/accident/"
 const getAccidentHistoryURL = "https://tractor-factory-interface.herokuapp.com/api/accident/";
@@ -87,6 +89,24 @@ class AccidentTable extends Component {
                     //history_length: length,
                     data_history: data_history.results[i],
                 })
+            })
+            .catch((error) => {
+                if (error.response.status === 403) {
+                    toast.error("Ошибка отправки. Вы не авторизованы", {
+                        style: {
+                            backgroundColor: 'grey',
+                            color: "white"
+                        }
+                    })
+                }
+                else {
+                    toast.error("Ошибка отправки на сервер", {
+                        style: {
+                            backgroundColor: 'grey',
+                            color: "white"
+                        }
+                    })
+                }
             });
     };
 
@@ -106,7 +126,7 @@ class AccidentTable extends Component {
             description: trgt.AccidentDescription.value
         }
 
-        console.log(JSON.stringify(accidentEditDetails));
+        // console.log(JSON.stringify(accidentEditDetails));
         axios.defaults.xsrfCookieName = 'csrftoken';
         axios.defaults.xsrfHeaderName = 'X-CSRFToken';
         axios.defaults.withCredentials = true;
@@ -119,19 +139,40 @@ class AccidentTable extends Component {
             },
         }).then(res => {
             console.log(res);
-            console.log(res.data);
+            toast.success("Изменения в инциденте успешно сохранены", {
+                style: {
+                    backgroundColor: 'grey',
+                    color: "white"
+                }
+            })
         })
-            .catch((error) => {
-                console.log(error);
-            });
+        .catch((error) => {
+            if (error.response.status === 403) {
+                toast.error("Ошибка отправки. Вы не авторизованы", {
+                    style: {
+                        backgroundColor: 'grey',
+                        color: "white"
+                    }
+                })
+            }
+            else {
+                toast.error("Ошибка отправки на сервер", {
+                    style: {
+                        backgroundColor: 'grey',
+                        color: "white"
+                    }
+                })
+            }
+            console.log(error);
+        });
 
     };
 
     render() {
         const accidents_list = typeof this.props.accidents == 'undefined' ? null : this.props.accidents;
         const accidentClasses = this.props.accidentClasses;
-        console.log(accidentClasses[0]);
-        console.log(accidents_list);
+        // console.log(accidentClasses[0]);
+        // console.log(accidents_list);
         return (
             <React.Fragment>
                 <table className="Table-Accidents" style={{ borderColor: 'black' }} class="table table-striped table-sm table-bordered">
@@ -158,7 +199,7 @@ class AccidentTable extends Component {
                     <tbody className="Table-body">
                         {accidents_list == null ? <p>Page is Loading ...</p> : accidents_list.map((obj, i) => (
                             <tr>
-                                <td>{obj.post}</td>
+                                <td>{getPostsToDisplayFromAccident(obj)}</td>
                                 <td>{typeof accidentClasses[obj.accident_class - 1] == 'undefined' ? "" : accidentClasses[obj.accident_class - 1].name}</td>
                                 <td>{obj.description}</td>
                                 <td>{obj.time_appeared.replace('T', ' ').replace('Z', '').replaceAll('-', '.').slice(0, 19)}</td>
@@ -172,9 +213,10 @@ class AccidentTable extends Component {
                     </tbody>
                 </table>
                 <ModalEdit isAct={this.state.edit} setUnactive={this.setUnactiveEdit} data={this.state.data} key={this.state.key}
-                    handleOnSubmit={this.handleEditSubmit} />
+                    handleOnSubmit={this.handleEditSubmit} accidentClasses={accidentClasses}/>
                 <ModalHistory isAct={this.state.history} setUnactive={this.setUnactiveHistory} data={this.state.data_history}
                     accidentsClasses={accidentClasses} />
+                <Toaster position='bottom-right'/>
             </React.Fragment>
         );
     }

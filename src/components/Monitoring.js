@@ -6,8 +6,8 @@ import Navbar from './Navbar.js';
 import AccidentTable from './AccidentTable.js';
 import ConveyorTable from './ConveyorTable.js';
 import arrow_forward from '../static/icons/arrow_forward.svg';
-import axios from 'axios';
-import { Component } from 'react';
+import React, { Component } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 const getAcidentURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/';
 const getAcidentClassesURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/classes/';
@@ -27,10 +27,19 @@ class Monitoring extends Component {
     fetch(getAcidentURL)
     .then(res => res.json())
     .then(accidents => {
-        // console.log(accidents);
         this.setState({
             accidents: accidents.results,
         });
+    })
+    .catch((error) => {
+      console.log(error);
+      console.log(error.response.status);
+      toast.error("Ошибка получения списка инцидентов.", {
+        style: {
+            backgroundColor: 'grey',
+            color: "white"
+        }
+      })
     });
     fetch(getAcidentClassesURL)
     .then(res => res.json())
@@ -58,7 +67,7 @@ class Monitoring extends Component {
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         <body>
           <Navbar />
           <div class="row">
@@ -84,11 +93,12 @@ class Monitoring extends Component {
                   <AccidentTable accidents={this.state.accidents} accidentClasses={this.state.accidentClasses}/>
                 </div>
               </div>
+              <Toaster position="bottom-right"/>
             </main>
           </div>
         </body>
         <footer></footer>
-      </div>
+      </React.Fragment>
     );
   }
 }

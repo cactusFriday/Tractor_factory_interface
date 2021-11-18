@@ -2,8 +2,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { React,  useEffect,  useState } from "react";
 import './Modal.css';
 import close from "../static/icons/close.svg";
+import {getPostsToDisplayFromAccident} from './utils/postsUtils';
 
-const ModalEdit = ({isAct, setUnactive, data, key, handleOnSubmit}) => {
+const ModalEdit = ({isAct, setUnactive, data, key, handleOnSubmit, accidentClasses}) => {
     const showHideClassName = isAct ? "container-fluid modalAccident active" : "container-fluid modalAccident";
     const [accident_key, setAccidentKey] = useState(key);
     const [accident_class, setAccidentClass] = useState(data === null ? "" : data.accident_class);
@@ -25,7 +26,7 @@ const ModalEdit = ({isAct, setUnactive, data, key, handleOnSubmit}) => {
 
     function dateAccidentSolved() {
         if (checkState === false) {
-            console.log(accident_key);
+            // console.log(accident_key);
             //middleCheckState = true;
             setCheckState(true);
             setTimeSolved(new Date().toISOString(true));
@@ -66,7 +67,7 @@ const ModalEdit = ({isAct, setUnactive, data, key, handleOnSubmit}) => {
                         <input type="text" class="form-control form-control-modal" id="PostNumber" 
                         name="post" 
                         disabled 
-                        value={data === null ? "" : data.post}/>
+                        value={data === null ? "" : String(getPostsToDisplayFromAccident(data))}/>
                     </div>
                     <div class="form-group my-3">
                         <label for="AccidentAppeared">Время фиксирования происшествия</label>
@@ -88,9 +89,11 @@ const ModalEdit = ({isAct, setUnactive, data, key, handleOnSubmit}) => {
                         name="accidentClass" 
                         value={accident_class}
                         onChange={changeAccidentClass}>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
+                            {
+                                accidentClasses.map((obj, i) => 
+                                    <option>{"Класс " + String(obj.number) + ": " + String(obj.name)}</option>
+                                )
+                            }
                         </select>
                     </div>
                     <div class="form-group my-3">

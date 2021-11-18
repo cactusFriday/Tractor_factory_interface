@@ -51,7 +51,7 @@ class AccidentList(generics.ListCreateAPIView):
     sort_params = {
         'sort': None,
         'last': None,
-        'post': None,
+        'posts_block': None,
         'dateStart': None,
         'dateEnd': None,
         'accClass': None,

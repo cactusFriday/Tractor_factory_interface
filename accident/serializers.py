@@ -22,7 +22,7 @@ class AccidentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Accident
         fields = (
-            'id', 'user', 'time_appeared', 'time_solved', 'post', 'accident_class', 'description', 'accident_history')
+            'id', 'user', 'time_appeared', 'time_solved', 'posts_block', 'accident_class', 'description', 'accident_history')
 
 class AccidentClassSerializer(serializers.ModelSerializer):
     """Сериализатор для классов инцидентов"""
