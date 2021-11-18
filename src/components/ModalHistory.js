@@ -45,7 +45,8 @@ const ModalHistory = ({isAct, setUnactive, data, accidentsClasses}) => {
                          : data.accident_history.map((obj, i) => (
                             <tr>
                                 <td>{getPostsToDisplayFromAccident(data)}</td>
-                                <td>{typeof accidentsClasses[data.accident_class - 1] == 'undefined' ? "Класс не установлен" : accidentsClasses[obj.accident_class - 1].name}</td>
+                                <td>{typeof accidentsClasses[obj.accident_class - 1] == 'undefined' ? 
+                                "Класс не установлен" : accidentsClasses[obj.accident_class - 1].name}</td>
                                 <td>{obj.description}</td>
                                 <td>{obj.time_changed.replace('T', ' ').replace('Z', '').replaceAll('-', '.').slice(0, 19)}</td>
                             </tr>

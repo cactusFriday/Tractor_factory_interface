@@ -10,7 +10,8 @@ import ModalHistory from './ModalHistory.js';
 import { getPostsToDisplayFromAccident } from './utils/postsUtils';
 import toast, { Toaster } from 'react-hot-toast';
 
-const url = "https://tractor-factory-interface.herokuapp.com/api/accident/"
+// const url = "https://tractor-factory-interface.herokuapp.com/api/accident/"
+const url = "http://localhost:8000/api/accident/"
 const getAccidentHistoryURL = "https://tractor-factory-interface.herokuapp.com/api/accident/";
 const postAccidentEditURL = "https://tractor-factory-interface.herokuapp.com/api/accident/history/";
 // const accidentsClasses = ["Некомплектность на рабочем месте", "Авария на рабчем месте", "Другое"];
@@ -87,7 +88,7 @@ class AccidentTable extends Component {
                     history: true,
                     key: i,
                     //history_length: length,
-                    data_history: data_history.results[i],
+                    data_history: data_history.results.find(obj => parseInt(obj.id) === parseInt(i)),
                 })
             })
             .catch((error) => {
@@ -195,8 +196,8 @@ class AccidentTable extends Component {
                                 <td>{obj.time_appeared.replace('T', ' ').replace('Z', '').replaceAll('-', '.').slice(0, 19)}</td>
                                 <td>{obj.time_solved === null ? "Проблема не устранена" : obj.time_solved.replace('T', ' ').replace('Z', '').replaceAll('-', '.').slice(0, 19)}</td>
                                 <td style={{position:'sticky', right:'0px'}}>
-                                    <img src={history} alt="" onClick={() => this.setActiveHistory(i)} />
-                                    <img src={edit} alt="" onClick={() => this.setActiveEdit(i)} />
+                                    <img src={history} alt="" onClick={() => this.setActiveHistory(obj.id)} />
+                                    <img src={edit} alt="" onClick={() => this.setActiveEdit(obj.id)} />
                                 </td>
                             </tr>
                         ))}

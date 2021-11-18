@@ -9,7 +9,8 @@ import arrow_forward from '../static/icons/arrow_forward.svg';
 import React, { Component } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
-const getAcidentURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/';
+// const getAcidentURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/';
+const getAcidentURL = 'http://localhost:8000/api/accident/';
 const getAcidentClassesURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/classes/';
 
 class Monitoring extends Component {
