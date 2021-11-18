@@ -91,22 +91,12 @@ class AccidentTable extends Component {
                 })
             })
             .catch((error) => {
-                if (error.response.status === 403) {
-                    toast.error("Ошибка отправки. Вы не авторизованы", {
-                        style: {
-                            backgroundColor: 'grey',
-                            color: "white"
-                        }
-                    })
-                }
-                else {
-                    toast.error("Ошибка отправки на сервер", {
-                        style: {
-                            backgroundColor: 'grey',
-                            color: "white"
-                        }
-                    })
-                }
+                toast.error("Ошибка получения истории", {
+                    style: {
+                        backgroundColor: 'grey',
+                        color: "white"
+                    }
+                })
             });
     };
 
@@ -119,10 +109,10 @@ class AccidentTable extends Component {
     handleEditSubmit = (e) => {
         e.preventDefault();
         let trgt = e.target;
-
+        // let accident_class = this.props.accidentClasses[trgt.accidentClass.selectedIndex].number;
         const accidentEditDetails = {
             accident_id: parseInt(this.state.key),
-            accident_class: parseInt(trgt.accidentClass.value),
+            accident_class: parseInt(this.props.accidentClasses[trgt.accidentClass.selectedIndex].number),
             description: trgt.AccidentDescription.value
         }
 
