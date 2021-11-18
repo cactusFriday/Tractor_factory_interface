@@ -1,9 +1,9 @@
-import React, { Component, forwardRef } from "react";
+import React, { Component } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Modal.css';
 import close from "../static/icons/close.svg";
 import axios from "axios";
-import {getPostsToDisplayFromAccident, getPostsFromAccident} from "./utils/postsUtils";
+import { getPostsToDisplayFromAccident } from "./utils/postsUtils";
 import toast, {Toaster} from 'react-hot-toast';
 
 
@@ -22,7 +22,7 @@ class Modal extends Component {
         e.preventDefault();
         // trgt - вся форма, лежащая в event
         let trgt = e.target;
-        let timeEnd = ":00+00:00";
+        // let timeEnd = ":00+00:00";
         let accident_id = this.props.accident.id;
         // Объект для сериализации и PATCH
         let accident_class = this.props.accidentClasses[trgt.accidentClass.selectedIndex].number;
@@ -46,8 +46,13 @@ class Modal extends Component {
           },
         })
         .then(res => {
-            // закрываем окно в случае ответа
             this.props.setActive(false);
+            toast.success("Инцидент успешно зарегестрирован", {
+                style: {
+                    backgroundColor: 'grey',
+                    color: "white"
+                }
+            })
         })
         .catch((error) => {
             this.props.setError("Ошибка во время отправки происшествия");
@@ -67,12 +72,6 @@ class Modal extends Component {
                     }
                 })
             }
-            console.log(typeof error);
-            for (const key in error){
-                console.log(key);
-            }
-            console.log("ERROR: \n\n", error.response);
-            // this.props.setError([error.response.status, error.response.statusText]);
         });
     };
 
@@ -158,7 +157,7 @@ class Modal extends Component {
                         </React.Fragment>
                     }
                 </div>
-                <Toaster/>
+                <Toaster position="bottom-right"/>
             </div>
         )
     }

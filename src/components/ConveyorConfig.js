@@ -8,10 +8,8 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const getConfigAPIUrl = "https://tractor-factory-interface.herokuapp.com/api/conveyor-state/buttons-posts/";
 const updateConfigAPIUrl = "https://tractor-factory-interface.herokuapp.com/api/conveyor-state/buttons-posts/update-buttons-configuration/";
-
-const notify = (msg) => toast(msg);
-
 // const getConfigAPIUrl = "http://localhost:8000/api/conveyor/config";
+
 
 class ConveyorConfig extends Component {
     constructor() {
@@ -96,13 +94,22 @@ class ConveyorConfig extends Component {
             console.log(res);
         })
         .catch((error) => {
-            toast.error("Не удалось сохранить конфигурацию", {
-                style: {
-                    backgroundColor: 'grey',
-                    color: "white"
-                }
-            })
-            console.log(error);
+            if (error.response.status === 403) {
+                toast.error("Ошибка сохранения. Вы не авторизованы", {
+                    style: {
+                        backgroundColor: 'grey',
+                        color: "white"
+                    }
+                })
+            }
+            else {
+                toast.error("Ошибка сохранения конфигурации", {
+                    style: {
+                        backgroundColor: 'grey',
+                        color: "white"
+                    }
+                })
+            }
         });
     }
 
@@ -149,7 +156,6 @@ class ConveyorConfig extends Component {
     convertPostsNumbersFromInputs(inputs) {
         /* Записи с инпутов конвертировать в блоки по постам */
         // inputs: {{post: 1, block: 0}, {}, {}....}
-        let inputsLen = Object.keys(inputs).length;
         let convertedConfig = {};
         let passedKeys = [];
         for (let key in inputs) {
@@ -281,10 +287,7 @@ class ConveyorConfig extends Component {
                             <button type='button' class="btn btn-dark btn-config btn-config-dark" onClick={this.onResetClick}>Сброс</button>
                         </div>
                     </div>
-                    <Toaster
-                    position="bottom-right"
-
-                    />
+                    <Toaster position="bottom-right"/>
                 </main>
                 <footer></footer>
             </div>

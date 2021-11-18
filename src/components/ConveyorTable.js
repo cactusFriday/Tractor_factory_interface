@@ -34,7 +34,6 @@ const ConveyorTable = ({accidentClasses}) => {
         После установки true, компонент перерендеривается и вызывается модальное окно.
         в которое передается вся информация о полученном происшествии. */
 
-        let config = JSON.parse(localStorage.getItem('posts-config'));
         let posts_block = getPostsBlockFromPost(parseInt(i));
         // const retrieveAccidentURL = `https://tractor-factory-interface.herokuapp.com/api/accident/?posts_block=${posts_block}&last=True`;
         const retrieveAccidentURL = `http://localhost:8000/api/accident/?posts_block=${posts_block}&last=True`;
@@ -153,7 +152,7 @@ const ConveyorTable = ({accidentClasses}) => {
             error={error}
             accidentClasses={accidentClasses}
         />
-        <Toaster/>
+        <Toaster position="bottom-right"/>
         </React.Fragment>
     )
 }
