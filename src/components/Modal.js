@@ -3,8 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Modal.css';
 import close from "../static/icons/close.svg";
 import axios from "axios";
-import {convertPost} from "./utils/postsUtils";
-import {getPostsFromAccident} from "./utils/postsUtils";
+import {getPostsToDisplayFromAccident, getPostsFromAccident} from "./utils/postsUtils";
+import toast, {Toaster} from 'react-hot-toast';
+
+
 class Modal extends Component {
 
     constructor() {
@@ -21,7 +23,6 @@ class Modal extends Component {
         // trgt - вся форма, лежащая в event
         let trgt = e.target;
         let timeEnd = ":00+00:00";
-        let post = parseInt(trgt.post.placeholder);
         let accident_id = this.props.accident.id;
         // Объект для сериализации и PATCH
         let accident_class = this.props.accidentClasses[trgt.accidentClass.selectedIndex].number;
@@ -50,6 +51,27 @@ class Modal extends Component {
         })
         .catch((error) => {
             this.props.setError("Ошибка во время отправки происшествия");
+            if (error.response.status === 403) {
+                toast.error("Ошибка отправки. Вы не авторизованы", {
+                    style: {
+                        backgroundColor: 'grey',
+                        color: "white"
+                    }
+                })
+            }
+            else {
+                toast.error("Ошибка отправки на сервер", {
+                    style: {
+                        backgroundColor: 'grey',
+                        color: "white"
+                    }
+                })
+            }
+            console.log(typeof error);
+            for (const key in error){
+                console.log(key);
+            }
+            console.log("ERROR: \n\n", error.response);
             // this.props.setError([error.response.status, error.response.statusText]);
         });
     };
@@ -93,17 +115,7 @@ class Modal extends Component {
                                 disabled 
                                 placeholder={
                                     accident == null ? '' : 
-                                    function () {
-                                        // TODO: if post < 19 add 'Л', else post-19 add 'П' TODO:!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                                        let config = JSON.parse(localStorage.getItem('posts-config'));
-                                        let posts = getPostsFromAccident(accident);
-                                        // let posts = config.find(block => block.buttons_block_number === accident.post).posts;
-                                        let toDisplay = '';
-                                        for (let i = 0; i < posts.length; i++) {
-                                            toDisplay += convertPost(posts[i].post_number) + ' ';
-                                        }
-                                        return toDisplay;
-                                    }()}
+                                    getPostsToDisplayFromAccident(accident)}
                                 />
                             </div>
                             <div class="form-group my-3">
@@ -146,6 +158,7 @@ class Modal extends Component {
                         </React.Fragment>
                     }
                 </div>
+                <Toaster/>
             </div>
         )
     }

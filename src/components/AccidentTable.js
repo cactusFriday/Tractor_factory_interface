@@ -7,6 +7,7 @@ import history from '../static/icons/history.svg';
 import edit from '../static/icons/edit.svg';
 import ModalEdit from './ModalEdit.js';
 import ModalHistory from './ModalHistory.js';
+import { getPostsToDisplayFromAccident } from './utils/postsUtils';
 
 const url = "https://tractor-factory-interface.herokuapp.com/api/accident/"
 const getAccidentHistoryURL = "https://tractor-factory-interface.herokuapp.com/api/accident/";
@@ -106,7 +107,7 @@ class AccidentTable extends Component {
             description: trgt.AccidentDescription.value
         }
 
-        console.log(JSON.stringify(accidentEditDetails));
+        // console.log(JSON.stringify(accidentEditDetails));
         axios.defaults.xsrfCookieName = 'csrftoken';
         axios.defaults.xsrfHeaderName = 'X-CSRFToken';
         axios.defaults.withCredentials = true;
@@ -119,7 +120,7 @@ class AccidentTable extends Component {
             },
         }).then(res => {
             console.log(res);
-            console.log(res.data);
+            // console.log(res.data);
         })
             .catch((error) => {
                 console.log(error);
@@ -130,8 +131,8 @@ class AccidentTable extends Component {
     render() {
         const accidents_list = typeof this.props.accidents == 'undefined' ? null : this.props.accidents;
         const accidentClasses = this.props.accidentClasses;
-        console.log(accidentClasses[0]);
-        console.log(accidents_list);
+        // console.log(accidentClasses[0]);
+        // console.log(accidents_list);
         return (
             <React.Fragment>
                 <table className="Table-Accidents" style={{ borderColor: 'black' }} class="table table-striped table-sm table-bordered">
@@ -158,7 +159,7 @@ class AccidentTable extends Component {
                     <tbody className="Table-body">
                         {accidents_list == null ? <p>Page is Loading ...</p> : accidents_list.map((obj, i) => (
                             <tr>
-                                <td>{obj.posts_block}</td>
+                                <td>{getPostsToDisplayFromAccident(obj)}</td>
                                 {/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */}
                                 <td>{typeof accidentClasses[obj.accident_class - 1] == 'undefined' ? "" : accidentClasses[obj.accident_class - 1].name}</td>
                                 <td>{obj.description}</td>
@@ -173,7 +174,7 @@ class AccidentTable extends Component {
                     </tbody>
                 </table>
                 <ModalEdit isAct={this.state.edit} setUnactive={this.setUnactiveEdit} data={this.state.data} key={this.state.key}
-                    handleOnSubmit={this.handleEditSubmit} />
+                    handleOnSubmit={this.handleEditSubmit} accidentClasses={accidentClasses}/>
                 <ModalHistory isAct={this.state.history} setUnactive={this.setUnactiveHistory} data={this.state.data_history}
                     accidentsClasses={accidentClasses} />
             </React.Fragment>
