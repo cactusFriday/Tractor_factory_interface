@@ -158,7 +158,8 @@ class AccidentTable extends Component {
                     <tbody className="Table-body">
                         {accidents_list == null ? <p>Page is Loading ...</p> : accidents_list.map((obj, i) => (
                             <tr>
-                                <td>{obj.post}</td>
+                                <td>{obj.posts_block}</td>
+                                {/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */}
                                 <td>{typeof accidentClasses[obj.accident_class - 1] == 'undefined' ? "" : accidentClasses[obj.accident_class - 1].name}</td>
                                 <td>{obj.description}</td>
                                 <td>{obj.time_appeared.replace('T', ' ').replace('Z', '').replaceAll('-', '.').slice(0, 19)}</td>

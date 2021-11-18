@@ -4,6 +4,8 @@ import React from "react";
 import Modal from './Modal.js';
 import './Monitoring.css';
 import './ConveyorTable.css';
+import { getPostsBlockFromPost } from './utils/postsUtils'
+import toast, { Toaster } from 'react-hot-toast';
 
 const getConvStateURL = "https://tractor-factory-interface.herokuapp.com/api/conveyor-state/"
 
@@ -31,12 +33,25 @@ const ConveyorTable = ({accidentClasses}) => {
         Получает информацию о последнем зафиксированном происшествии на этом посту.
         После установки true, компонент перерендеривается и вызывается модальное окно.
         в которое передается вся информация о полученном происшествии. */
-        const retrieveAccidentURL = `https://tractor-factory-interface.herokuapp.com/api/accident/?post=${i}&last=True`;
+
+        let config = JSON.parse(localStorage.getItem('posts-config'));
+        let posts_block = getPostsBlockFromPost(parseInt(i));
+        // const retrieveAccidentURL = `https://tractor-factory-interface.herokuapp.com/api/accident/?posts_block=${posts_block}&last=True`;
+        const retrieveAccidentURL = `http://localhost:8000/api/accident/?posts_block=${posts_block}&last=True`;
         fetch(retrieveAccidentURL)
         .then(res => res.json())
         .then(accidents => {
             const last_accident = accidents.results[0];
             setAccident(last_accident);
+        })
+        .catch((error) => {
+            console.log(error);
+            toast.error("Не удалось получить данные инцидента", {
+                style: {
+                    backgroundColor: 'grey',
+                    color: "white"
+                }
+            })
         });
         setActive(true);
         setError(null);
@@ -138,6 +153,7 @@ const ConveyorTable = ({accidentClasses}) => {
             error={error}
             accidentClasses={accidentClasses}
         />
+        <Toaster/>
         </React.Fragment>
     )
 }

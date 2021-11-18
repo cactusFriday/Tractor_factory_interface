@@ -58,3 +58,7 @@
     border-bottom-width: 4px;
     border-right-width: 4px;
 }
+
+.toaster-notification {
+    background-color: grey;
+}

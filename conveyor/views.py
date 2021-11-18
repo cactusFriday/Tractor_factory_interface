@@ -35,15 +35,13 @@ def update_posts_status(request):
             for i, buttons_block in enumerate(buttons_blocks):
                 if buttons_block.status_block != serializer.validated_data[i]['status_block']:
                     if serializer.validated_data[i]['status_block'] == 'error':
-                        for post in buttons_block.posts.all():
-                            accident = Accident(post=post.post_number)
-                            accident.save()
+                        accident = Accident(posts_block=buttons_block.buttons_block_number)
+                        accident.save()
                     elif buttons_block.status_block == 'error':
-                        for post in buttons_block.posts.all():
-                            accidents = Accident.objects.filter(post=post.post_number)
-                            for accident in accidents:
-                                accident.time_solved = timezone.now()
-                                accident.save()
+                        accidents = Accident.objects.filter(posts_block=buttons_block.buttons_block_number)
+                        for accident in accidents:
+                            accident.time_solved = timezone.now()
+                            accident.save()
                     buttons_block.status_block = serializer.validated_data[i]['status_block']
                     buttons_block.save()
             return JsonResponse(serializer.data, status=201, safe=False)

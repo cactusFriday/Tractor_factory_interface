@@ -3,11 +3,13 @@ import { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Navbar.js'
 import './ConveyorConfig.css'
-import { useHistory } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
 
 
 const getConfigAPIUrl = "https://tractor-factory-interface.herokuapp.com/api/conveyor-state/buttons-posts/";
 const updateConfigAPIUrl = "https://tractor-factory-interface.herokuapp.com/api/conveyor-state/buttons-posts/update-buttons-configuration/";
+
+const notify = (msg) => toast(msg);
 
 // const getConfigAPIUrl = "http://localhost:8000/api/conveyor/config";
 
@@ -58,6 +60,12 @@ class ConveyorConfig extends Component {
             this.setState({
                 isError: false
             });
+            toast.success("Конфигурация постов/кнопок получена с сервера", {
+                style: {
+                    backgroundColor: "grey",
+                    color: "white"
+                }
+            })
         })
         .catch((error) => {
             this.setState({
@@ -79,9 +87,21 @@ class ConveyorConfig extends Component {
             },
         })
         .then(res => {
+            toast.success("Конфигурация успешно сохранена", {
+                style: {
+                    backgroundColor: "grey",
+                    color: "white"
+                }
+            });
             console.log(res);
         })
         .catch((error) => {
+            toast.error("Не удалось сохранить конфигурацию", {
+                style: {
+                    backgroundColor: 'grey',
+                    color: "white"
+                }
+            })
             console.log(error);
         });
     }
@@ -112,6 +132,14 @@ class ConveyorConfig extends Component {
 
     onResetClick() {
         /* Метод очистки полей ввода */
+        // notify('Hello');
+        toast.success("Введенные данные удалены", {
+            className: 'toaster-notification',
+            style: {
+                backgroundColor: "grey",
+                color: "white"
+            }
+        });
         let inputs = document.getElementsByTagName('input');
         for (let i = 0; i < inputs.length; i++) {
             inputs[i].value = "";
@@ -253,6 +281,10 @@ class ConveyorConfig extends Component {
                             <button type='button' class="btn btn-dark btn-config btn-config-dark" onClick={this.onResetClick}>Сброс</button>
                         </div>
                     </div>
+                    <Toaster
+                    position="bottom-right"
+
+                    />
                 </main>
                 <footer></footer>
             </div>

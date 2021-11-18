@@ -32,7 +32,7 @@ class Accident(models.Model):
     time_appeared = models.DateTimeField('Время появления происшествия', blank=False, default=timezone.now, unique=True)
     # Время решения проблемы (мастер зарегестрировал в системе) TODO: узнать как это поле заполнять
     time_solved = models.DateTimeField('Время решения происшествия', blank=True, null=True)
-    post = models.IntegerField('Пост с происшествием')
+    posts_block = models.IntegerField('Пост с происшествием')
     accident_class = models.ForeignKey(to=AccidentClass, on_delete=models.SET_NULL, null=True, default=None)
     description = models.TextField('Описание происшествия', blank=True, null=True)
 

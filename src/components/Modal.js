@@ -3,8 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Modal.css';
 import close from "../static/icons/close.svg";
 import axios from "axios";
-
-
+import {convertPost} from "./utils/postsUtils";
+import {getPostsFromAccident} from "./utils/postsUtils";
 class Modal extends Component {
 
     constructor() {
@@ -85,7 +85,26 @@ class Modal extends Component {
                         <form onSubmit={this.handleOnSubmit}>
                             <div class="form-group my-3">
                                 <label for="PostNumber">Номер поста</label>
-                                <input type="text" class="form-control form-control-modal" id="PostNumber" name="post" disabled placeholder={accident == null ? null : accident.post}/>
+                                <input 
+                                type="text" 
+                                class="form-control form-control-modal" 
+                                id="PostNumber" 
+                                name="post" 
+                                disabled 
+                                placeholder={
+                                    accident == null ? '' : 
+                                    function () {
+                                        // TODO: if post < 19 add 'Л', else post-19 add 'П' TODO:!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                        let config = JSON.parse(localStorage.getItem('posts-config'));
+                                        let posts = getPostsFromAccident(accident);
+                                        // let posts = config.find(block => block.buttons_block_number === accident.post).posts;
+                                        let toDisplay = '';
+                                        for (let i = 0; i < posts.length; i++) {
+                                            toDisplay += convertPost(posts[i].post_number) + ' ';
+                                        }
+                                        return toDisplay;
+                                    }()}
+                                />
                             </div>
                             <div class="form-group my-3">
                                 <label for="AccidentAppeared">Время фиксирования происшествия</label>

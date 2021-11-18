@@ -13,7 +13,7 @@ class AccidentFilter(FilterSet):
         model = Accident
         fields = {
             # 'accident_class': ['number',],
-            'post': ['exact',],
+            'posts_block': ['exact',],
             'time_appeared': ['date__range',]
         }
     
