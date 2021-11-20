@@ -63,13 +63,14 @@ class AccidentTable extends Component {
     setActiveEdit(i) {
         //console.log(i);
         var accidentsArray = Object.values(this.state.accidents.results);
-        console.log("ACCIDENTS ARRAY: ", accidentsArray[accidentsArray.length - i]);
-        console.log("ACCIDENTS ID: ", accidentsArray.length - i);
         this.setState({
             edit: true,
-            key: accidentsArray[accidentsArray.length - i].id,
-            data: accidentsArray[accidentsArray.length - i]
+            key: -20,
+            data: accidentsArray.find(obj => parseInt(obj.id) === parseInt(i)),
+            // data: accidentsArray[accidentsArray.length - i]
         });
+        console.log("OBJECT ID IN EDIT", i);
+        console.log("THIS STATE DATA IN EDIT", this.state.data);
     };
 
     setUnactiveEdit = () => {
@@ -114,7 +115,8 @@ class AccidentTable extends Component {
         let trgt = e.target;
         // let accident_class = this.props.accidentClasses[trgt.accidentClass.selectedIndex].number;
         const accidentEditDetails = {
-            accident_id: parseInt(this.state.key),
+            // accident_id: parseInt(this.state.key),
+            accident_id: parseInt(this.state.data.id),
             accident_class: parseInt(this.props.accidentClasses[trgt.accidentClass.selectedIndex].number),
             description: trgt.AccidentDescription.value
         }
