@@ -11,6 +11,7 @@ export default function Navbar() {
     function handleClick() {
         localStorage.removeItem('token');
         localStorage.removeItem('group');
+        localStorage.removeItem('username');
         history.push("/");
     }
 
