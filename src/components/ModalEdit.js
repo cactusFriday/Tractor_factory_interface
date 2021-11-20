@@ -7,12 +7,12 @@ import {getPostsToDisplayFromAccident} from './utils/postsUtils';
 const ModalEdit = ({isAct, setUnactive, data, key, handleOnSubmit, accidentClasses}) => {
     const showHideClassName = isAct ? "container-fluid modalAccident active" : "container-fluid modalAccident";
     const [accident_key, setAccidentKey] = useState(key);
-    const [accident_class, setAccidentClass] = useState(data === null ? "" : data.accident_class);
+    const [accident_class, setAccidentClass] = useState(data === null || 'undefined' ? "" : data.accident_class);
     const [time_solved, setTimeSolved] = useState("");
-    const [description, setDescription] = useState(data === null ? "" : data.description);
+    const [description, setDescription] = useState(data === null || 'undefined' ? "" : data.description);
     const [checkState, setCheckState] = useState(false);
-    let middleDescription = data === null ? "" : data.description;
-    let middleAccidentClass = data === null ? "" : data.accident_class;
+    let middleDescription = data === null || 'undefined' ? "" : data.description;
+    let middleAccidentClass = data === null || 'undefined' ? "" : data.accident_class;
     //let middleCheckState = false;
 
     useEffect(() => {
@@ -87,8 +87,9 @@ const ModalEdit = ({isAct, setUnactive, data, key, handleOnSubmit, accidentClass
                         <label for="AccidentClass">Класс происшествия</label>
                         <select class="form-control form-control-modal" id="AccidentClass" 
                         name="accidentClass" 
-                        value={accident_class}
-                        onChange={changeAccidentClass}>
+                        // value={accident_class}
+                        // onChange={changeAccidentClass}
+                        >
                             {
                                 accidentClasses.map((obj, i) => 
                                     <option>{"Класс " + String(obj.number) + ": " + String(obj.name)}</option>
@@ -100,8 +101,9 @@ const ModalEdit = ({isAct, setUnactive, data, key, handleOnSubmit, accidentClass
                         <label for="AccidentDescription">Описание</label>
                         <textarea class="form-control form-control-modal" id="AccidentDescription" rows="3" 
                         name="description"
-                        value={description}
-                        onChange={changeDescription}></textarea>
+                        // value={description}
+                        // onChange={changeDescription}
+                        ></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary" onClick={setUnactive}>Применить изменения</button>
                 </form>

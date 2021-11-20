@@ -8,6 +8,7 @@ import ConveyorTable from './ConveyorTable.js';
 import arrow_forward from '../static/icons/arrow_forward.svg';
 import React, { Component } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import { getConfig } from './utils/configUtils';
 
 const getAcidentURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/';
 // const getAcidentURL = 'http://localhost:8000/api/accident/';
@@ -25,6 +26,7 @@ class Monitoring extends Component {
   };
 
   componentDidMount() {
+    getConfig();
     fetch(getAcidentURL)
     .then(res => res.json())
     .then(accidents => {

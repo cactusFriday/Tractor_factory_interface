@@ -63,10 +63,12 @@ class AccidentTable extends Component {
     setActiveEdit(i) {
         //console.log(i);
         var accidentsArray = Object.values(this.state.accidents.results);
+        console.log("ACCIDENTS ARRAY: ", accidentsArray[accidentsArray.length - i]);
+        console.log("ACCIDENTS ID: ", accidentsArray.length - i);
         this.setState({
             edit: true,
-            key: i,
-            data: accidentsArray[i]
+            key: accidentsArray[accidentsArray.length - i].id,
+            data: accidentsArray[accidentsArray.length - i]
         });
     };
 
