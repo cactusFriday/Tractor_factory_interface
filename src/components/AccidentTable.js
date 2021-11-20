@@ -10,8 +10,8 @@ import ModalHistory from './ModalHistory.js';
 import { getPostsToDisplayFromAccident } from './utils/postsUtils';
 import toast, { Toaster } from 'react-hot-toast';
 
-// const url = "https://tractor-factory-interface.herokuapp.com/api/accident/"
-const url = "http://localhost:8000/api/accident/"
+const url = "https://tractor-factory-interface.herokuapp.com/api/accident/"
+// const url = "http://localhost:8000/api/accident/"
 const getAccidentHistoryURL = "https://tractor-factory-interface.herokuapp.com/api/accident/";
 const postAccidentEditURL = "https://tractor-factory-interface.herokuapp.com/api/accident/history/";
 // const accidentsClasses = ["Некомплектность на рабочем месте", "Авария на рабчем месте", "Другое"];
