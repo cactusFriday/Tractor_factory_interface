@@ -72,7 +72,7 @@ class Monitoring extends Component {
       <React.Fragment>
         <body>
           <Navbar />
-          <div class="row">
+          <div>
             <div>
               <Menu />
             </div>
