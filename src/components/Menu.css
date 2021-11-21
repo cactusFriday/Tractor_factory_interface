@@ -4,6 +4,7 @@
     color: #ffffff;
     font-family: Roboto;
     font-size: 18px;
+    overflow-y: auto;
   }
   
 .sidebar ul p {
