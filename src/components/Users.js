@@ -95,7 +95,7 @@ class Users extends Component {
       <div>
         <body>
           <Navbar />
-          <div class="row">
+          <div>
             <div>
               <Menu />
             </div>
