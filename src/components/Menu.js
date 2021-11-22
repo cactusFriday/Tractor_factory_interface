@@ -50,7 +50,7 @@ export default function Menu() {
               Такты
             </a>
           </li>*/}
-          <li class="nav-item">
+          <li class="nav-item" onClick={pushToMonitoring}>
             <a class="nav-link" style={{ color: "white" }}>
               <img style={{ paddingRight: "24px" }} src={monitoring} alt="" />
               Мониторинг
