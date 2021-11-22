@@ -1,0 +1,62 @@
+.sidebar {
+    min-width: 230px;
+    background: #2D333C;
+    color: #ffffff;
+    font-family: Roboto;
+    font-size: 18px;
+    overflow-y: auto;
+  }
+  
+.sidebar ul p {
+    color: #ffffff;
+    padding: 10px;
+}
+.nav-link {
+    color: #ffffff;
+}  
+.nav-item {
+    padding: 8px;
+    padding-left: 0px;
+    color: #ffffff;
+}
+.nav-item:hover {
+  background: #C92A2D;
+  color: #ffffff;
+}
+
+.items-menu {
+  color: #ffffff;
+  background: #2D333C;
+}
+
+li a.dropdown-toggle::after {
+  display: inline-flex;
+  position: relative;
+  left: 60%;
+  top: 10%;
+}
+
+.mr-2 {
+    padding-right: 27px;
+}
+
+.side-menu {
+  height: calc(100vh - 130px);
+}
+
+li a.dropdown-toggle::after {
+  display: inline-block;
+  position: relative;
+  left: 68%;
+}
+
+ul li a {
+  cursor: pointer;
+}
+
+@font-face {
+  font-family: Roboto; 
+  src: url("../static/fonts/Roboto-Light.ttf") format("truetype"); 
+  font-style: normal; 
+  font-weight: normal; 
+  }

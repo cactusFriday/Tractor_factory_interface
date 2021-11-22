@@ -1,4 +1,9 @@
+import jwt
+from django.conf import settings
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import (
+    Group
+)
 from rest_framework import serializers
 
 from .models import User
@@ -19,7 +24,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
     # запросом на регистрацию. Сделаем его доступным только на чтение.
     token = serializers.CharField(max_length=255, read_only=True)
 
-    group = serializers.CharField(max_length=255, read_only=True)
+    group = serializers.CharField(max_length=255, write_only=True)
 
     class Meta:
         model = User
@@ -30,7 +35,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Использовать метод create_user, который мы
         # написали ранее, для создания нового пользователя.
-        user, group = User.objects.create_user(**validated_data)
+        group_name = ''
+        for key, value in validated_data.items():
+            if key == 'group':
+                group_name = value
+
+        if group_name == 'Admin':
+            user, group = User.objects.create_superuser(**validated_data)
+        else:
+            user, group = User.objects.create_user(**validated_data)
         return {
             'email': user.email,
             'username': user.username,
@@ -124,7 +137,7 @@ class UserSerializer(serializers.ModelSerializer):
         # состоит в том, что нам не нужно ничего указывать о поле. В поле
         # пароля требуются свойства min_length и max_length,
         # но это не относится к полю токена.
-        read_only_fields = ('token',)
+        read_only_fields = ('token', 'group',)
 
     def update(self, instance, validated_data):
         """ Выполняет обновление User. """
@@ -159,3 +172,50 @@ class UserSerializer(serializers.ModelSerializer):
             'token': instance.token,
             'group': group_name
         }
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    """
+    Осуществляет сериализацию поля group
+    """
+    group = serializers.CharField(max_length=255)
+    token = serializers.CharField(max_length=255)
+
+    class Meta:
+        model = User
+        fields = ['token', 'group']
+
+    def create(self, validated_data):
+        group_name = ""
+        token = ""
+        for key, value in validated_data.items():
+            if key == 'group':
+                group_name = value
+            elif key == 'token':
+                token = value
+        payload = jwt.decode(
+            jwt=token, key=settings.SECRET_KEY, algorithms='HS256')
+        user = User.objects.get(pk=payload['id'])
+        group_old_name = ""
+        for g in user.groups.all():
+            group_old_name = g.name
+        old_group = Group.objects.get(name=group_old_name)
+        old_group.user_set.remove(user)
+        group = Group.objects.get(name=group_name)
+        group.user_set.add(user)
+        if group != 'Admin':
+            user.is_superuser = False
+            user.is_staff = False
+            user.save()
+        return {
+            'token': user.token,
+            'group': group
+        }
+
+
+class UsersRetrieve(serializers.ModelSerializer):
+    groups = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'token', 'groups']

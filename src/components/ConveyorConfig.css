@@ -1,0 +1,64 @@
+
+.table-config tbody {
+    vertical-align: middle;
+}
+.table-config > tbody td input {
+    margin: auto;
+}
+
+.form-control__config {
+    width: 80%;
+    height: 40px;
+}
+
+.btn-config {
+    margin: 20px 20px 0 0;
+}
+
+.btn-config-dark {
+    background-color: rgba(254, 254, 254, 0.5);
+    border-style: groove;
+    /* border: 1.5px solid transparent; */
+    color: rgb(65, 65, 65);
+}
+
+.outer {
+    width: 90px;
+    height: 50px;
+    padding-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+}
+.outer a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    font-weight: bolder;
+    color: rgb(73, 73, 73);
+}
+.outer p {
+    margin: 0;
+}
+.arrow-back {
+    box-sizing: border-box;
+    height: 30px;
+    width: 30px;
+    border-style: solid;
+    border-color: red;
+    border-width: 0px 1px 1px 0px;
+    transform: rotate(135deg);
+    transition: border-width 150ms ease-in-out;
+}
+
+.arrow-back:hover {
+    border-bottom-width: 4px;
+    border-right-width: 4px;
+}
+
+.toaster-notification {
+    background-color: grey;
+}

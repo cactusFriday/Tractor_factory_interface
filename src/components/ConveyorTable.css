@@ -1,0 +1,21 @@
+.App-Conveyor {
+    width: 100%;
+    line-height: 50px;
+    border-collapse: collapse;
+    text-align: center;
+    padding-left: 32px;
+    padding-right: 32px;
+    vertical-align: middle;
+    font-family: Roboto;
+}
+.error {
+    background-color: #C92A2D;
+    cursor: pointer;
+}
+.active {
+    /* background-color: #FFAE50; */
+    background-color: #F8C100;
+}
+.success {
+    background-color: #09AC54;
+}

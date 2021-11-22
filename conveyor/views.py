@@ -1,31 +1,82 @@
-from django.shortcuts import render
-
-# Create your views here.
+from django.http import JsonResponse
+from django.utils import timezone
 from rest_framework.decorators import api_view
+from rest_framework.generics import ListAPIView
+from rest_framework.parsers import JSONParser
 
-from conveyor.models import ConveyorState
+from accident.models import Accident
+from conveyor.models import PostsState, ButtonsBlocks
+from conveyor.serializers import PostsStateSerializer, ButtonsBlocksSerializer, ButtonsBlocksConfiguratorSerializer
 
 
-@api_view(['GET', 'POST'])
-def conveyor_state_list(request):
-    '''
-    POST:   обрабатывает json, присланный модулятором, сохраняет в БД и возвращает его обратно
-    GET:    достает состояния постов из БД и отправляет json
-    '''
+@api_view(['GET'])
+def posts_state_list(request):
+    """
+    GET:    достает состояния блоков кнопок, которые связаны с постами из БД и отправляет json
+    """
     if request.method == 'GET':
-        conv_state_set = ConveyorState.get_posts()
-        serializer = ConveyorStateSerializer(conv_state_set, many=True)
+        conv_state_set = PostsState.objects.all()
+        serializer = PostsStateSerializer(conv_state_set, many=True)
         return JsonResponse(serializer.data, safe=False)
-    elif request.method == 'POST':
+
+
+@api_view(['POST'])
+def update_posts_status(request):
+    """
+    POST:   принимает номер блока кнопки и её статус и обновляет данные в БД.
+    Если статус блока error, то создаётся инцидент.
+    Если статус блока был error, а стал active или success, то инцидент становится решённым
+    """
+    if request.method == 'POST':
         data = JSONParser().parse(request)
-        serializer = ConveyorStateSerializer(data=data, many=True)
+        serializer = ButtonsBlocksSerializer(data=data, many=True)
         if serializer.is_valid():
-            stats_set = ConveyorState.objects.order_by('post')
-            # Обновление статусов
-            for i, conv_stat in enumerate(stats_set):
-                tmp = conv_stat
-                if tmp.status != serializer.validated_data[i]['status']:
-                    tmp.status = serializer.validated_data[i]['status']
-                    tmp.save()
+            buttons_blocks = ButtonsBlocks.objects.all()
+            for i, buttons_block in enumerate(buttons_blocks):
+                if buttons_block.status_block != serializer.validated_data[i]['status_block']:
+                    if serializer.validated_data[i]['status_block'] == 'error':
+                        accident = Accident(posts_block=buttons_block.buttons_block_number)
+                        accident.save()
+                    elif buttons_block.status_block == 'error':
+                        accidents = Accident.objects.filter(posts_block=buttons_block.buttons_block_number)
+                        for accident in accidents:
+                            accident.time_solved = timezone.now()
+                            accident.save()
+                    buttons_block.status_block = serializer.validated_data[i]['status_block']
+                    buttons_block.save()
             return JsonResponse(serializer.data, status=201, safe=False)
         return JsonResponse(serializer.errors, status=400, safe=False)
+
+
+class ButtonsBlocksRetrieveAPIView(ListAPIView):
+    queryset = ButtonsBlocks.objects.all()
+    serializer_class = ButtonsBlocksConfiguratorSerializer
+
+
+@api_view(['POST'])
+def update_posts_buttons_configuration(request):
+    data = JSONParser().parse(request)
+    serializer = ButtonsBlocksConfiguratorSerializer(data=data, many=True)
+    if serializer.is_valid():
+        for button_block_json in serializer.validated_data:
+
+            button_block_data_base = ButtonsBlocks.objects.get(
+                buttons_block_number=button_block_json['buttons_block_number'])
+            for post_of_button_block in button_block_data_base.posts.all():
+                post = PostsState.objects.get(post_number=post_of_button_block.post_number)
+                post.buttons_set.remove(button_block_data_base)
+                post.save()
+
+            for new_post in button_block_json['posts']:
+                post = PostsState.objects.get(post_number=new_post['post_number'])
+                for button in post.buttons_set.all():
+                    button_data_base = ButtonsBlocks.objects.get(
+                        buttons_block_number=button.buttons_block_number)
+                    post.buttons_set.remove(button_data_base)
+
+            for new_post in button_block_json['posts']:
+                post = PostsState.objects.get(post_number=new_post['post_number'])
+                post.buttons_set.add(button_block_data_base)
+
+        return JsonResponse(serializer.data, status=201, safe=False)
+    return JsonResponse(serializer.errors, status=400, safe=False)

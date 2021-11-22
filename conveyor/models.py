@@ -1,14 +1,12 @@
 from django.db import models
 
 
-# Create your models here.
-class ConveyorState(models.Model):
-    post = models.IntegerField('Номер поста')
-    status = models.CharField('Статус поста', max_length=12, default='success')
+class PostsState(models.Model):
+    post_number = models.IntegerField()
 
-    def __str__(self) -> str:
-        return f'[{self.status}]: post {self.post}'
 
-    @classmethod
-    def get_posts(cls):
-        return ConveyorState.post
+class ButtonsBlocks(models.Model):
+    buttons_block_number = models.IntegerField()
+    count_click = models.IntegerField()
+    status_block = models.CharField(max_length=10)
+    posts = models.ManyToManyField(PostsState, related_name='buttons_set', related_query_name='buttons')

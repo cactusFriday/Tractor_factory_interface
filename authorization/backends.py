@@ -7,7 +7,7 @@ from rest_framework import authentication, exceptions
 from .models import User
 
 
-def _authenticate_credentials(request, token):
+def _authenticate_credentials(token):
     """
     Попытка аутентификации с предоставленными данными. Если успешно -
     вернуть пользователя и токен, иначе - сгенерировать исключение.
@@ -81,4 +81,4 @@ class JWTAuthentication(authentication.BaseAuthentication):
 
         # К настоящему моменту есть "шанс", что аутентификация пройдет успешно.
         # Мы делегируем фактическую аутентификацию учетных данных методу ниже.
-        return _authenticate_credentials(request, token)
+        return _authenticate_credentials(token)

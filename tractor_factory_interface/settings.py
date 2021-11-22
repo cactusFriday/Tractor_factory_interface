@@ -41,8 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'coreAPI',
+    'django_filters',
     'authorization',
+    'accident',
+    'conveyor',
 ]
 
 MIDDLEWARE = [
@@ -70,14 +72,14 @@ REST_FRAMEWORK = {
     ),
 
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 200,
     'DEFAULT_THROTTLE_CLASSES': (
         'rest_framework.throttling.UserRateThrottle',
         'rest_framework.throttling.AnonRateThrottle',
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'user': '60/minute',
-        'anon': '30/minute',
+        'user': '200/minute',
+        'anon': '200/minute',
     },
 }
 
@@ -98,6 +100,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'tractor_factory_interface.wsgi.application'
+
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -131,6 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -143,6 +147,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -174,18 +179,21 @@ AUTH_USER_MODEL = 'authorization.User'
 CORS_ALLOW_CREDENTIALS = True
 # Option 1
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
     'http://127.0.0.1:3000',
+    'http://127.0.0.1:8000',
 ]
 
 # Option 2
-# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 CORS_ALLOW_HEADERS = (
     'csrftoken',
     'content-type',
-    'X-CSRFToken'
+    'X-CSRFToken',
+    'Authorization',
+    'Content-Type',
+    'Accept'
 )
 
 CSRF_COOKIE_NAME = "csrftoken"
