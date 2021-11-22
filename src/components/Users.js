@@ -1,8 +1,8 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import Dropdown from "react-bootstrap/Dropdown";
-import "./Monitoring.css";
-import "./style.css";
+import Spinner from "react-bootstrap/Spinner";
+import "./Users.css";
 import Menu from "./Menu.js";
 import Navbar from "./Navbar.js";
 import axios from "axios";
@@ -19,6 +19,8 @@ class Users extends Component {
     this.getUsers = this.getUsers.bind(this);
     this.state = {
       users: [],
+      displaySpinner: false,
+      index_list_users: 0,
     };
   }
 
@@ -56,8 +58,14 @@ class Users extends Component {
     clearInterval(this.intervalGetUsers);
   }
 
-  handleChangeGroupUser = (event, token_user, group_user) => {
+  handleChangeGroupUser = (event, token_user, group_user, index_list_users) => {
     event.preventDefault();
+
+    this.setState({
+      displaySpinner: true,
+      index_list_users: index_list_users,
+    });
+
     const user = {
       token: token_user,
       group: group_user,
@@ -68,7 +76,6 @@ class Users extends Component {
     axios.defaults.withCredentials = true;
 
     let token = localStorage.getItem("token");
-
     axios
       .post(
         postChangeGroupUser,
@@ -81,6 +88,7 @@ class Users extends Component {
         }
       )
       .then((res) => {
+        this.state.displaySpinner = false;
         console.log(res);
       })
       .catch((error) => {
@@ -88,9 +96,21 @@ class Users extends Component {
       });
   };
 
+  changeNameGroupFromEnglish(nameGroup) {
+    switch (nameGroup) {
+      case "Admin":
+        return "Администратор";
+      case "Guest":
+        return "Гость";
+      default:
+        return "Мастер";
+    }
+  }
+
   render() {
     const users_list =
       typeof this.state.users == "undefined" ? null : this.state.users;
+    const display_spiner = this.state.displaySpinner;
     return (
       <div>
         <body>
@@ -132,7 +152,19 @@ class Users extends Component {
                         <td>
                           <Dropdown>
                             <Dropdown.Toggle variant="secondary">
-                              {obj.groups[0]}
+                              {display_spiner &&
+                                this.state.index_list_users == i && (
+                                  <>
+                                    <Spinner
+                                      as="span"
+                                      animation="grow"
+                                      size="sm"
+                                      role="status"
+                                      aria-hidden="true"
+                                    />
+                                  </>
+                                )}
+                              {this.changeNameGroupFromEnglish(obj.groups[0])}
                             </Dropdown.Toggle>
                             <Dropdown.Menu variant="dark">
                               <Dropdown.Item
@@ -140,7 +172,8 @@ class Users extends Component {
                                   this.handleChangeGroupUser(
                                     e,
                                     obj.token,
-                                    "Admin"
+                                    "Admin",
+                                    i
                                   );
                                 }}
                               >
@@ -151,7 +184,8 @@ class Users extends Component {
                                   this.handleChangeGroupUser(
                                     e,
                                     obj.token,
-                                    "Master"
+                                    "Master",
+                                    i
                                   );
                                 }}
                               >
@@ -162,7 +196,8 @@ class Users extends Component {
                                   this.handleChangeGroupUser(
                                     e,
                                     obj.token,
-                                    "Guest"
+                                    "Guest",
+                                    i
                                   );
                                 }}
                               >
