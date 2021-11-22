@@ -12,6 +12,7 @@ export default function Navbar() {
         localStorage.removeItem('token');
         localStorage.removeItem('group');
         localStorage.removeItem('username');
+        localStorage.removeItem('email');
         history.push("/");
     }
 
