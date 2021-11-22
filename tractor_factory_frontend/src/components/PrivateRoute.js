@@ -1,20 +1,30 @@
 import React from "react";
 import axios from 'axios';
 import { Redirect, Route } from "react-router";
+import { useHistory } from "react-router-dom";
 
 const getTokenValidationUrl = "https://tractor-factory-interface.herokuapp.com/api/user";
 
 export const PrivateRouteMonitoring = ({ component: Component, ...rest }) => {
-
-    function checkToken() {
-        let result = false;
-        if (!localStorage.token) {
-            result = false;
-        }
-        else {
-            result = false;   
-        };
-        return result;
+    let history = useHistory();
+    
+    function isValid() {
+        axios.get(getTokenValidationUrl, {
+            headers: {
+                'Authorization': `Token ${localStorage.token}`,
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(res => {
+                console.log(res);
+            }).catch((error) => {
+                console.log(error);
+                localStorage.removeItem('token');
+                localStorage.removeItem('group');
+                localStorage.removeItem('username');
+                history.push('/sessionexpired');
+            })
+            return true;
     }
 
     return (
@@ -22,7 +32,15 @@ export const PrivateRouteMonitoring = ({ component: Component, ...rest }) => {
             {...rest}
             render={props =>
                 localStorage.token ? (
-                    <Component {...props} />) :
+                    isValid() ?
+                        (<Component {...props} />) :
+                        (
+                            <Redirect to={{
+                                pathname: "/sessionexpired",
+                                state: { from: props.location }
+                            }}
+                            />)
+                ) :
                     (
                         <Redirect to={{
                             pathname: "/unauthorized",
@@ -35,6 +53,7 @@ export const PrivateRouteMonitoring = ({ component: Component, ...rest }) => {
 }
 
 export const PrivateRouteUsers = ({ component: Component, ...rest }) => {
+    let history = useHistory();
 
     function checkToken() {
         let result = false;
@@ -47,40 +66,65 @@ export const PrivateRouteUsers = ({ component: Component, ...rest }) => {
             }
             else {
                 result = false;
-            }     
-        };
+            }
+        }
         return result;
+    }
+
+    function isValid() {
+        axios.get(getTokenValidationUrl, {
+            headers: {
+                'Authorization': `Token ${localStorage.token}`,
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(res => {
+                console.log(res);
+            }).catch((error) => {
+                console.log(error);
+                localStorage.removeItem('token');
+                localStorage.removeItem('group');
+                localStorage.removeItem('username');
+                history.push('/sessionexpired');
+            })
+            return true;
     }
 
     return (
         <Route
             {...rest}
             render={props =>
-                localStorage.token ? (
-                    checkToken() ? 
-                    (<Component {...props} />) : (
-                        <Redirect to={{
-                            pathname: "/notenoughrights",
+                localStorage.token ?
+                    isValid() ?
+                        (
+                            checkToken() ?
+                                <Component {...props} /> :
+                                (<Redirect to={{
+                                    pathname: "/notenoughrights",
+                                    state: { from: props.location }
+                                }}
+                                />)
+                        ) :
+                        (<Redirect to={{
+                            pathname: "/sessionexpired",
                             state: { from: props.location }
                         }}
-                        />
-                    )) :
-                    (
-                        <Redirect to={{
-                            pathname: "/unauthorized",
-                            state: { from: props.location }
-                        }}
-                        />)
+                        />) :
+                    (<Redirect to={{
+                        pathname: "/unauthorized",
+                        state: { from: props.location }
+                    }}
+                    />)
             }
         />
     )
 }
 
 export const PrivateRouteConfig = ({ component: Component, ...rest }) => {
-
+    let history = useHistory();
+    
     function checkToken() {
         let result = false;
-
         if (!localStorage.token) {
             result = false;
         }
@@ -90,44 +134,55 @@ export const PrivateRouteConfig = ({ component: Component, ...rest }) => {
             }
             else {
                 result = false;
-            }  
-        };
-
+            }
+        }
         return result;
     }
 
-    const isValid = async () => {
-        const response = await axios.get(getTokenValidationUrl, {
+    function isValid() {
+        axios.get(getTokenValidationUrl, {
             headers: {
                 'Authorization': `Token ${localStorage.token}`,
                 'Content-Type': 'application/json'
             },
-        });
-        console.log(response);
-        console.log(response.status === 200);
-        let result = response.status === 200 ? true : false;
-        return true; 
+        })
+            .then(res => {
+                console.log(res);
+            }).catch((error) => {
+                console.log(error);
+                localStorage.removeItem('token');
+                localStorage.removeItem('group');
+                localStorage.removeItem('username');
+                history.push('/sessionexpired');
+            })
+            return true;
     }
 
     return (
         <Route
             {...rest}
             render={props =>
-                localStorage.token ? (
-                    checkToken() ? 
-                    (<Component {...props} />) : (
-                        <Redirect to={{
-                            pathname: "/notenoughrights",
+                localStorage.token ?
+                    isValid() ?
+                        (
+                            checkToken() ?
+                                <Component {...props} /> :
+                                (<Redirect to={{
+                                    pathname: "/notenoughrights",
+                                    state: { from: props.location }
+                                }}
+                                />)
+                        ) :
+                        (<Redirect to={{
+                            pathname: "/sessionexpired",
                             state: { from: props.location }
                         }}
-                        />
-                    )) :
-                    (
-                        <Redirect to={{
-                            pathname: "/unauthorized",
-                            state: { from: props.location }
-                        }}
-                        />)
+                        />) :
+                    (<Redirect to={{
+                        pathname: "/unauthorized",
+                        state: { from: props.location }
+                    }}
+                    />)
             }
         />
     )
