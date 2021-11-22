@@ -1,7 +1,7 @@
 import './App.css';
 import { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { PrivateRouteMonitoring, PrivateRouteRegister } from './components/PrivateRoute';
+import { PrivateRouteMonitoring, PrivateRouteAdmin } from './components/PrivateRoute';
 import Login from './components/Login';
 import Monitoring from './components/Monitoring';
 import Unauthorized from './components/Unauthorized';
