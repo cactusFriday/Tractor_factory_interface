@@ -3,6 +3,7 @@ import "./TableUsers.css";
 import "bootstrap/dist/css/bootstrap.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import Spinner from "react-bootstrap/Spinner";
+import Button from "react-bootstrap/Button";
 import axios from "axios";
 
 const postChangeGroupUser =
@@ -71,8 +72,8 @@ export default function TableUsers(props) {
     index_list_users
   ) => {
     event.preventDefault();
-    setDisplaySpinner(true);
 
+    setDisplaySpinner(true);
     setIndexItemList(index_list_users);
 
     const user = {
@@ -148,45 +149,49 @@ export default function TableUsers(props) {
             <td>{item.username}</td>
             <td>{item.email}</td>
             <td>
-              <Dropdown>
-                <Dropdown.Toggle variant="secondary">
-                  {displaySpinner && indexItemList == i && (
-                    <>
-                      <Spinner
-                        as="span"
-                        animation="grow"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                      />
-                    </>
-                  )}
-                  {changeNameGroupFromEnglish(item.groups[0])}
-                </Dropdown.Toggle>
-                <Dropdown.Menu variant="dark">
-                  <Dropdown.Item
-                    onClick={(e) => {
-                      handleChangeGroupUser(e, item.token, "Admin", i);
-                    }}
-                  >
-                    Администратор
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    onClick={(e) => {
-                      handleChangeGroupUser(e, item.token, "Master", i);
-                    }}
-                  >
-                    Мастер
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    onClick={(e) => {
-                      handleChangeGroupUser(e, item.token, "Guest", i);
-                    }}
-                  >
-                    Гость
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+              {item.email != localStorage.getItem("email") ? (
+                <Dropdown>
+                  <Dropdown.Toggle variant="secondary">
+                    {displaySpinner && indexItemList == i && (
+                      <>
+                        <Spinner
+                          as="span"
+                          animation="grow"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                      </>
+                    )}
+                    {changeNameGroupFromEnglish(item.groups[0])}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu variant="dark">
+                    <Dropdown.Item
+                      onClick={(e) => {
+                        handleChangeGroupUser(e, item.token, "Admin", i);
+                      }}
+                    >
+                      Администратор
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={(e) => {
+                        handleChangeGroupUser(e, item.token, "Master", i);
+                      }}
+                    >
+                      Мастер
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={(e) => {
+                        handleChangeGroupUser(e, item.token, "Guest", i);
+                      }}
+                    >
+                      Гость
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              ) : (
+                <Button>{changeNameGroupFromEnglish(item.groups[0])}</Button>
+              )}
             </td>
           </tr>
         ))}
