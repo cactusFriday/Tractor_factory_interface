@@ -65,7 +65,7 @@ export default function RegisterForm() {
         <header className="App-header">
         <Navbar />
           </header>
-          <div class="row">
+          <div>
             <div>
               <Menu />
             </div>
