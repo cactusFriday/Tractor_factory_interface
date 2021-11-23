@@ -1,0 +1,75 @@
+
+.container-filter {
+    display: flex;
+    flex-direction: row;
+    /* position: fixed; */
+}
+
+.form-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.dropdown-container {
+    margin-left: 1%;
+}
+
+.container-filter label {
+    font-size: 0.9rem;
+}
+
+.sort-container:nth-child(1) {
+    display: flex;
+    /* border: 0!important; */
+    flex-direction: row;
+}
+
+.sort-container > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.filter-date-picker {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.filter-date-picker > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2%;
+}
+.filter-date-picker > div > div {
+    padding-right: 10%;
+}
+
+.filter-icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    /* margin: 4% */
+}
+
+.filter-icons > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Table-Accidents > thead > tr > th:last-child {
+    padding-left: 20px;
+    padding-right: 20px;
+    /* padding: 1%!important; */
+}
+.Table-Accidents > thead > tr > th:nth-child(2) {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.filter-icons__elem {
+    cursor: pointer;
+}
