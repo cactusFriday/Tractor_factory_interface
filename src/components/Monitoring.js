@@ -10,8 +10,8 @@ import React, { Component } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { getConfig } from './utils/configUtils';
 
-const getAcidentURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/';
-// const getAcidentURL = 'http://localhost:8000/api/accident/';
+let getAcidentURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/';
+// let getAcidentURL = 'http://localhost:8000/api/accident/';
 const getAcidentClassesURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/classes/';
 
 class Monitoring extends Component {
@@ -59,6 +59,39 @@ class Monitoring extends Component {
     clearInterval(this.intervalGetAccidents);
   }
 
+  changeUrlOnFilter(params) {
+    /* Вызывается в дочернем компоненте таблицы. 
+    Обрабатывает выставленне фильтры и добавляет параметры в url */
+    getAcidentURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/';
+    console.log(params);
+    let queryParams = '';
+    if (params['accident_class'] > 0) {
+      queryParams += 'accident_class=' + String(params['accident_class']) + '&';
+    }
+    delete params['accident_class'];
+    for (let key in params) {
+      if (params[key][0] != '' && params[key][1] == '') {
+        // gte
+        queryParams += key + '__gte=' + String(params[key][0]) + '&';
+      } else if (params[key][0] == '' && params[key][1] != '') {
+        // lte
+        queryParams += key + '__lte=' + String(params[key][1]) + '&';
+      } else if (params[key][0] == '' && params[key][1] == '') {
+        // dont add param
+        continue;
+      } else {
+        // date__range
+        queryParams += key + '__date__range=' + params[key][0] + '%2C' + params[key][1] + '&'
+      }
+    }
+    console.log(queryParams);
+    getAcidentURL += `?${queryParams}`
+  }
+
+  clearFilter() {
+    getAcidentURL = 'https://tractor-factory-interface.herokuapp.com/api/accident/';
+  }
+
   async getAccidents() {
     const res = await fetch(getAcidentURL);
     const data = await res.json();
@@ -91,9 +124,11 @@ class Monitoring extends Component {
               </table>
               <div className="App-Accidents" class="table-responsive">
                 <h1 style={{ textAlign: 'left', verticalAlign: 'middle', lineHeight: '30px', marginBottom: '30px', fontWeight: '600' }}>Список последних происшествий</h1>
-                <div style={{height: '40vh', overflowY: 'auto'}}>
-                  <AccidentTable accidents={this.state.accidents} accidentClasses={this.state.accidentClasses}/>
-                </div>
+                <AccidentTable 
+                accidents={this.state.accidents} 
+                accidentClasses={this.state.accidentClasses}
+                changeUrlOnFilter={this.changeUrlOnFilter}
+                clearFilter={this.clearFilter}/>
               </div>
               <Toaster position="bottom-right"/>
             </main>
