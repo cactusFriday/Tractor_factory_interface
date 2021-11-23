@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import {  PrivateRouteMonitoring, PrivateRouteAdmin  } from './components/PrivateRoute';
 import Login from './components/Login';
-import Main from './components/Login';
+import Main from './components/Main';
 import Monitoring from './components/Monitoring';
 import Unauthorized from './components/Unauthorized';
 import ConveyorConfig from './components/ConveyorConfig';
