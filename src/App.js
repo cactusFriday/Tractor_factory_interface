@@ -3,8 +3,8 @@ import { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import {  PrivateRouteMonitoring, PrivateRouteAdmin  } from './components/PrivateRoute';
 import Login from './components/Login';
+import Main from './components/Main';
 import Monitoring from './components/Monitoring';
-import Register from './components/Register';
 import Unauthorized from './components/Unauthorized';
 import ConveyorConfig from './components/ConveyorConfig';
 import Users from './components/Users';
@@ -22,11 +22,11 @@ export default class App extends Component {
       <div className="App" >
       <Switch>
       <Route exact path="/" component={ Login } />
+      <Route exact path="/main" component={ Main } />
       <Route exact path="/unauthorized" component={ Unauthorized } />
       <Route exact path="/sessionexpired" component={ SessionExpired } />
       <Route exact path="/notenoughrights" component={ NotEnoughRights } />
       <PrivateRouteMonitoring exact path="/monitoring" component={ Monitoring } />
-      <PrivateRouteAdmin exact path="/register" component={ Register } /> 
       <PrivateRouteAdmin exact path="/config" component={ ConveyorConfig } />
       <PrivateRouteAdmin exact path="/users" component={ Users } /> 
       </Switch>
