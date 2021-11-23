@@ -22,6 +22,10 @@ class Users extends Component {
       error: null,
     };
   }
+  
+  setActive = (s) => {
+    this.setState({isActiveModal: s});
+  }
 
   componentDidMount = () => {
     fetch(getUsersURL, {
