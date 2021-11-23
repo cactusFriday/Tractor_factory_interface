@@ -28,11 +28,14 @@ export default function Menu() {
   function pushToUsers() {
     history.push("/users");
   }
+  function pushToMain() {
+    history.push("/main");
+  }
   return (
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
       <div class="position-sticky">
         <ul class="nav flex-column">
-          <li class="nav-item" onClick={pushToMonitoring}>
+          <li class="nav-item" onClick={pushToMain}>
             <a class="nav-link" style={{ color: "white" }} aria-current="page">
               <img style={{ paddingRight: "24px" }} src={home} alt="" />
               Главная
