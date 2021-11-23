@@ -12,9 +12,10 @@ class AccidentFilter(FilterSet):
     class Meta:
         model = Accident
         fields = {
-            # 'accident_class': ['number',],
+            'accident_class': ['exact',],
             'posts_block': ['exact',],
-            'time_appeared': ['date__range',]
+            'time_appeared': ['gte', 'lte', 'date__range'],
+            'time_solved': ['gte', 'lte']
         }
     
     @property
