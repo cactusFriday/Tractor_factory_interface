@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import "./TableUsers.css";
 import "bootstrap/dist/css/bootstrap.css";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -58,6 +58,7 @@ export default function TableUsers(props) {
   const { items, requestSort, sortConfig } = useSortableData(props.users_list);
   const [displaySpinner, setDisplaySpinner] = React.useState(false);
   const [indexItemList, setIndexItemList] = React.useState(0);
+
   const getClassNamesFor = (name) => {
     if (!sortConfig) {
       return;
@@ -65,46 +66,42 @@ export default function TableUsers(props) {
     return sortConfig.key === name ? sortConfig.direction : undefined;
   };
 
-  const handleChangeGroupUser = (
-    event,
-    token_user,
-    group_user,
-    index_list_users
-  ) => {
-    event.preventDefault();
+  const handleChangeGroupUser = useCallback(
+    (token_user, group_user, index_list_users) => {
+      setDisplaySpinner(true);
+      setIndexItemList(index_list_users);
 
-    setDisplaySpinner(true);
-    setIndexItemList(index_list_users);
+      const user = {
+        token: token_user,
+        group: group_user,
+      };
 
-    const user = {
-      token: token_user,
-      group: group_user,
-    };
+      axios.defaults.xsrfCookieName = "csrftoken";
+      axios.defaults.xsrfHeaderName = "X-CSRFToken";
+      axios.defaults.withCredentials = true;
 
-    axios.defaults.xsrfCookieName = "csrftoken";
-    axios.defaults.xsrfHeaderName = "X-CSRFToken";
-    axios.defaults.withCredentials = true;
-
-    let token = localStorage.getItem("token");
-    axios
-      .post(
-        postChangeGroupUser,
-        { user },
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((res) => {
-        setDisplaySpinner(false);
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+      let token = localStorage.getItem("token");
+      axios
+        .post(
+          postChangeGroupUser,
+          { user },
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          setDisplaySpinner(false);
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    []
+  );
 
   return (
     <table
@@ -167,23 +164,23 @@ export default function TableUsers(props) {
                   </Dropdown.Toggle>
                   <Dropdown.Menu variant="dark">
                     <Dropdown.Item
-                      onClick={(e) => {
-                        handleChangeGroupUser(e, item.token, "Admin", i);
-                      }}
+                      onClick={(e) =>
+                        handleChangeGroupUser(item.token, "Admin", i)
+                      }
                     >
                       Администратор
                     </Dropdown.Item>
                     <Dropdown.Item
-                      onClick={(e) => {
-                        handleChangeGroupUser(e, item.token, "Master", i);
-                      }}
+                      onClick={(e) =>
+                        handleChangeGroupUser(item.token, "Master", i)
+                      }
                     >
                       Мастер
                     </Dropdown.Item>
                     <Dropdown.Item
-                      onClick={(e) => {
-                        handleChangeGroupUser(e, item.token, "Guest", i);
-                      }}
+                      onClick={(e) =>
+                        handleChangeGroupUser(item.token, "Guest", i)
+                      }
                     >
                       Гость
                     </Dropdown.Item>
