@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Modal.css';
+import './ModalRegister.css';
 import close from "../static/icons/close.svg";
 import axios from "axios";
 import toast, { Toaster } from 'react-hot-toast';
