@@ -151,13 +151,10 @@ class ModalRegister extends Component {
                                             <option value="Admin">Администратор</option>
                                         </select>
                                     </label>
-
-                                    <div class="modal-footer">
-                                        <button className="App-Button"
-                                            type="submit" >
-                                            Зарегистрировать
-                                        </button>
-                                    </div>
+                                    <button className="App-Button"
+                                        type="submit" >
+                                        Зарегистрировать
+                                    </button>
                                 </form>
                             </div>
                         </React.Fragment>
