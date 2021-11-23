@@ -34,7 +34,10 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 100%;
+    max-width: 100%;
 }
+
 .filter-date-picker > div {
     display: flex;
     flex-direction: row;
@@ -42,6 +45,7 @@
     align-items: center;
     margin-top: 2%;
 }
+
 .filter-date-picker > div > div {
     padding-right: 10%;
 }
@@ -60,9 +64,18 @@
     align-items: center;
 }
 
+.Table-Accidents {
+    table-layout: fixed;
+    width: 100%;
+}
+
+
+
 .Table-Accidents > thead > tr > th:last-child {
     padding-left: 20px;
     padding-right: 20px;
+    max-width: 8%;
+    width: 8%;
     /* padding: 1%!important; */
 }
 .Table-Accidents > thead > tr > th:nth-child(2) {
