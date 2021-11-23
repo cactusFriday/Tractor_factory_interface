@@ -166,11 +166,11 @@ export default function Menu() {
               Конфигурация
             </a>
           </li>
-          <li class="nav-item" onClick={pushToRegister}>
+          {/*<li class="nav-item" onClick={pushToRegister}>
             <a class="nav-link" style={{ color: "white" }}>
               <img style={{ paddingRight: "24px" }} src={admin} alt="" />
               Регистрация пользователей
-            </a>
+            </a>*/}
           </li>
           <li class="nav-item" onClick={pushToUsers}>
             <a class="nav-link" style={{ color: "white" }}>
