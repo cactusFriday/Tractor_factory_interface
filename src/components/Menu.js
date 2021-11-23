@@ -170,8 +170,8 @@ export default function Menu() {
             <a class="nav-link" style={{ color: "white" }}>
               <img style={{ paddingRight: "24px" }} src={admin} alt="" />
               Регистрация пользователей
-            </a>*/}
-          </li>
+            </a>
+          </li>*/}
           <li class="nav-item" onClick={pushToUsers}>
             <a class="nav-link" style={{ color: "white" }}>
               <img style={{ paddingRight: "24px" }} src={people} alt="" />
