@@ -93,7 +93,7 @@ class ModalRegister extends Component {
 
         return (
             <div className={isActive ? "container-fluid modalAccident active" : "container-fluid modalAccident"} onClick={() => this.props.setActive(false)}>
-                <div className="modal__content" style={{ width: "400px" }} onClick={e => e.stopPropagation()}>
+                <div className="modal__content" style={{ width: "450px" }} onClick={e => e.stopPropagation()}>
                     <div>
                         <img height='32px' style={{ marginTop: '10px', float: 'right', cursor: "pointer" }} src={close} alt="" onClick={() => this.props.setActive(false)} />
                     </div>
