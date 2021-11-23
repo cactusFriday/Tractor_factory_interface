@@ -82,7 +82,9 @@ class Users extends Component {
                 </div>
               </div>
               <h1>Пользователи</h1>
-              <TableUsers users_list={users_list} />
+              <div style={{height: '75vh', overflowY: 'auto'}}>
+                <TableUsers users_list={users_list} />
+              </div>
               <button className="App-Button"
                 onClick={(e) => this.setState({ isActiveModal: true })}>
                 Регистрация нового пользователя
