@@ -2,9 +2,12 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./Users.css";
 import TableUsers from "./TableUsers.js";
+import ModalRegister from "./ModalRegister.js";
 import Menu from "./Menu.js";
 import Navbar from "./Navbar.js";
+import axios from "axios";
 import { Component } from "react";
+import toast, { Toaster } from 'react-hot-toast';
 
 const getUsersURL =
   "https://tractor-factory-interface.herokuapp.com/api/users/all/";
@@ -15,6 +18,8 @@ class Users extends Component {
     this.getUsers = this.getUsers.bind(this);
     this.state = {
       users: [],
+      isActiveModal: false,
+      error: null,
     };
   }
 
@@ -74,8 +79,19 @@ class Users extends Component {
               </div>
               <h1>Пользователи</h1>
               <TableUsers users_list={users_list} />
+              <button className="App-Button"
+                onClick={(e) => this.setState({ isActiveModal: true })}>
+                Регистрация нового пользователя
+              </button>
             </main>
           </div>
+          <ModalRegister
+            isActive={this.state.isActiveModal}
+            setActive={this.setActive}
+            error={this.state.error}
+          />
+          <Toaster position="bottom-right" />
+
         </body>
         <footer></footer>
       </div>
