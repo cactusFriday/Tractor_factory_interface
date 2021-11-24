@@ -31,6 +31,6 @@ function convertPost(post) {
         return String(post) + 'Л'
     } 
     else {
-        return String(post - 13) + 'П'
+        return String(post - 14) + 'П'
     }
 }
