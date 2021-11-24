@@ -6,7 +6,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
-import trash from "../static/icons/trash.svg";
+import trash from "../static/icons/delete.svg";
 
 const postChangeGroupUser =
   "https://tractor-factory-interface.herokuapp.com/api/user/group/";
