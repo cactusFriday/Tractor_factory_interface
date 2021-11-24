@@ -74,7 +74,7 @@ export default function LoginForm() {
             style={{ marginBottom: '20px' }}
             type="text"
             name="login"
-            placeholder="Имя пользователя"
+            placeholder="Почта пользователя"
             value={login}
             required="required"
             autoFocus="autoFocus"

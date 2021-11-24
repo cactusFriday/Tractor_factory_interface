@@ -233,7 +233,7 @@ class DeleteSerializer(serializers.ModelSerializer):
                 token = value
         payload = jwt.decode(
             jwt=token, key=settings.SECRET_KEY, algorithms='HS256')
-        user = User.objects.filter(pk=payload['id'])
+        user = User.objects.get(pk=payload['id'])
         group_user = user.groups.all()[0]
         old_group = Group.objects.get(name=group_user)
         old_group.user_set.remove(user)
