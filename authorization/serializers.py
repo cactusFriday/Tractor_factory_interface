@@ -207,6 +207,12 @@ class GroupSerializer(serializers.ModelSerializer):
             user.is_superuser = False
             user.is_staff = False
             user.save()
+        elif group == 'Admin':
+            user.is_superuser = True
+            user.is_staff = True
+            user.save()
+        group.save()
+        user.save()
         return {
             'token': user.token,
             'group': group
