@@ -201,18 +201,18 @@ class GroupSerializer(serializers.ModelSerializer):
             group_old_name = g.name
         old_group = Group.objects.get(name=group_old_name)
         old_group.user_set.remove(user)
+        old_group.save()
         group = Group.objects.get(name=group_name)
         group.user_set.add(user)
-        if group != 'Admin':
+        group.save()
+        if group_name != "Admin":
             user.is_superuser = False
             user.is_staff = False
             user.save()
-        elif group == 'Admin':
+        else:
             user.is_superuser = True
             user.is_staff = True
             user.save()
-        group.save()
-        user.save()
         return {
             'token': user.token,
             'group': group
