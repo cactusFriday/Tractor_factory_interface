@@ -286,7 +286,11 @@ class AccidentTable extends Component {
                                 accidents_list.map((obj, i) => (
                                     <tr>
                                         <td>{getPostsToDisplayFromAccident(obj)}</td>
-                                        <td>{typeof accidentClasses[obj.accident_class - 1] == 'undefined' ? "" : accidentClasses[obj.accident_class - 1].name}</td>
+                                        <td>{typeof accidentClasses[obj.accident_class - 1] == 'undefined' ? 
+                                            "" : 
+                                            accidentClasses[obj.accident_class - 1].name.includes('Тип') ? 
+                                                accidentClasses[obj.accident_class - 1].name.replace('Тип ', '').charAt(0).toUpperCase() + accidentClasses[obj.accident_class - 1].name.replace('Тип ', '').slice(1) :
+                                                accidentClasses[obj.accident_class - 1].name}</td>
                                         <td>{obj.description}</td>
                                         <td>{obj.time_appeared.replace('T', ' ').replace('Z', '').replaceAll('-', '.').slice(0, 19)}</td>
                                         <td>{obj.time_solved === null ? "Проблема не устранена" : obj.time_solved.replace('T', ' ').replace('Z', '').replaceAll('-', '.').slice(0, 19)}</td>
