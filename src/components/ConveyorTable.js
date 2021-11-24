@@ -19,6 +19,12 @@ const ConveyorTable = ({accidentClasses}) => {
     const getAnswer = async () => {
         const res = await fetch(getConvStateURL);
         const data = await res.json();
+        function sortByPosts(a, b) {
+            if (a.post_number > b.post_number) return 1;
+            if (a.post_number ==  b.post_number) return 0;
+            if (a.post_number < b.post_number) return -1;
+        }
+        data.sort(sortByPosts);
         setAnswer(data);
     };
 
