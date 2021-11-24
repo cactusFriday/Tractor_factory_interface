@@ -202,7 +202,7 @@ class GroupSerializer(serializers.ModelSerializer):
         old_group = Group.objects.get(name=group_old_name)
         old_group.user_set.remove(user)
         old_group.save()
-        group = Group.objects.get(name=group_name)
+        group = Group.objects.re(name=group_name)
         group.user_set.add(user)
         group.save()
         if group_name != "Admin":
@@ -216,6 +216,30 @@ class GroupSerializer(serializers.ModelSerializer):
         return {
             'token': user.token,
             'group': group
+        }
+
+
+class DeleteSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(max_length=255)
+
+    class Meta:
+        model = User
+        fields = ['token']
+
+    def create(self, validated_data):
+        token = ""
+        for key, value in validated_data.items():
+            if key == 'token':
+                token = value
+        payload = jwt.decode(
+            jwt=token, key=settings.SECRET_KEY, algorithms='HS256')
+        user = User.objects.filter(pk=payload['id'])
+        group_user = user.groups.all()[0]
+        old_group = Group.objects.get(name=group_user)
+        old_group.user_set.remove(user)
+        user.delete()
+        return {
+            'token': user.token,
         }
 
 

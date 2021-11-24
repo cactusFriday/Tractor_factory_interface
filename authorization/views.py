@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from .renderers import UserJSONRenderer
 from rest_framework.generics import RetrieveUpdateAPIView, ListAPIView
 from .serializers import (
-    LoginSerializer, RegistrationSerializer, UserSerializer, GroupSerializer, UsersRetrieve
+    LoginSerializer, RegistrationSerializer, UserSerializer, GroupSerializer, UsersRetrieve, DeleteSerializer
 )
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
@@ -23,9 +23,6 @@ class RegistrationAPIView(APIView):
     @method_decorator(ensure_csrf_cookie)
     def post(self, request):
         user = request.data.get('user', {})
-
-        # Паттерн создания сериализатора, валидации и сохранения - довольно
-        # стандартный, и его можно часто увидеть в реальных проектах.
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -41,10 +38,6 @@ class LoginAPIView(APIView):
     @method_decorator(ensure_csrf_cookie)
     def post(self, request):
         user = request.data.get('user', {})
-
-        # Обратите внимание, что мы не вызываем метод save() сериализатора, как
-        # делали это для регистрации. Дело в том, что в данном случае нам
-        # нечего сохранять. Вместо этого, метод validate() делает все нужное.
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
 
@@ -58,9 +51,6 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
 
     @method_decorator(ensure_csrf_cookie)
     def retrieve(self, request, *args, **kwargs):
-        # Здесь нечего валидировать или сохранять. Мы просто хотим, чтобы
-        # сериализатор обрабатывал преобразования объекта User во что-то, что
-        # можно привести к json и вернуть клиенту.
         serializer = self.serializer_class(request.user)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -68,8 +58,6 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
     @method_decorator(ensure_csrf_cookie)
     def update(self, request, *args, **kwargs):
         serializer_data = request.data.get('user', {})
-
-        # Паттерн сериализации, валидирования и сохранения - то, о чем говорили
         serializer = self.serializer_class(
             request.user, data=serializer_data, partial=True
         )
@@ -87,8 +75,20 @@ class UserUpdateGroupAPIView(APIView):
     @method_decorator(ensure_csrf_cookie)
     def post(self, request):
         user = request.data.get('user', {})
-        # Паттерн создания сериализатора, валидации и сохранения - довольно
-        # стандартный, и его можно часто увидеть в реальных проектах.
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UserDeleteAPIView(APIView):
+    permission_classes = (IsAdminUser,)
+    renderer_classes = (UserJSONRenderer,)
+    serializer_class = DeleteSerializer
+
+    @method_decorator(ensure_csrf_cookie)
+    def post(self, request):
+        user = request.data.get('user', {})
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -99,4 +99,3 @@ class UsersRetrieveAPIView(ListAPIView):
     permission_classes = (IsAdminUser,)
     queryset = User.objects.all()
     serializer_class = UsersRetrieve
-
