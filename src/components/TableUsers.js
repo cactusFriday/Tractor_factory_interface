@@ -209,7 +209,6 @@ export default function TableUsers(props) {
               <td>
                 {item.email != localStorage.getItem("email") ? (
                   <img
-                    height="18px"
                     style={{
                       float: "left",
                       margin: "10px",
