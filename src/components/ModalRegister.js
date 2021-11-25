@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './ModalRegister.css';
+import './Register.css';
 import close from "../static/icons/close.svg";
 import axios from "axios";
 import toast, { Toaster } from 'react-hot-toast';
@@ -12,20 +12,28 @@ class ModalRegister extends Component {
     constructor() {
         super();
         this.state = {
-            error: '',
+            error: "",
             username: "",
             email: "",
             group: "Guest",
             password: "",
             password_confirm: "",
+            is_match: false,
         };
 
 
     };
 
+    checkPassword() {
+        if (this.state.password == this.state.password_confirm) {
+            this.setState({ is_match: true});
+        }
+        else {
+            this.setState({ is_match: false});
+        }
+    }
+
     handleOnSubmit = (e) => {
-        /* Метод для обработки формы. Получает информацию об инциденте из формы. 
-        Отправляет PATCH запрос с обновлением информации об инциденте (регистрация инцидента)*/
         e.preventDefault();
 
         const user = {
@@ -34,57 +42,78 @@ class ModalRegister extends Component {
             password: this.state.password,
             group: this.state.group
         };
-        // Сериализуем, отправляем на сервер, создавая новое происшествие.
-        // При получении ответа обновляем состояние новым происшествием.
-        // При обновлении состояния компонент рендерится заново, значит,
-        // список с актуальными происшествиями, переданный как пропсы в компонент таблицы, будет отрендерен
+
         axios.defaults.xsrfCookieName = 'csrftoken';
         axios.defaults.xsrfHeaderName = 'X-CSRFToken';
         axios.defaults.withCredentials = true;
         let token = localStorage.getItem("token");
 
-        axios.post(baseAPIUrl + '/users/', { user }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
-            },
-        })
-            .then(res => {
-                this.props.setActive(false);
-                toast.success("Пользователь успешно зарегестрирован!", {
+
+        this.checkPassword();
+        if (this.state.is_match) {
+            axios.post(baseAPIUrl + '/users/', { user }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`
+                },
+            })
+                .then(res => {
+                    this.props.setActive(false);
+                    toast.success("Пользователь успешно зарегестрирован!", {
+                        style: {
+                            backgroundColor: 'grey',
+                            color: "white"
+                        }
+                    })
+                })
+                .catch((error) => {
+                    this.checkPassword()
+                    this.setState({ error: "Ошибка во время регистрации пользователя" })
+                    if (error.response.status === 403) {
+                        toast.error("Ошибка регистрации. Вы не авторизованы", {
+                            style: {
+                                backgroundColor: 'grey',
+                                color: "white"
+                            }
+                        })
+                    }
+                    else if (error.response.status === 400) {
+                        if (this.state.password.length < 8) {
+                            toast.error("Ошибка регистрации. Длина пароля должна быть больше 8 символов", {
+                                style: {
+                                    backgroundColor: 'grey',
+                                    color: "white"
+                                }
+                            })
+                        }
+                        else {
+                            toast.error("Ошибка регистрации. Проверьте правильность введенных данных", {
+                                style: {
+                                    backgroundColor: 'grey',
+                                    color: "white"
+                                }
+                            })
+                        }
+                    }
+                    else {
+                        toast.error("Ошибка регистрации", {
+                            style: {
+                                backgroundColor: 'grey',
+                                color: "white"
+                            }
+                        })
+                    }
+                })
+            }
+            
+            else {
+                toast.error("Пароли не совпадают!", {
                     style: {
                         backgroundColor: 'grey',
                         color: "white"
                     }
                 })
-            })
-            .catch((error) => {
-                this.setState({ error: "Ошибка во время регистрации пользователя" })
-                if (error.response.status === 403) {
-                    toast.error("Ошибка регистрации. Вы не авторизованы", {
-                        style: {
-                            backgroundColor: 'grey',
-                            color: "white"
-                        }
-                    })
-                }
-                else if (error.response.status === 400) {
-                    toast.error("Ошибка регистрации. Проверьте корректность введенных данных", {
-                        style: {
-                            backgroundColor: 'grey',
-                            color: "white"
-                        }
-                    })
-                }
-                else {
-                    toast.error("Ошибка регистрации", {
-                        style: {
-                            backgroundColor: 'grey',
-                            color: "white"
-                        }
-                    })
-                }
-            });
+            };
     };
 
 
@@ -151,10 +180,13 @@ class ModalRegister extends Component {
                                             <option value="Admin">Администратор</option>
                                         </select>
                                     </label>
-                                    <button className="App-Button"
-                                        type="submit" >
-                                        Зарегистрировать
-                                    </button>
+
+                                    <div class="modal-footer">
+                                        <button className="App-Button"
+                                            type="submit" >
+                                            Зарегистрировать
+                                        </button>
+                                    </div>
                                 </form>
                             </div>
                         </React.Fragment>
