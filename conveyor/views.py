@@ -20,6 +20,14 @@ def posts_state_list(request):
         return JsonResponse(serializer.data, safe=False)
 
 
+@api_view(['GET'])
+def buttons_status(request):
+    if request.method == 'GET':
+        buttons_state_set = ButtonsBlocks.objects.all()
+        serializer = ButtonsBlocksSerializer(buttons_state_set, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+
 @api_view(['POST'])
 def update_posts_status(request):
     """

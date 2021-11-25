@@ -8,4 +8,5 @@ urlpatterns = [
     path('update-list/', views.update_posts_status),
     path('buttons-posts/update-buttons-configuration/', views.update_posts_buttons_configuration),
     path('buttons-posts/', ButtonsBlocksRetrieveAPIView.as_view()),
+    path('buttons-status/', views.buttons_status),
 ]
