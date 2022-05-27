@@ -73,10 +73,13 @@ def update_posts_buttons_configuration(request):
                     button_data_base = ButtonsBlocks.objects.get(
                         buttons_block_number=button.buttons_block_number)
                     post.buttons_set.remove(button_data_base)
+                    button_data_base.save()
+                    post.save()
 
             for new_post in button_block_json['posts']:
                 post = PostsState.objects.get(post_number=new_post['post_number'])
                 post.buttons_set.add(button_block_data_base)
+                post.save()
 
         return JsonResponse(serializer.data, status=201, safe=False)
     return JsonResponse(serializer.errors, status=400, safe=False)
